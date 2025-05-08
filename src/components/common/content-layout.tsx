@@ -2,7 +2,6 @@
 
 import { type ReactNode, useEffect, useState } from "react";
 import { TableOfContents, type TOCItem } from "./table-of-contents";
-
 interface ContentLayoutProps {
   children: ReactNode;
   tocItems: TOCItem[];

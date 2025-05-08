@@ -1,52 +1,28 @@
-import {
-  GET_STARTED_STATUS_PAGE_DATA,
-  GET_STARTED_STATUS_TOC_ITEMS,
-} from "@/lib/state";
+import React from "react";
+import UnderstandRequirements from "./UnderstandRequirements";
 import { Play } from "lucide-react";
-import UnderstandRequirements from "./components/UnderstandRequirements";
 import { ContentLayout } from "@/components/common/content-layout";
+import type { TOCItem } from "@/components/common/table-of-contents";
 import { GET_STARTED_STATUS_CONTENT } from "@/lib/constant";
-import GetStartedCheckStatus from "./components/GetStartedCheckStatus";
-import GetStartedGetCompensation from "./components/GetStartedGetCompensation";
 
-export default async function GetStartedStatus({
-  searchParams,
-  params,
-}: {
-  searchParams: any;
-  params: any;
-}) {
-  const allParams = await params;
-  const status = allParams?.status;
-  const pageData = GET_STARTED_STATUS_PAGE_DATA[status];
-  const tocItems = GET_STARTED_STATUS_TOC_ITEMS[status];
+type GetStartedGetCompensationProps = {
+  title: string;
+  subText: string;
+  tocItems: TOCItem[];
+};
 
-  if (status === "status") {
-    return (
-      <GetStartedCheckStatus
-        subText={pageData?.subText}
-        title={pageData?.title}
-      />
-    );
-  }
-
-  if (status === "compensation") {
-    return (
-      <GetStartedGetCompensation
-        subText={pageData?.subText}
-        title={pageData?.title}
-        tocItems={tocItems}
-      />
-    );
-  }
-
+const GetStartedGetCompensation = ({
+  subText,
+  title,
+  tocItems,
+}: GetStartedGetCompensationProps) => {
   return (
     <div className="p-6 md:p-8">
       <div className="max-w-3xl mx-auto mb-12 rounded-lg p-6">
         <h1 className="text-center text-3xl md:text-4xl font-bold text-[#333] mb-2">
-          {pageData?.title}
+          {title}
         </h1>
-        <p className="text-center text-gray-600">{pageData?.subText}</p>
+        <p className="text-center text-gray-600">{subText}</p>
         <div className="relative w-full my-4 rounded-xl overflow-hidden">
           <div className="bg-gradient-to-r from-[#59285F]/80 to-[#59285F]/60 relative h-[318px] rounded-xl overflow-hidden">
             <img
@@ -64,13 +40,18 @@ export default async function GetStartedStatus({
             </div>
           </div>
         </div>
-        <UnderstandRequirements continueText={pageData?.continueText} />
+        <UnderstandRequirements
+          continueText={"Apply Now"}
+          type="compensation"
+        />
       </div>
       <div>
         <ContentLayout tocItems={tocItems}>
-          {GET_STARTED_STATUS_CONTENT[status]}
+          {GET_STARTED_STATUS_CONTENT["compensation"]}
         </ContentLayout>
       </div>
     </div>
   );
-}
+};
+
+export default GetStartedGetCompensation;

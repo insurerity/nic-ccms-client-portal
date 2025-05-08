@@ -1,0 +1,132 @@
+"use client";
+
+import type React from "react";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { useRouter, useSearchParams } from "next/navigation";
+import { RequiredDocuments } from "./components/RequiredDocuments";
+import MotorCompensationDeathIcon from "@/components/icons/MotorCompensationDeathIcon";
+import MotorCompensationInjuryIcon from "@/components/icons/MotorCompensationInjuryIcon";
+
+const questions = [
+  {
+    id: 1,
+    title: "What type of case are you applying for?",
+    subtitle:
+      "Select the option that best describes the outcome of the motor accident.",
+    options: [
+      {
+        id: "death",
+        title: "Death",
+        description:
+          "For cases where the victim passed away as a result of the accident.",
+        icon: <MotorCompensationDeathIcon />,
+      },
+      {
+        id: "injury",
+        title: "Injury",
+        description:
+          "For cases where the victim was injured but survived the accident.",
+        icon: <MotorCompensationInjuryIcon />,
+      },
+    ],
+  },
+];
+
+export default function MotorCompensation() {
+  const [currentQuestion, setCurrentQuestion] = useState(1);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [showRequiredDocuments, setShowRequiredDocuments] = useState(false);
+
+  const handleOptionSelect = (optionId: string) => {
+    setSelectedOption(optionId);
+    // const url = new URL(window.location.href);
+    // url.searchParams.set("caseType", optionId);
+    // window.history.pushState({}, "", url.toString());
+  };
+
+  const handleContinue = () => {
+    setShowRequiredDocuments(true);
+    // return router.push(`/complaints/compensation?${searchParams}`);
+  };
+
+  const currentQuestionData = questions.find((q) => q.id === currentQuestion);
+
+  if (showRequiredDocuments) {
+    return <RequiredDocuments caseType={selectedOption as string} />;
+  }
+
+  return (
+    <div className="flex justify-center items-center p-4">
+      <div className="w-full max-w-4xl">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentQuestion}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="p-6 md:p-8"
+          >
+            {currentQuestionData && (
+              <>
+                <div className="mb-4">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    {currentQuestionData.title}
+                  </h1>
+                  <p className="text-gray-600">
+                    {currentQuestionData.subtitle}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  {currentQuestionData.options.map((option) => (
+                    <div
+                      key={option.id}
+                      className={cn(
+                        "border rounded-lg p-6 cursor-pointer transition-all",
+                        selectedOption === option.id
+                          ? "border-[#5D2D79] border-2 bg-white"
+                          : "border-gray-200 hover:border-gray-300 bg-gray-50"
+                      )}
+                      onClick={() => handleOptionSelect(option.id)}
+                    >
+                      <div className="flex flex-col items-center text-center">
+                        <div className="mb-4">{option.icon}</div>
+                        <h3 className="text-xl font-semibold mb-2">
+                          {option.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          {option.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleContinue}
+                    disabled={!selectedOption}
+                    className={cn(
+                      "px-8 py-3 rounded-full text-white font-medium transition-colors",
+                      selectedOption
+                        ? "bg-[#5D2D79] hover:bg-[#4A2461]"
+                        : "bg-gray-300 cursor-not-allowed"
+                    )}
+                  >
+                    Continue
+                  </button>
+                </div>
+              </>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}

@@ -53,7 +53,7 @@ export default function GetStarted() {
               been injured or affected by an uninsured vehicle accident.
             </p>
             <ActionButton
-              goTo="/get-started/accident"
+              goTo="/get-started/compensation"
               className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full mt-auto cursor-pointer"
               text="Learn More"
             />

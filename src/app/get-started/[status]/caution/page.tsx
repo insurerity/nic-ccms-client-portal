@@ -1,10 +1,11 @@
 import BigBellIcon from "@/components/icons/BigBellIcon";
 import { Button } from "@/components/ui/button";
+import CautionNotice from "../components/CautionNotices";
 
 export default function Caution() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col items-center">
-      <BigBellIcon />
+      {/* <BigBellIcon />
 
       <h1 className="text-3xl font-bold text-center mb-6">Caution!</h1>
 
@@ -29,7 +30,9 @@ export default function Caution() {
         >
           Yes, I have notified them.
         </Button>
-      </div>
+      </div> */}
+
+      <CautionNotice />
     </div>
   );
 }

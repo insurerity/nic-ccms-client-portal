@@ -146,7 +146,7 @@ export const GET_STARTED_STATUS_CONTENT: Record<any, ReactNode[]> = {
       {content}
     </section>
   )),
-  accident: PETITION_DETAILED_DATA.map(({ id, title, content }) => (
+  compensation: PETITION_DETAILED_DATA.map(({ id, title, content }) => (
     <section key={id} id={id} className="mb-12">
       <h2 className="text-2xl font-bold text-purple-800 mb-4">{title}</h2>
       {content}
