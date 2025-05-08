@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import {
   BusinessInformationSchemaType,
+  CaseDetailsSchemaType,
   PetitionerProfileSchemaType,
   VehicleProfileSchemaType,
   complaintDetailFormSchemaType,
@@ -12,6 +13,7 @@ type ComplaintStoreData = {
   supportingDocuments: any;
   petitionerProfile: PetitionerProfileSchemaType | null;
   businessInformation: BusinessInformationSchemaType | null;
+  caseDetails: CaseDetailsSchemaType | null;
 };
 
 interface ComplaintStore {
@@ -29,6 +31,7 @@ export const ComplaintDataStore = create<ComplaintStore>((set) => ({
     supportingDocuments: null,
     businessInformation: null,
     petitionerProfile: null,
+    caseDetails: null,
   },
   setData: (key, value) =>
     set((state) => ({

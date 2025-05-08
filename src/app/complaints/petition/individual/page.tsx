@@ -9,11 +9,11 @@ import {
 } from "@/lib/state";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import VictimsProfileForm from "./components/VictimProfileForm";
-import ComplaintDetailsForm from "./components/ComplaintDetailsForm";
-import SupportingDocumentsForm from "@/components/common/Form/SupportingDocuments";
+
 import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
 import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupportingDocumentsForm";
+import ComplaintDetailsForm from "@/components/common/Form/ComplaintDetailsForm";
+import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
 
 const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "victim-profile": VictimsProfileForm,

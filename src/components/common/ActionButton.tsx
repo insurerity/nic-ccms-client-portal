@@ -1,11 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
-
 type ActionButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   text: string;
-  goTo: string;
+  goTo?: string;
 };
 
 const ActionButton: React.FC<ActionButtonProps> = ({
@@ -15,13 +13,21 @@ const ActionButton: React.FC<ActionButtonProps> = ({
 }) => {
   const router = useRouter();
   return (
-    <Button
+    <button
       {...props}
-      className={`${props.className || ""} cursor-pointer`}
-      onClick={() => router.push(goTo)}
+      className={`${
+        props.className || ""
+      } cursor-pointer hover:bg-primaryLight/90`}
+      onClick={(e) => {
+        if (goTo) {
+          router.push(goTo);
+        } else if (props.onClick) {
+          props.onClick(e);
+        }
+      }}
     >
       {text}
-    </Button>
+    </button>
   );
 };
 

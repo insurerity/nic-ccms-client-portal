@@ -104,6 +104,20 @@ export const PetitionerProfileSchema = z.object({
   }),
 });
 
+// Case Details Schema
+export const CaseDetailsSchema = z.object({
+  incidentDate: z.date().optional(),
+  claimType: z.string({
+    required_error: "Please select a claim type",
+  }),
+  vehicleNumber: z.string().optional(),
+  description: z.string().min(10, {
+    message: "Description must be at least 10 characters",
+  }),
+});
+
+export type CaseDetailsSchemaType = z.infer<typeof CaseDetailsSchema>;
+
 export type PetitionerProfileSchemaType = z.infer<
   typeof PetitionerProfileSchema
 >;

@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -26,6 +28,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { VehicleProfileSchema, VehicleProfileSchemaType } from "@/lib/schema";
 import { useComplaintStore } from "@/hooks/use-complaint-store";
+import ActionButton from "../ActionButton";
 
 const idTypes = [
   "Ghana Card",
@@ -319,7 +322,11 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
           <Separator className="space-y-3" />
 
           <div className="flex justify-end">
-            <Button type="submit">Continue</Button>
+            <ActionButton
+              text="Continue"
+              type="submit"
+              className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full"
+            />
           </div>
         </form>
       </Form>

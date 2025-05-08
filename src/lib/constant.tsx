@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode } from "react";
 
 export const PETITION_DETAILED_DATA = [
