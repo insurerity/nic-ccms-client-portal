@@ -37,7 +37,6 @@ export function RequiredDocuments({
   description,
   onComplete,
 }: RequirementCheckProps) {
-  // Default requirements based on case type
   const getDefaultRequirements = (type: CaseType): Requirement[] => {
     if (type === "death") {
       const deathItems = MOTOR_COMP_REQUIRED_DOCUMENTS["death"];
@@ -53,28 +52,31 @@ export function RequiredDocuments({
           ),
         };
       });
-    } else if (type === "injury") {
-      const injuryItems = MOTOR_COMP_REQUIRED_DOCUMENTS["injury"];
-      return injuryItems.map((v) => {
-        return {
-          id: v,
-          text: v,
-          icon: pictureItems.includes(v) ? (
-            <ImageIcon className="w-5 h-5 text-[#5D2D79]" />
-          ) : (
-            <FileText className="w-5 h-5 text-[#5D2D79]" />
-          ),
-        };
-      });
     }
-    return [];
+
+    const injuryItems = MOTOR_COMP_REQUIRED_DOCUMENTS["injury"];
+    return injuryItems.map((v) => {
+      return {
+        id: v,
+        text: v,
+        icon: pictureItems.includes(v) ? (
+          <ImageIcon className="w-5 h-5 text-[#5D2D79]" />
+        ) : (
+          <FileText className="w-5 h-5 text-[#5D2D79]" />
+        ),
+      };
+    });
   };
 
   // Use custom requirements if provided, otherwise use defaults
   const requirements = customRequirements || getDefaultRequirements(caseType);
 
+  const uniqueRequirements = Array.from(
+    new Map(requirements.map((item) => [item.id, item])).values()
+  );
+
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(
-    requirements.reduce((acc, item) => ({ ...acc, [item.id]: false }), {})
+    uniqueRequirements.reduce((acc, item) => ({ ...acc, [item.id]: false }), {})
   );
 
   const handleCheckboxChange = (id: string) => {
@@ -84,9 +86,13 @@ export function RequiredDocuments({
     }));
   };
 
+  console.log("checked items", checkedItems);
+
   const allChecked = Object.values(checkedItems).every(
     (value) => value === true
   );
+
+  console.log("all checked", allChecked);
 
   const handleContinue = () => {
     if (allChecked && onComplete) {

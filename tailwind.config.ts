@@ -14,6 +14,7 @@ export default {
         foreground: "hsl(var(--foreground))",
         customGray: "#737A83",
         secondaryColor: "#614418",
+        customCard: "#F7F4F7",
         lightSecondary: "#D3BE90",
         primaryLight: "#59285F",
         tundora: "#4A4A4A",

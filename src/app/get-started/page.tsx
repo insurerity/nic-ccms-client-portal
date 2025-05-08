@@ -1,4 +1,5 @@
 import ActionButton from "@/components/common/ActionButton";
+import CustomCard from "@/components/common/CustomCard";
 import {
   AccidentIcon,
   ComplaintIcon,
@@ -7,8 +8,8 @@ import {
 
 export default function GetStarted() {
   return (
-    <div className="p-6 md:p-8">
-      <div className="max-w-3xl mx-auto mb-12 rounded-lg p-6">
+    <div className="p-6 md:p-8 md:pt-0">
+      <div className="max-w-3xl mx-auto rounded-lg p-6 pt-0">
         <h1 className="text-center text-3xl md:text-4xl font-bold text-[#333] mb-2">
           What do you want to do?
         </h1>
@@ -18,11 +19,11 @@ export default function GetStarted() {
       </div>
 
       {/* Options */}
-      <div className="relative">
+      <div className="w-full">
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 rounded-lg p-6">
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-x-6 rounded-lg p-6">
           {/* Card 1 */}
-          <div className="bg-[#F7F4F7] p-6 rounded-[24px] text-center flex flex-col items-center">
+          <CustomCard>
             <div className="w-48 h-48 mb-4 flex items-center justify-center">
               <ComplaintIcon />
             </div>
@@ -38,10 +39,10 @@ export default function GetStarted() {
               className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full mt-auto cursor-pointer"
               text="Learn More"
             />
-          </div>
+          </CustomCard>
 
           {/* Card 2 */}
-          <div className="bg-[#F7F4F7] p-6 rounded-[24px] flex flex-col items-center">
+          <CustomCard>
             <div className="w-48 h-48 mb-4 flex items-center justify-center">
               <AccidentIcon />
             </div>
@@ -57,10 +58,10 @@ export default function GetStarted() {
               className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full mt-auto cursor-pointer"
               text="Learn More"
             />
-          </div>
+          </CustomCard>
 
           {/* Card 3 */}
-          <div className="bg-[#F7F4F7] p-6 rounded-[24px] flex flex-col items-center">
+          <CustomCard>
             <div className="w-48 h-48 mb-4 flex items-center justify-center">
               <StatusIcon />
             </div>
@@ -76,7 +77,7 @@ export default function GetStarted() {
               className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full mt-auto cursor-pointer"
               text="Learn More"
             />
-          </div>
+          </CustomCard>
         </div>
       </div>
     </div>

@@ -91,7 +91,7 @@ export default function MotorCompensation() {
                         "border rounded-lg p-6 cursor-pointer transition-all",
                         selectedOption === option.id
                           ? "border-[#5D2D79] border-2 bg-white"
-                          : "border-gray-200 hover:border-gray-300 bg-gray-50"
+                          : "border-gray-200 hover:bg-primaryLight/10 hover:border-[#5D2D79] hover:border-1  bg-customCard"
                       )}
                       onClick={() => handleOptionSelect(option.id)}
                     >
