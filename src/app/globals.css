@@ -13,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 5%;
 
-    --primary: 284 80% 44%;
+    --primary: 293, 41%, 26%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 0 0% 96%;
@@ -32,7 +32,7 @@
     --input: 0 0% 85%;
     --ring: 0 0% 76%;
 
-    --radius: 1rem;
+    --radius: 0.4rem;
   }
 
   .dark {
@@ -72,5 +72,9 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
+  }
+
+  button {
+    @apply rounded-full;
   }
 }

@@ -17,6 +17,7 @@ export default {
         customCard: "#F7F4F7",
         lightSecondary: "#D3BE90",
         primaryLight: "#59285F",
+        primary100: "#EEE9EF",
         tundora: "#4A4A4A",
         card: {
           DEFAULT: "hsl(var(--card))",

@@ -5,7 +5,7 @@ import type React from "react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { RequiredDocuments } from "./components/RequiredDocuments";
 import MotorCompensationDeathIcon from "@/components/icons/MotorCompensationDeathIcon";
 import MotorCompensationInjuryIcon from "@/components/icons/MotorCompensationInjuryIcon";
@@ -36,28 +36,33 @@ const questions = [
 ];
 
 export default function MotorCompensation() {
+  const pathName = usePathname();
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [showRequiredDocuments, setShowRequiredDocuments] = useState(false);
 
   const handleOptionSelect = (optionId: string) => {
     setSelectedOption(optionId);
-    // const url = new URL(window.location.href);
-    // url.searchParams.set("caseType", optionId);
-    // window.history.pushState({}, "", url.toString());
   };
 
   const handleContinue = () => {
     setShowRequiredDocuments(true);
-    // return router.push(`/complaints/compensation?${searchParams}`);
   };
 
   const currentQuestionData = questions.find((q) => q.id === currentQuestion);
 
   if (showRequiredDocuments) {
-    return <RequiredDocuments caseType={selectedOption as string} />;
+    return (
+      <RequiredDocuments
+        caseType={selectedOption as string}
+        onComplete={() => {
+          return router.push(
+            `${pathName}/petitioner?caseType=${selectedOption}`
+          );
+        }}
+      />
+    );
   }
 
   return (

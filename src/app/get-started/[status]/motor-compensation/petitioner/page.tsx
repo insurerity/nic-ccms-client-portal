@@ -78,7 +78,11 @@ export default function MotorCompensationPetitioner() {
 
   const handleContinue = () => {
     if (currentQuestion === 2) {
-      return router.push(`/submit-complaint?${searchParams}`);
+      const gotoUrl =
+        selectedOption === "individual"
+          ? `/complaints/compensation/individual?${searchParams}`
+          : `/complaints/compensation/business?${searchParams}`;
+      return router.push(gotoUrl);
     }
     if (selectedOption) {
       setCurrentQuestion(currentQuestion + 1);

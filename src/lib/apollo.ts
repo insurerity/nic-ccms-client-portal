@@ -22,7 +22,7 @@ export type ResolverContext = {
 
 const httpLink = createHttpLink({
   // uri: `${env("HTTP_LINK")}`,
-  uri: `https://m11-dashing-blaze.hasura.app/v1/graphql`,
+  uri: `https://ccmab-graph-demo-460980904788.us-central1.run.app/v1/graphql`,
 });
 
 // const authLink = setContext((_: any, { headers }: { headers:  }) => {

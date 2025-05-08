@@ -1,0 +1,5 @@
+mutation addTicket($object: nic_ccms_Complaint_insert_input!) {
+  insert_nic_ccms_Complaint_one(object: $object) {
+    id
+  }
+}

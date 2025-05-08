@@ -4,11 +4,11 @@ import { Bell, X } from "lucide-react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#59285F] p-4 md:p-8 flex items-center justify-center">
+    <div className="min-h-screen bg-[#59285F] flex items-center justify-center">
       <div className="w-full max-w-7xl h-[90vh] rounded-3xl border-4 bg-white overflow-hidden shadow-2xl flex flex-col">
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-white p-6 pb-0 md:p-8 md:pb-0">
-          <div className="flex justify-between items-center">
+        <div className="sticky top-0 z-10 bg-white">
+          <div className="flex justify-between items-center  p-6 pb-0 md:p-8 md:pb-0">
             {/* Logo and Title */}
             <div className="flex items-center gap-4">
               <div className="relative w-16 h-16 flex-shrink-0">
@@ -52,7 +52,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8">{children}</div>
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-customCard">
+          {children}
+        </div>
       </div>
     </div>
   );

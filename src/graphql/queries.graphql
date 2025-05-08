@@ -1,0 +1,41 @@
+query RegulatedEntities {
+  RegulatedEntity {
+    id
+    name
+    entityType
+  }
+}
+
+query getTicetNumber($id: uuid!) {
+  nic_ccms_Complaint_by_pk(id: $id) {
+    ticketNumber
+    ticketType
+    id
+  }
+}
+
+query getStatus($_eq: String!) {
+  nic_ccms_ComplaintStatus(
+    where: {
+      Complaint: { ticketNumber: { _eq: $_eq }, RegulatedEntity: {} }
+      isActive: { _eq: true }
+    }
+  ) {
+    isActive
+    status
+    id
+    Complaint {
+      name
+      RegulatedEntity {
+        name
+      }
+    }
+  }
+}
+
+query Offices {
+  Office {
+    id
+    name
+  }
+}

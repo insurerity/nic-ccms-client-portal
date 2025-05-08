@@ -74,11 +74,13 @@ export default function ComplaintForm() {
     window.history.pushState({}, "", url.toString());
   };
 
-  console.log("search params", searchParams);
-
   const handleContinue = () => {
     if (currentQuestion === 2) {
-      return router.push(`/submit-complaint?${searchParams}`);
+      const gotoUrl =
+        selectedOption === "individual"
+          ? `/complaints/petition/individual?${searchParams}`
+          : `/complaints/petition/business?${searchParams}`;
+      return router.push(gotoUrl);
     }
     if (selectedOption) {
       setCurrentQuestion(currentQuestion + 1);

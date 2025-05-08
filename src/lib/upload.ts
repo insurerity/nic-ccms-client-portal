@@ -15,3 +15,9 @@ async function uploadFile(file: File) {
   const url = await getDownloadURL(storageRef);
   return url;
 }
+
+export const formatFileSize = (bytes: number): string => {
+  if (bytes < 1024) return bytes + " bytes";
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+};
