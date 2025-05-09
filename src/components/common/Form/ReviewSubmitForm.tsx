@@ -133,6 +133,7 @@ const ReviewSubmitForm = ({
           </Button>
           <ActionButton
             text="Submit Complaint"
+            onClick={handleSubmit}
             type="submit"
             className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
           />

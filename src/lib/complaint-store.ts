@@ -3,13 +3,14 @@ import {
   BusinessInformationSchemaType,
   CaseDetailsSchemaType,
   PetitionerProfileSchemaType,
-  VehicleProfileSchemaType,
+  VictimProfileSchemaType,
   complaintDetailFormSchemaType,
 } from "./schema";
 
 type ComplaintStoreData = {
-  vehicleProfile: VehicleProfileSchemaType | null;
+  vehicleProfile: VictimProfileSchemaType | null;
   complaintDetails: complaintDetailFormSchemaType | null;
+
   supportingDocuments: any;
   petitionerProfile: PetitionerProfileSchemaType | null;
   businessInformation: BusinessInformationSchemaType | null;

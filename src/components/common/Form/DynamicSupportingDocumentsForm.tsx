@@ -1,11 +1,9 @@
 "use client";
 
-import type React from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { UploadCloud, X, FileText } from "lucide-react";
+import { X, FileText } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -100,7 +98,6 @@ const DynamicSupportingDocumentsForm = ({
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setData("supportingDocuments", values);
-    console.log(values);
     onNextStep();
   };
 

@@ -40,7 +40,7 @@ const ComplaintDetailsForm = ({
   onPrevStep,
 }: ComplaintDetailsFormProps) => {
   const { setData, data } = useComplaintStore();
-  const { entities, loadingEntities } = useGetRegulatedEntities();
+  const { entities } = useGetRegulatedEntities();
 
   const form = useForm<complaintDetailFormSchemaType>({
     resolver: zodResolver(complaintDetailFormSchema),

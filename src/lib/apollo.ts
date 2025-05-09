@@ -105,7 +105,6 @@ export function createApolloClient(_context?: ResolverContext) {
 }
 
 export function initializeApollo(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialState: any = null,
   // Pages with Next.js data fetching methods, like `getStaticProps`, can send
   // a custom context which will be used by `SchemaLink` to server render pages
