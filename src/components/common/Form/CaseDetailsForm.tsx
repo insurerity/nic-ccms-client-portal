@@ -84,7 +84,6 @@ const CaseDetailsForm = ({ onNextStep, onPrevStep }: CaseDetailsFormProps) => {
   }, [data.caseDetails]);
 
   const onSubmit = (values: CaseDetailsSchemaType) => {
-    console.log(values);
     setData("caseDetails", values);
     onNextStep();
   };

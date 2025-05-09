@@ -8,7 +8,7 @@ import {
 } from "./schema";
 
 type ComplaintStoreData = {
-  vehicleProfile: VictimProfileSchemaType | null;
+  victimProfile: VictimProfileSchemaType | null;
   complaintDetails: complaintDetailFormSchemaType | null;
   supportingDocuments: any;
   petitionerProfile: PetitionerProfileSchemaType | null;
@@ -26,7 +26,7 @@ interface ComplaintStore {
 
 export const ComplaintDataStore = create<ComplaintStore>((set) => ({
   data: {
-    vehicleProfile: null,
+    victimProfile: null,
     complaintDetails: null,
     supportingDocuments: null,
     businessInformation: null,

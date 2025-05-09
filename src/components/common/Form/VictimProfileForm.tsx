@@ -47,9 +47,9 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
 
   const form = useForm<VictimProfileSchemaType>({
     resolver: zodResolver(VictimProfileSchema),
-    defaultValues: data.vehicleProfile
+    defaultValues: data.victimProfile
       ? {
-          ...data.vehicleProfile,
+          ...data.victimProfile,
         }
       : {
           firstName: "",
@@ -66,7 +66,7 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
   const selectedIdType = form.watch("idType");
 
   const onSubmit = (values: VictimProfileSchemaType) => {
-    setData("vehicleProfile", values);
+    setData("victimProfile", values);
     onNextStep();
   };
 

@@ -22,3 +22,9 @@ export interface SupportingDocumentsFormProps {
 }
 
 export type ComplaintOwnerType = "individual" | "business";
+
+export type TFormStep = {
+  id: number;
+  identifier: string;
+  label: string;
+};

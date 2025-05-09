@@ -29,6 +29,7 @@ import {
 import { useComplaintStore } from "@/hooks/use-complaint-store";
 import { CLAIM_TYPES, NATURE_OF_CLAIMS } from "@/lib/state";
 import { useGetRegulatedEntities } from "@/hooks/use-get-regulated-entities";
+import ActionButton from "../ActionButton";
 
 interface ComplaintDetailsFormProps {
   onNextStep: () => void;
@@ -239,10 +240,20 @@ const ComplaintDetailsForm = ({
           />
 
           <div className="flex justify-between pt-4">
-            <Button type="button" variant="outline" onClick={onPrevStep}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onPrevStep}
+              className="rounded-full"
+            >
               Back
             </Button>
-            <Button type="submit">Continue</Button>
+
+            <ActionButton
+              text="Continue"
+              type="submit"
+              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+            />
           </div>
         </form>
       </Form>

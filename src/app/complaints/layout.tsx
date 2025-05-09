@@ -1,6 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import GoBack from "../components/back-button";
 import { Bell, X } from "lucide-react";
+import Logo from "@/components/common/Logo";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,17 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="sticky top-0 z-10 bg-white">
           <div className="flex justify-between items-center  p-6 pb-0 md:p-8 md:pb-0">
             {/* Logo and Title */}
-            <div className="flex items-center gap-4">
-              <div className="relative w-16 h-16 flex-shrink-0">
-                {/* Your SVG Logo */}
-                {/* ... */}
-              </div>
-              <div className="text-[#333] leading-tight">
-                <div className="font-bold text-sm">NATIONAL</div>
-                <div className="font-bold text-sm">INSURANCE</div>
-                <div className="font-bold text-sm">COMMISSION</div>
-              </div>
-            </div>
+            <Logo />
 
             <div className="flex flex-col items-center">
               <h2 className="text-2xl font-semibold">

@@ -1,6 +1,7 @@
 import { Bell } from "lucide-react";
 import HeroSlider from "./components/hero-slider";
 import ActionButton from "@/components/common/ActionButton";
+import Logo from "@/components/common/Logo";
 
 export default function Home() {
   return (
@@ -10,13 +11,7 @@ export default function Home() {
       <div className="hidden md:flex md:w-1/2 bg-white flex-col  p-8">
         {/* Top header with logo and notification */}
         <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <img
-              src="/images/nic-logo.png"
-              alt="National Insurance Commission"
-              className="h-12"
-            />
-          </div>
+          <Logo />
 
           <div className="relative">
             <Bell className="h-6 w-6 text-gray-600" />

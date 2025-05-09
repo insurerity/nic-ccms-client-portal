@@ -72,6 +72,7 @@ const MCompBusiness = () => {
       onPrevStep: handlePrevStep,
       onComplete: handleComplete,
       documents: REQUIRED_DOCUMENTS,
+      formSteps,
     };
 
     return <Component {...commonProps} />;

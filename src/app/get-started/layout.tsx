@@ -1,26 +1,15 @@
 import { Separator } from "@/components/ui/separator";
 import GoBack from "../components/back-button";
 import { Bell } from "lucide-react";
+import Logo from "@/components/common/Logo";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[#59285F] p-4 md:p-8 flex items-center justify-center">
       <div className="w-full max-w-7xl h-[90vh] rounded-3xl border-4 bg-white overflow-hidden shadow-2xl flex flex-col">
-        {/* Header */}
         <div className="sticky top-0 z-10 bg-white p-6 pb-0 md:p-8 md:pb-0">
           <div className="flex justify-between items-center">
-            {/* Logo and Title */}
-            <div className="flex items-center gap-4">
-              <div className="relative w-16 h-16 flex-shrink-0">
-                {/* Your SVG Logo */}
-                {/* ... */}
-              </div>
-              <div className="text-[#333] leading-tight">
-                <div className="font-bold text-sm">NATIONAL</div>
-                <div className="font-bold text-sm">INSURANCE</div>
-                <div className="font-bold text-sm">COMMISSION</div>
-              </div>
-            </div>
+            <Logo />
 
             {/* Go Back and Notification */}
             <div className="flex items-center gap-3">

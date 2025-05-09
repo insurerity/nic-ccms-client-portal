@@ -23,3 +23,13 @@ export function capitalize(str: string | null | undefined): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
+
+export function toCamelCase(input: string): string {
+  return input.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
+}
+
+export function camelCaseToTitle(input: string): string {
+  return input
+    .replace(/([A-Z])/g, " $1") // Add space before capital letters
+    .replace(/^./, (str) => str.toUpperCase()); // Capitalize first letter
+}
