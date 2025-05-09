@@ -31,7 +31,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { capitalize, cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useComplaintStore } from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
 
@@ -90,150 +90,152 @@ const CaseDetailsForm = ({ onNextStep, onPrevStep }: CaseDetailsFormProps) => {
   };
 
   return (
-    <div className="bg-white rounded-[28px] shadow-sm p-6">
-      <div className="bg-primaryLight text-white p-6 rounded-lg mb-6">
-        <h2 className="text-xl font-bold">Case Details</h2>
-        <p className="text-sm mt-2">
-          Provide the details for your application.
+    <Suspense>
+      <div className="bg-white rounded-[28px] shadow-sm p-6">
+        <div className="bg-primaryLight text-white p-6 rounded-lg mb-6">
+          <h2 className="text-xl font-bold">Case Details</h2>
+          <p className="text-sm mt-2">
+            Provide the details for your application.
+          </p>
+        </div>
+
+        <p className="mb-4 text-sm">
+          Fields marked with (<span className="text-red-500">*</span>) are
+          required.
         </p>
-      </div>
 
-      <p className="mb-4 text-sm">
-        Fields marked with (<span className="text-red-500">*</span>) are
-        required.
-      </p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 gap-4">
+              <FormField
+                control={form.control}
+                name="incidentDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Date of Incident</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal bg-gray-50",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value
+                              ? format(field.value, "PPP")
+                              : "Select a date"}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) => date > new Date()}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 gap-4">
-            <FormField
-              control={form.control}
-              name="incidentDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Date of Incident</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="claimType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Claim Type <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal bg-gray-50",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value
-                            ? format(field.value, "PPP")
-                            : "Select a date"}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select claim type" />
+                        </SelectTrigger>
                       </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) => date > new Date()}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+                      <SelectContent className="w-full">
+                        {claimTypes.map((type) => (
+                          <SelectItem key={type} value={type}>
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="claimType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Claim Type <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+              <FormField
+                control={form.control}
+                name="vehicleNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Vehicle Number</FormLabel>
                     <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select claim type" />
-                      </SelectTrigger>
+                      <Input placeholder="Enter vehicle number" {...field} />
                     </FormControl>
-                    <SelectContent className="w-full">
-                      {claimTypes.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-            <FormField
-              control={form.control}
-              name="vehicleNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Vehicle Number</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter vehicle number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+            <div className="grid grid-cols-1 gap-4">
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Description Of Petition{" "}
+                      <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tell us more about the issue or situation..."
+                        className="min-h-[200px] resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-          <div className="grid grid-cols-1 gap-4">
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Description Of Petition{" "}
-                    <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Tell us more about the issue or situation..."
-                      className="min-h-[200px] resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+            <div className="flex justify-between pt-4">
+              {onPrevStep && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded-full"
+                  onClick={onPrevStep}
+                >
+                  Back
+                </Button>
               )}
-            />
-          </div>
-
-          <div className="flex justify-between pt-4">
-            {onPrevStep && (
-              <Button
-                type="button"
-                variant="outline"
-                className="rounded-full"
-                onClick={onPrevStep}
-              >
-                Back
-              </Button>
-            )}
-            <ActionButton
-              text="Next"
-              type="submit"
-              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
-            />
-          </div>
-        </form>
-      </Form>
-    </div>
+              <ActionButton
+                text="Next"
+                type="submit"
+                className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+              />
+            </div>
+          </form>
+        </Form>
+      </div>
+    </Suspense>
   );
 };
 

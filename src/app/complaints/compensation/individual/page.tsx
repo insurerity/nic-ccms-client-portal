@@ -15,7 +15,7 @@ import {
 } from "@/lib/state";
 
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const REQUIRED_DOCUMENTS = NORMAL_PETITION_DOCUMENTS["individual"];
 
@@ -79,9 +79,15 @@ const MotorCompIndividual = () => {
   };
 
   return (
-    <FormLayout currentStep={currentStep} faqs={DEFAULT_FAQS} steps={formSteps}>
-      {renderStepContent()}
-    </FormLayout>
+    <Suspense>
+      <FormLayout
+        currentStep={currentStep}
+        faqs={DEFAULT_FAQS}
+        steps={formSteps}
+      >
+        {renderStepContent()}
+      </FormLayout>
+    </Suspense>
   );
 };
 

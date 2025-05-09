@@ -8,7 +8,7 @@ import {
   NORMAL_PETITION_FORM_STEPS,
 } from "@/lib/state";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
 import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupportingDocumentsForm";
@@ -76,9 +76,15 @@ const NormalPetition = () => {
   };
 
   return (
-    <FormLayout currentStep={currentStep} faqs={DEFAULT_FAQS} steps={formSteps}>
-      {renderStepContent()}
-    </FormLayout>
+    <Suspense>
+      <FormLayout
+        currentStep={currentStep}
+        faqs={DEFAULT_FAQS}
+        steps={formSteps}
+      >
+        {renderStepContent()}
+      </FormLayout>
+    </Suspense>
   );
 };
 

@@ -14,7 +14,7 @@ import {
   NORMAL_PETITION_FORM_STEPS,
 } from "@/lib/state";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 
 const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "victim-profile": VictimsProfileForm,
@@ -78,9 +78,15 @@ const NormalPetitionBusiness = () => {
   };
 
   return (
-    <FormLayout currentStep={currentStep} faqs={DEFAULT_FAQS} steps={formSteps}>
-      {renderStepContent()}
-    </FormLayout>
+    <Suspense>
+      <FormLayout
+        currentStep={currentStep}
+        faqs={DEFAULT_FAQS}
+        steps={formSteps}
+      >
+        {renderStepContent()}
+      </FormLayout>
+    </Suspense>
   );
 };
 
