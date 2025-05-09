@@ -26,7 +26,7 @@ import { useGetRegions } from "@/hooks/use-get-regions";
 import { capitalize } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
-import { VehicleProfileSchema, VehicleProfileSchemaType } from "@/lib/schema";
+import { VictimProfileSchema, VictimProfileSchemaType } from "@/lib/schema";
 import { useComplaintStore } from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
 
@@ -47,8 +47,8 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
   const { offices: regions, loading: loadingRegions } = useGetRegions();
   const { setData, data } = useComplaintStore();
 
-  const form = useForm<VehicleProfileSchemaType>({
-    resolver: zodResolver(VehicleProfileSchema),
+  const form = useForm<VictimProfileSchemaType>({
+    resolver: zodResolver(VictimProfileSchema),
     defaultValues: data.vehicleProfile
       ? {
           ...data.vehicleProfile,
@@ -67,7 +67,7 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
 
   const selectedIdType = form.watch("idType");
 
-  const onSubmit = (values: VehicleProfileSchemaType) => {
+  const onSubmit = (values: VictimProfileSchemaType) => {
     setData("vehicleProfile", values);
     onNextStep();
   };
@@ -325,7 +325,7 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
             <ActionButton
               text="Continue"
               type="submit"
-              className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full"
+              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
             />
           </div>
         </form>

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const VehicleProfileSchema = z
+export const VictimProfileSchema = z
   .object({
     firstName: z.string().min(1, { message: "First name is required" }),
     lastName: z.string().min(1, { message: "Last name is required" }),
@@ -52,57 +52,114 @@ export const complaintDetailFormSchema = z.object({
 // Define the schema for the business information form
 export const BusinessInformationSchema = z.object({
   businessName: z.string().min(2, {
-    message: "Business name must be at least 2 characters",
+    message: "Business name is required",
   }),
   businessAddress: z.string().min(5, {
     message: "Please enter a valid business address",
   }),
-  businessPhoneNumber: z.string().min(10, {
-    message: "Phone number must be at least 10 digits",
-  }),
+  businessPhoneNumber: z
+    .string()
+    .optional()
+
+    .refine(
+      (val) =>
+        val === null ||
+        val === undefined ||
+        val.trim() === "" ||
+        val.length >= 10,
+      {
+        message: "Phone number must be at least 10 digits",
+      }
+    ),
   businessEmail: z.string().email({
     message: "Please enter a valid email address",
   }),
   contactPersonName: z.string().min(2, {
-    message: "Contact person name must be at least 2 characters",
+    message: "Contact person name is required",
   }),
   contactPhoneNumber: z.string().min(10, {
-    message: "Phone number must be at least 10 digits",
+    message: "Phone number is required",
   }),
-  region: z.string({
-    required_error: "Please select a region",
-  }),
-  idType: z.string({
-    required_error: "Please select an ID type",
-  }),
-  idNumber: z.string().min(1, {
-    message: "ID number is required",
-  }),
-});
-// Define the schema for the petitioner profile form
-export const PetitionerProfileSchema = z.object({
-  petitionerType: z.string({
-    required_error: "Please select a petitioner type",
-  }),
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters",
-  }),
-  email: z
-    .string()
-    .email({
-      message: "Please enter a valid email address",
+  region: z
+    .string({
+      required_error: "Please select a region",
     })
-    .optional(),
-  phoneNumber: z.string().min(10, {
-    message: "Phone number must be at least 10 digits",
-  }),
-  idType: z.string({
-    required_error: "Please select an ID type",
-  }),
-  idNumber: z.string().min(1, {
-    message: "ID number is required",
-  }),
+    .min(2, {
+      message: "Region is required",
+    }),
 });
+
+export const PetitionerProfileSchema = z
+  .object({
+    petitionerType: z.string({
+      required_error: "Please select a petitioner type",
+    }),
+    name: z.string().min(2, {
+      message: "Name must be at least 2 characters",
+    }),
+    email: z
+      .string()
+      .email({
+        message: "Please enter a valid email address",
+      })
+      .optional(),
+    phoneNumber: z.string().min(10, {
+      message: "Phone number must be at least 10 digits",
+    }),
+    idType: z.string({
+      required_error: "Please select an ID type",
+    }),
+    idNumber: z.string().min(1, {
+      message: "ID number is required",
+    }),
+    familyMemberType: z.string().optional(),
+    customFamilyMemberType: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.petitionerType === "Family") {
+      if (!data.familyMemberType) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Please select a family member type",
+          path: ["familyMemberType"],
+        });
+      } else if (
+        data.familyMemberType === "Other" &&
+        !data.customFamilyMemberType
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Please specify the relationship",
+          path: ["customFamilyMemberType"],
+        });
+      }
+    }
+
+    if (data.idType === "Ghana Card") {
+      if (!data.idNumber || data.idNumber.trim() === "") {
+        ctx.addIssue({
+          path: ["idNumber"],
+          code: z.ZodIssueCode.custom,
+          message: "Ghana Card Number is required",
+        });
+      } else if (!/^GHA-\d{9}-\d$/.test(data.idNumber)) {
+        ctx.addIssue({
+          path: ["idNumber"],
+          code: z.ZodIssueCode.custom,
+          message: "Ghana Card Number must be in the format GHA-XXXXXXXXX-X",
+        });
+      }
+    } else {
+      // For other ID types, make sure it's not empty
+      if (!data.idNumber || data.idNumber.trim() === "") {
+        ctx.addIssue({
+          path: ["idNumber"],
+          code: z.ZodIssueCode.custom,
+          message: "ID number is required",
+        });
+      }
+    }
+  });
 
 // Case Details Schema
 export const CaseDetailsSchema = z.object({
@@ -125,7 +182,7 @@ export type PetitionerProfileSchemaType = z.infer<
 export type BusinessInformationSchemaType = z.infer<
   typeof BusinessInformationSchema
 >;
-export type VehicleProfileSchemaType = z.infer<typeof VehicleProfileSchema>;
+export type VictimProfileSchemaType = z.infer<typeof VictimProfileSchema>;
 export type complaintDetailFormSchemaType = z.infer<
   typeof complaintDetailFormSchema
 >;

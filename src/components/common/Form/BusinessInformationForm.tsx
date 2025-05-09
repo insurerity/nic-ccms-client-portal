@@ -27,25 +27,10 @@ import {
   BusinessInformationSchemaType,
 } from "@/lib/schema";
 import { useComplaintStore } from "@/hooks/use-complaint-store";
-
-const regions = [
-  "Greater Accra",
-  "Ashanti",
-  "Western",
-  "Eastern",
-  "Central",
-  "Volta",
-  "Northern",
-  "Upper East",
-  "Upper West",
-  "Bono East",
-  "Ahafo",
-  "Bono",
-  "North East",
-  "Savannah",
-  "Oti",
-  "Western North",
-];
+import { useGetRegions } from "@/hooks/use-get-regions";
+import { Skeleton } from "@/components/ui/skeleton";
+import { capitalize } from "@/lib/utils";
+import ActionButton from "../ActionButton";
 
 const idTypes = [
   "Ghana Card",
@@ -63,6 +48,8 @@ const BusinessInformationForm = ({
   onNextStep,
   onPrevStep,
 }: BusinessInformationFormProps) => {
+  const { offices: regions, loading: loadingRegions } = useGetRegions();
+
   const { data, setData } = useComplaintStore();
 
   const form = useForm<BusinessInformationSchemaType>({
@@ -79,8 +66,6 @@ const BusinessInformationForm = ({
           contactPersonName: "",
           contactPhoneNumber: "",
           region: "",
-          idType: "",
-          idNumber: "",
         },
   });
 
@@ -145,10 +130,7 @@ const BusinessInformationForm = ({
               name="businessPhoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Business Phone Number{" "}
-                    <span className="text-red-500">*</span>
-                  </FormLabel>
+                  <FormLabel>Business Phone Number </FormLabel>
                   <FormControl>
                     <div className="flex">
                       <div className="flex items-center justify-center bg-gray-100 border border-r-0 rounded-l-md px-3">
@@ -251,7 +233,7 @@ const BusinessInformationForm = ({
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 ">
             <FormField
               control={form.control}
               name="region"
@@ -270,61 +252,34 @@ const BusinessInformationForm = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="w-full">
-                      {regions.map((region) => (
-                        <SelectItem key={region} value={region}>
-                          {region}
-                        </SelectItem>
-                      ))}
+                      {loadingRegions ? (
+                        <>
+                          <div className="flex flex-col space-y-4">
+                            {Array.from({ length: 4 }).map((_, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-center items-center py-4"
+                              >
+                                <Skeleton className="h-10 w-10 rounded-full" />
+                                <div className="flex-1 space-y-4 py-1 ml-4">
+                                  <Skeleton className="h-4 w-3/4 rounded" />
+                                  <Skeleton className="h-4 w-5/6 rounded" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {regions.map((region) => (
+                            <SelectItem key={region.id} value={region.id}>
+                              {capitalize(region.label)}
+                            </SelectItem>
+                          ))}
+                        </>
+                      )}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="idType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Type of ID <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select your ID Type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="w-full">
-                      {idTypes.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 gap-4">
-            <FormField
-              control={form.control}
-              name="idNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    ID Number <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter ID number" {...field} />
-                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -335,13 +290,23 @@ const BusinessInformationForm = ({
 
           <div className="flex justify-between">
             {onPrevStep && (
-              <Button type="button" variant="outline" onClick={onPrevStep}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onPrevStep}
+                className="rounded-full"
+              >
                 Back
               </Button>
             )}
-            <Button type="submit" className="ml-auto">
+            <ActionButton
+              text="Next"
+              type="submit"
+              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+            />
+            {/* <Button type="submit" className="ml-auto">
               Next
-            </Button>
+            </Button> */}
           </div>
         </form>
       </Form>

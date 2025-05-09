@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { toast } from "sonner";
+import ActionButton from "../ActionButton";
 
 interface ReviewSubmitFormProps {
   onPrevStep: () => void;
@@ -130,9 +131,11 @@ const ReviewSubmitForm = ({
           <Button type="button" variant="outline" onClick={onPrevStep}>
             Back
           </Button>
-          <Button type="submit" onClick={handleSubmit} disabled={!agreed}>
-            Submit Complaint
-          </Button>
+          <ActionButton
+            text="Submit Complaint"
+            type="submit"
+            className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+          />
         </div>
       </div>
     </div>

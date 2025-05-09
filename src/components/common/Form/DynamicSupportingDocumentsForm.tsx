@@ -22,6 +22,7 @@ import { ACCEPTED_FILE_TYPES, MAX_FILE_SIZE } from "@/lib/state";
 import UploadIcon from "@/components/icons/UploadIcon";
 import { formatFileSize } from "@/lib/upload";
 import { useComplaintStore } from "@/hooks/use-complaint-store";
+import ActionButton from "../ActionButton";
 
 // This will be dynamically generated based on the documents array
 const createFormSchema = (documents: DocumentTypeT[]) => {
@@ -237,12 +238,22 @@ const DynamicSupportingDocumentsForm = ({
           </div>
 
           <div className="flex justify-between pt-4">
-            <Button type="button" variant="outline" onClick={onPrevStep}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onPrevStep}
+              className="rounded-full"
+            >
               Back
             </Button>
-            <Button type="submit" className="hover:bg-primaryLight/90">
+            <ActionButton
+              text="Continue"
+              type="submit"
+              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+            />
+            {/* <Button type="submit" className="hover:bg-primaryLight/90">
               Continue
-            </Button>
+            </Button> */}
           </div>
         </form>
       </Form>

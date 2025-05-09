@@ -4,7 +4,9 @@ export const useGetRegions = () => {
   const { data, loading } = useOfficesQuery();
 
   const offices = data
-    ? data?.Office?.map((v) => ({ id: v.id, label: v.name }))
+    ? data?.Office?.filter(
+        (v) => v.name.toLocaleUpperCase() !== "Head Office".toLocaleUpperCase()
+      ).map((v) => ({ id: v.id, label: v.name }))
     : [];
 
   return {

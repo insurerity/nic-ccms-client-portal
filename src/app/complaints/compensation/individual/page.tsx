@@ -1,9 +1,9 @@
 "use client";
 
 import CaseDetailsForm from "@/components/common/Form/CaseDetailsForm";
-import ComplaintDetailsForm from "@/components/common/Form/ComplaintDetailsForm";
 import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupportingDocumentsForm";
 import FormLayout from "@/components/common/Form/FormLayout";
+import PetitionerProfileForm from "@/components/common/Form/PetitionProfileForm";
 import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
 import SubmissionSuccess from "@/components/common/Form/SubmissionSucess";
 import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
@@ -24,6 +24,7 @@ const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "case-details": CaseDetailsForm,
   "supporting-documents": DynamicSupportingDocumentsForm,
   "review-submit": ReviewSubmitForm,
+  "petitioners-profile": PetitionerProfileForm,
 };
 
 const MotorCompIndividual = () => {

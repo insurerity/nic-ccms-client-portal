@@ -1,5 +1,3 @@
-import { TOCItem } from "@/components/common/table-of-contents";
-import { PETITION_DETAILED_DATA } from "./constant";
 import { ComplaintOwnerType, DocumentTypeT } from "@/types";
 
 export const GET_STARTED_STATUS_PAGE_DATA: Record<any, any> = {
@@ -21,36 +19,6 @@ export const GET_STARTED_STATUS_PAGE_DATA: Record<any, any> = {
       "Watch our video or read the article below to understand our process and requirements",
     continueText: "Continue to check status",
   },
-};
-
-export const GET_STARTED_STATUS_TOC_DATA: Record<string, any[]> = {
-  petition: PETITION_DETAILED_DATA,
-  compensation: PETITION_DETAILED_DATA,
-  status: PETITION_DETAILED_DATA,
-};
-
-export const GET_STARTED_STATUS_TOC_ITEMS: Record<string, TOCItem[]> = {
-  petition: PETITION_DETAILED_DATA.map((v) => {
-    return {
-      id: v.id,
-      level: 1,
-      title: v.title,
-    };
-  }),
-  compensation: PETITION_DETAILED_DATA.map((v) => {
-    return {
-      id: v.id,
-      level: 1,
-      title: v.title,
-    };
-  }),
-  status: PETITION_DETAILED_DATA.map((v) => {
-    return {
-      id: v.id,
-      level: 1,
-      title: v.title,
-    };
-  }),
 };
 
 export const MOTOR_COMP_REQUIRED_DOCUMENTS: Record<any, string[]> = {
@@ -432,3 +400,31 @@ export const NORMAL_PETITION_DOCUMENTS: Record<
     },
   ],
 };
+
+export const PETITIONER_TYPES = [
+  "Individual",
+  "Corporate",
+  "Legal Entity",
+  "Broker",
+  "Family",
+];
+
+export const FAMILY_MEMBER_TYPES = [
+  "Brother",
+  "Sister",
+  "Mother",
+  "Father",
+  "Uncle",
+  "Cousin",
+  "Nephew",
+  "Other",
+];
+
+export const idTypes = [
+  "Ghana Card",
+  "Voter ID",
+  "Passport",
+  "Driver's License",
+  "NHIS Card",
+  "Other",
+];

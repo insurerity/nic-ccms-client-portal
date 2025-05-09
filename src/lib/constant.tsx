@@ -1,5 +1,6 @@
 "use client";
 
+import { TOCItem } from "@/components/common/table-of-contents";
 import { ReactNode } from "react";
 
 export const PETITION_DETAILED_DATA = [
@@ -140,6 +141,36 @@ export const PETITION_DETAILED_DATA = [
     ),
   },
 ];
+
+export const GET_STARTED_STATUS_TOC_DATA: Record<string, any[]> = {
+  petition: PETITION_DETAILED_DATA,
+  compensation: PETITION_DETAILED_DATA,
+  status: PETITION_DETAILED_DATA,
+};
+
+export const GET_STARTED_STATUS_TOC_ITEMS: Record<string, TOCItem[]> = {
+  petition: PETITION_DETAILED_DATA.map((v) => {
+    return {
+      id: v.id,
+      level: 1,
+      title: v.title,
+    };
+  }),
+  compensation: PETITION_DETAILED_DATA.map((v) => {
+    return {
+      id: v.id,
+      level: 1,
+      title: v.title,
+    };
+  }),
+  status: PETITION_DETAILED_DATA.map((v) => {
+    return {
+      id: v.id,
+      level: 1,
+      title: v.title,
+    };
+  }),
+};
 
 export const GET_STARTED_STATUS_CONTENT: Record<any, ReactNode[]> = {
   petition: PETITION_DETAILED_DATA.map(({ id, title, content }) => (

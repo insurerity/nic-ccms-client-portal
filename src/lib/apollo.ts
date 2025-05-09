@@ -22,30 +22,8 @@ export type ResolverContext = {
 
 const httpLink = createHttpLink({
   // uri: `${env("HTTP_LINK")}`,
-  uri: `https://ccmab-graph-demo-460980904788.us-central1.run.app/v1/graphql`,
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
 });
-
-// const authLink = setContext((_: any, { headers }: { headers:  }) => {
-//   function returnToken() {
-//     const token = localStorage.getItem("userAccess");
-
-//     const tokenInStorage = localStorage.getItem("userAccess");
-//     if (tokenInStorage) {
-//       return {
-//         authorization: `Bearer ${token}`,
-//       };
-//     } else {
-//       return;
-//     }
-//   }
-
-//   return {
-//     headers: {
-//       ...headers,
-//       ...returnToken(),
-//     },
-//   };
-// });
 
 const authLink = setContext(async (_, { headers }) => {
   function returnToken() {
@@ -63,7 +41,7 @@ const authLink = setContext(async (_, { headers }) => {
   return {
     headers: {
       ...headers,
-      "x-hasura-role": "user",
+      // "x-hasura-role": "user",
       ...returnToken(),
     },
   };

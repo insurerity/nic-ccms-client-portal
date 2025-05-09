@@ -19,6 +19,7 @@ export function TableOfContents({
   items,
   contentSelector = "[data-toc-content]",
 }: TableOfContentsProps) {
+  console.log("toc items", items);
   const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {

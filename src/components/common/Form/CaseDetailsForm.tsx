@@ -33,6 +33,7 @@ import { capitalize, cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useComplaintStore } from "@/hooks/use-complaint-store";
+import ActionButton from "../ActionButton";
 
 // Define the schema for the case details form
 const CaseDetailsSchema = z.object({
@@ -218,18 +219,17 @@ const CaseDetailsForm = ({ onNextStep, onPrevStep }: CaseDetailsFormProps) => {
               <Button
                 type="button"
                 variant="outline"
-                className="rounded-full px-8"
+                className="rounded-full"
                 onClick={onPrevStep}
               >
                 Back
               </Button>
             )}
-            <Button
+            <ActionButton
+              text="Next"
               type="submit"
-              className="ml-auto rounded-full px-8 bg-purple-200 text-purple-800 hover:bg-purple-300"
-            >
-              Next
-            </Button>
+              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+            />
           </div>
         </form>
       </Form>

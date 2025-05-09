@@ -27,23 +27,8 @@ import {
   PetitionerProfileSchemaType,
 } from "@/lib/schema";
 import { useComplaintStore } from "@/hooks/use-complaint-store";
-
-const petitionerTypes = [
-  "Individual",
-  "Solicitor",
-  "Legal Representative",
-  "Corporate Entity",
-  "Other",
-];
-
-const idTypes = [
-  "Ghana Card",
-  "Voter ID",
-  "Passport",
-  "Driver's License",
-  "NHIS Card",
-  "Other",
-];
+import { FAMILY_MEMBER_TYPES, idTypes, PETITIONER_TYPES } from "@/lib/state";
+import ActionButton from "../ActionButton";
 
 interface PetitionerProfileFormProps {
   onNextStep: () => void;
@@ -61,15 +46,11 @@ const PetitionerProfileForm = ({
       ? {
           ...data.petitionerProfile,
         }
-      : {
-          petitionerType: "",
-          name: "",
-          email: "",
-          phoneNumber: "",
-          idType: "",
-          idNumber: "",
-        },
+      : undefined,
   });
+
+  const petitionerType = form.watch("petitionerType");
+  const familyMemberType = form.watch("familyMemberType");
 
   const onSubmit = (values: PetitionerProfileSchemaType) => {
     console.log(values);
@@ -113,7 +94,7 @@ const PetitionerProfileForm = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="w-full">
-                      {petitionerTypes.map((type) => (
+                      {PETITIONER_TYPES.map((type) => (
                         <SelectItem key={type} value={type}>
                           {type}
                         </SelectItem>
@@ -232,10 +213,22 @@ const PetitionerProfileForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    ID Number <span className="text-red-500">*</span>
+                    {form.watch("idType") === "Ghana Card"
+                      ? "Ghana Card Number"
+                      : form.watch("idType")
+                      ? `${form.watch("idType")} Number`
+                      : "ID Number"}{" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your ID number" {...field} />
+                    <Input
+                      placeholder={
+                        form.watch("idType") === "Ghana Card"
+                          ? "e.g. GHA-123456789-X"
+                          : "Enter your ID number"
+                      }
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -243,17 +236,75 @@ const PetitionerProfileForm = ({
             />
           </div>
 
+          {petitionerType === "Family" && (
+            <FormField
+              control={form.control}
+              name="familyMemberType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Relationship <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select relationship" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="w-full">
+                      {FAMILY_MEMBER_TYPES.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {/* Conditionally Render Custom Relationship Input */}
+          {petitionerType === "Family" && familyMemberType === "Other" && (
+            <FormField
+              control={form.control}
+              name="customFamilyMemberType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Specify Relationship <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. Step-sister-in-law" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
           <Separator className="space-y-3" />
 
           <div className="flex justify-between">
             {onPrevStep && (
-              <Button type="button" variant="outline" onClick={onPrevStep}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onPrevStep}
+                className="rounded-full"
+              >
                 Back
               </Button>
             )}
-            <Button type="submit" className="ml-auto">
-              Next
-            </Button>
+            <ActionButton
+              text="Next"
+              type="submit"
+              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+            />
           </div>
         </form>
       </Form>
