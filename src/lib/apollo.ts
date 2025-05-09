@@ -21,7 +21,6 @@ export type ResolverContext = {
 };
 
 const httpLink = createHttpLink({
-  // uri: `${env("HTTP_LINK")}`,
   uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
 });
 
@@ -49,20 +48,6 @@ const authLink = setContext(async (_, { headers }) => {
 
 const wsLink = httpLink;
 
-// stackoverflow.com/questions/61743153/how-to-use-apollo-graphql-subscriptions-in-the-client-side-nextjs
-// const wsLinkOld = () => {
-//   return new GraphQLWsLink(
-//     createClient({
-//       url: 'ws://adapted-termite-34.hasura.app/v1/grahql',
-//       connectionParams: {
-//         authToken: 'Token',
-//       },
-//       keepAlive: 5_000,
-//       shouldRetry: (_errOrCloseEvent: unknown) => true,
-//     })
-//   );
-// };
-
 const link =
   typeof window !== "undefined"
     ? split(
@@ -78,7 +63,6 @@ const link =
       )
     : httpLink;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function createApolloClient(_context?: ResolverContext) {
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {

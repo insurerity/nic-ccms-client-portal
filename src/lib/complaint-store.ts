@@ -10,7 +10,6 @@ import {
 type ComplaintStoreData = {
   vehicleProfile: VictimProfileSchemaType | null;
   complaintDetails: complaintDetailFormSchemaType | null;
-
   supportingDocuments: any;
   petitionerProfile: PetitionerProfileSchemaType | null;
   businessInformation: BusinessInformationSchemaType | null;

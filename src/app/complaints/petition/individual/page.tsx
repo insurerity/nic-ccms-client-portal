@@ -24,7 +24,7 @@ const FORM_COMPONENTS: Record<string, React.FC<any>> = {
 
 const REQUIRED_DOCUMENTS = NORMAL_PETITION_DOCUMENTS["individual"];
 
-const page = () => {
+const NormalPetition = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -82,4 +82,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default NormalPetition;
