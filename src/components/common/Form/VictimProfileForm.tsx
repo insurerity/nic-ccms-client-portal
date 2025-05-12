@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ChevronDown } from "lucide-react";
+import { Check, ChevronDown, ChevronsUpDown } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -20,22 +20,38 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { useGetRegions } from "@/hooks/use-get-regions";
-import { capitalize } from "@/lib/utils";
+import { capitalize, cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { VictimProfileSchema, VictimProfileSchemaType } from "@/lib/schema";
 import { useComplaintStore } from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
+import { idTypes } from "@/lib/state";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
-const idTypes = [
-  "Ghana Card",
-  "Voter ID",
-  "Passport",
-  "Driver's License",
-  "NHIS Card",
-  "Other",
-];
+// const idTypes = [
+//   "Ghana Card",
+//   "Voter ID",
+//   "Passport",
+//   "Driver's License",
+//   "NHIS Card",
+//   "Other",
+// ];
 
 interface VictimsProfileFormProps {
   onNextStep: () => void;
@@ -192,23 +208,82 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
-              name="digitalAddress"
+              name="region"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Digital Address</FormLabel>
-                  <FormControl>
-                    <div>
-                      <Input placeholder="GS-000-0000" {...field} />
-                      <FormDescription className="text-xs mt-1">
-                        <a href="#" className="text-blue-600 hover:underline">
-                          Find your digital address here
-                        </a>
-                      </FormDescription>
-                    </div>
-                  </FormControl>
+                <FormItem className="flex flex-col">
+                  <FormLabel>
+                    Region <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-full justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? regions.find(
+                                (region) => region.id === field.value
+                              )?.label
+                            : "Select your region"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      {loadingRegions ? (
+                        <div className="flex flex-col space-y-4 p-2">
+                          {Array.from({ length: 4 }).map((_, index) => (
+                            <div key={index} className="flex items-center py-2">
+                              <Skeleton className="h-5 w-5 rounded-full" />
+                              <div className="flex-1 space-y-1 py-1 ml-2">
+                                <Skeleton className="h-4 w-3/4 rounded" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <Command>
+                          <CommandInput
+                            placeholder="Search region..."
+                            className="h-1 focus:ring-primaryLight"
+                          />
+                          <CommandList>
+                            <CommandEmpty>No region found.</CommandEmpty>
+                            <ScrollArea className="h-[200px]">
+                              <CommandGroup>
+                                {regions.map((region) => (
+                                  <CommandItem
+                                    key={region.id}
+                                    value={region.label.toLowerCase()}
+                                    onSelect={() => {
+                                      form.setValue("region", region.id);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        region.id === field.value
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                    {capitalize(region.label)}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </ScrollArea>
+                          </CommandList>
+                        </Command>
+                      )}
+                    </PopoverContent>
+                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}
@@ -216,57 +291,6 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="region"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Region <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select your region" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="w-full">
-                      {loadingRegions ? (
-                        <>
-                          <div className="flex flex-col space-y-4">
-                            {Array.from({ length: 4 }).map((_, index) => (
-                              <div
-                                key={index}
-                                className="flex justify-center items-center py-4"
-                              >
-                                <Skeleton className="h-10 w-10 rounded-full" />
-                                <div className="flex-1 space-y-4 py-1 ml-4">
-                                  <Skeleton className="h-4 w-3/4 rounded" />
-                                  <Skeleton className="h-4 w-5/6 rounded" />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          {regions.map((region) => (
-                            <SelectItem key={region.id} value={region.id}>
-                              {capitalize(region.label)}
-                            </SelectItem>
-                          ))}
-                        </>
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="idType"
@@ -296,9 +320,7 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
                 </FormItem>
               )}
             />
-          </div>
 
-          <div className="grid grid-cols-1  gap-4">
             <FormField
               control={form.control}
               name="idNumber"
@@ -321,6 +343,29 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
                       }
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-1  gap-4">
+            <FormField
+              control={form.control}
+              name="digitalAddress"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Digital Address</FormLabel>
+                  <FormControl>
+                    <div>
+                      <Input placeholder="GS-000-0000" {...field} />
+                      <FormDescription className="text-xs mt-1">
+                        <a href="#" className="text-blue-600 hover:underline">
+                          Find your digital address here
+                        </a>
+                      </FormDescription>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

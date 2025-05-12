@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { ChevronDown } from "lucide-react";
+import { Check, ChevronDown, ChevronsUpDown } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -14,13 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Separator } from "@/components/ui/separator";
 import {
   BusinessInformationSchema,
@@ -29,8 +23,22 @@ import {
 import { useComplaintStore } from "@/hooks/use-complaint-store";
 import { useGetRegions } from "@/hooks/use-get-regions";
 import { Skeleton } from "@/components/ui/skeleton";
-import { capitalize } from "@/lib/utils";
+import { capitalize, cn } from "@/lib/utils";
 import ActionButton from "../ActionButton";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface BusinessInformationFormProps {
   onNextStep: () => void;
@@ -231,48 +239,78 @@ const BusinessInformationForm = ({
               control={form.control}
               name="region"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex flex-col">
                   <FormLabel>
                     Region <span className="text-red-500">*</span>
                   </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select your region" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="w-full">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-full justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? regions.find(
+                                (region) => region.id === field.value
+                              )?.label
+                            : "Select your region"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
                       {loadingRegions ? (
-                        <>
-                          <div className="flex flex-col space-y-4">
-                            {Array.from({ length: 4 }).map((_, index) => (
-                              <div
-                                key={index}
-                                className="flex justify-center items-center py-4"
-                              >
-                                <Skeleton className="h-10 w-10 rounded-full" />
-                                <div className="flex-1 space-y-4 py-1 ml-4">
-                                  <Skeleton className="h-4 w-3/4 rounded" />
-                                  <Skeleton className="h-4 w-5/6 rounded" />
-                                </div>
+                        <div className="flex flex-col space-y-4 p-2">
+                          {Array.from({ length: 4 }).map((_, index) => (
+                            <div key={index} className="flex items-center py-2">
+                              <Skeleton className="h-5 w-5 rounded-full" />
+                              <div className="flex-1 space-y-1 py-1 ml-2">
+                                <Skeleton className="h-4 w-3/4 rounded" />
                               </div>
-                            ))}
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          {regions.map((region) => (
-                            <SelectItem key={region.id} value={region.id}>
-                              {capitalize(region.label)}
-                            </SelectItem>
+                            </div>
                           ))}
-                        </>
+                        </div>
+                      ) : (
+                        <Command>
+                          <CommandInput
+                            placeholder="Search region..."
+                            className="h-1"
+                          />
+                          <CommandList>
+                            <CommandEmpty>No region found.</CommandEmpty>
+                            <ScrollArea className="h-[200px]">
+                              <CommandGroup>
+                                {regions.map((region) => (
+                                  <CommandItem
+                                    key={region.id}
+                                    value={region.label.toLowerCase()} // <-- important!
+                                    onSelect={() => {
+                                      form.setValue("region", region.id);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        region.id === field.value
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                    {capitalize(region.label)}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </ScrollArea>
+                          </CommandList>
+                        </Command>
                       )}
-                    </SelectContent>
-                  </Select>
+                    </PopoverContent>
+                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}

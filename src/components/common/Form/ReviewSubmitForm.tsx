@@ -45,7 +45,6 @@ const ReviewSubmitForm = ({
     useUploadSupportingDocuments();
 
   const handleSubmit = async () => {
-    console.log("handling submit running");
     toast.loading("Uploading supporting documents, please wait...", {
       id: uploadLoaderIDS.documents,
     });
@@ -53,9 +52,8 @@ const ReviewSubmitForm = ({
       const documents = await uploadSupportingDocuments(
         data.supportingDocuments
       );
+      console.log("uploaded documents", documents);
       const payload = transformComplaintData(data);
-
-      console.log("payload", payload);
 
       if (documents) {
         toast.success("Complaint Documents have been submitted");

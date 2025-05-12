@@ -12,6 +12,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,15 +44,12 @@ import { useComplaintStore } from "@/hooks/use-complaint-store";
 import { CLAIM_TYPES, NATURE_OF_CLAIMS } from "@/lib/state";
 import { useGetRegulatedEntities } from "@/hooks/use-get-regulated-entities";
 import ActionButton from "../ActionButton";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface ComplaintDetailsFormProps {
   onNextStep: () => void;
@@ -50,7 +61,7 @@ const ComplaintDetailsForm = ({
   onPrevStep,
 }: ComplaintDetailsFormProps) => {
   const { setData, data } = useComplaintStore();
-  const { entities } = useGetRegulatedEntities();
+  const { entities, loadingEntities } = useGetRegulatedEntities();
 
   const form = useForm<complaintDetailFormSchemaType>({
     resolver: zodResolver(complaintDetailFormSchema),
@@ -219,31 +230,94 @@ const ComplaintDetailsForm = ({
                 <FormLabel>
                   Entity of Concern <span className="text-red-500">*</span>
                 </FormLabel>
-
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <div>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select entity" />
-                      </SelectTrigger>
-                      <FormDescription>
-                        <a href="#" className="text-blue-600 hover:underline">
-                          Can't find your entity of concern?
-                        </a>
-                      </FormDescription>
-                    </div>
-                  </FormControl>
-                  <SelectContent className="w-full">
-                    {entities.map((entity) => (
-                      <SelectItem key={entity.id} value={entity.id}>
-                        {entity.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <div>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-full justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                          disabled={loadingEntities}
+                        >
+                          {loadingEntities ? (
+                            <div className="flex items-center gap-2">
+                              <Skeleton className="h-4 w-4 rounded-full" />
+                              <Skeleton className="h-4 w-24 rounded" />
+                            </div>
+                          ) : field.value ? (
+                            entities.find((entity) => entity.id === field.value)
+                              ?.label
+                          ) : (
+                            "Select entity"
+                          )}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        {loadingEntities ? (
+                          <div className="flex flex-col space-y-4 p-2">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center py-2"
+                              >
+                                <Skeleton className="h-5 w-5 rounded-full" />
+                                <div className="flex-1 space-y-1 py-1 ml-2">
+                                  <Skeleton className="h-4 w-3/4 rounded" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <Command>
+                            <CommandInput
+                              placeholder="Search entity..."
+                              className="h-1"
+                            />
+                            <CommandList>
+                              <CommandEmpty>No entity found.</CommandEmpty>
+                              <CommandGroup>
+                                <ScrollArea className="h-[200px]">
+                                  {entities.map((entity) => (
+                                    <CommandItem
+                                      key={entity.id}
+                                      value={entity.label}
+                                      onSelect={() => {
+                                        form.setValue(
+                                          "entityOfConcern",
+                                          entity.id
+                                        );
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          entity.id === field.value
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {entity.label}
+                                    </CommandItem>
+                                  ))}
+                                </ScrollArea>
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        )}
+                      </PopoverContent>
+                    </Popover>
+                    <FormDescription>
+                      <a href="#" className="text-blue-600 hover:underline">
+                        Can't find your entity of concern?
+                      </a>
+                    </FormDescription>
+                  </div>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
