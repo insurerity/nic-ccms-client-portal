@@ -13,22 +13,35 @@ export const VictimProfileSchema = z
       .min(1, { message: "Residential address is required" }),
     digitalAddress: z.string().optional(),
     region: z.string().min(1, { message: "Region is required" }),
-    idType: z.string().min(1, { message: "ID type is required" }),
-    ghanaCardNumber: z.string().optional(),
+    idType: z.string({
+      required_error: "Please select an ID type",
+    }),
+    idNumber: z.string().min(1, {
+      message: "ID number is required",
+    }),
   })
   .superRefine((data, ctx) => {
     if (data.idType === "Ghana Card") {
-      if (!data.ghanaCardNumber || data.ghanaCardNumber.trim() === "") {
+      if (!data.idNumber || data.idNumber.trim() === "") {
         ctx.addIssue({
-          path: ["ghanaCardNumber"],
+          path: ["idNumber"],
           code: z.ZodIssueCode.custom,
           message: "Ghana Card Number is required",
         });
-      } else if (!/^GHA-\d{9}-\d$/.test(data.ghanaCardNumber)) {
+      } else if (!/^GHA-\d{9}-\d$/.test(data.idNumber)) {
         ctx.addIssue({
-          path: ["ghanaCardNumber"],
+          path: ["idNumber"],
           code: z.ZodIssueCode.custom,
           message: "Ghana Card Number must be in the format GHA-XXXXXXXXX-X",
+        });
+      }
+    } else {
+      // For other ID types, make sure it's not empty
+      if (!data.idNumber || data.idNumber.trim() === "") {
+        ctx.addIssue({
+          path: ["idNumber"],
+          code: z.ZodIssueCode.custom,
+          message: "ID number is required",
         });
       }
     }
@@ -36,8 +49,10 @@ export const VictimProfileSchema = z
 
 export const complaintDetailFormSchema = z.object({
   dateOfIncident: z
-    .string()
-    .min(1, { message: "Date of incident is required" }),
+    .date()
+    .refine((date) => date !== null && !isNaN(date.getTime()), {
+      message: "Date of incident is required",
+    }),
   policyNumber: z.string().optional(),
   claimType: z.string().min(1, { message: "Claim type is required" }),
   entityOfConcern: z

@@ -152,7 +152,7 @@ const CaseDetailsForm = ({ onNextStep, onPrevStep }: CaseDetailsFormProps) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Claim Type <span className="text-red-500">*</span>
+                      Case Type <span className="text-red-500">*</span>
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}

@@ -60,6 +60,7 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
           digitalAddress: "",
           region: "",
           idType: "",
+          idNumber: "",
         },
   });
 
@@ -298,23 +299,33 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
           </div>
 
           <div className="grid grid-cols-1  gap-4">
-            {selectedIdType === "Ghana Card" && (
-              <FormField
-                control={form.control}
-                name="ghanaCardNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Ghana Card Number <span className="text-red-500">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="GHA-000000000-0" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+            <FormField
+              control={form.control}
+              name="idNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {form.watch("idType") === "Ghana Card"
+                      ? "Ghana Card Number"
+                      : form.watch("idType")
+                      ? `${form.watch("idType")} Number`
+                      : "ID Number"}{" "}
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={
+                        form.watch("idType") === "Ghana Card"
+                          ? "e.g. GHA-123456789-X"
+                          : "Enter your ID number"
+                      }
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           <Separator className="space-y-3" />

@@ -6,7 +6,7 @@ query RegulatedEntities {
   }
 }
 
-query getTicetNumber($id: uuid!) {
+query getTicketNumber($id: uuid!) {
   nic_ccms_Complaint_by_pk(id: $id) {
     ticketNumber
     ticketType

@@ -3,3 +3,11 @@ mutation addTicket($object: nic_ccms_Complaint_insert_input!) {
     id
   }
 }
+
+mutation fileUploadAction($base64: String!, $name: String!, $mime: String!) {
+  _upload(base64: $base64, name: $name, mime: $mime) {
+    id
+    name
+    url
+  }
+}

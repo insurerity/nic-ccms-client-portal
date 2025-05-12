@@ -32,13 +32,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { capitalize } from "@/lib/utils";
 import ActionButton from "../ActionButton";
 
-const idTypes = [
-  "Ghana Card",
-  "Business Registration",
-  "Tax Identification Number",
-  "Other",
-];
-
 interface BusinessInformationFormProps {
   onNextStep: () => void;
   onPrevStep?: () => void;
@@ -100,7 +93,7 @@ const BusinessInformationForm = ({
                     Business Name <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="Andrew" {...field} />
+                    <Input placeholder="Afrima Ventures" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

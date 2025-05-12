@@ -7,7 +7,7 @@ import {
   complaintDetailFormSchemaType,
 } from "./schema";
 
-type ComplaintStoreData = {
+export type ComplaintStoreData = {
   victimProfile: VictimProfileSchemaType | null;
   complaintDetails: complaintDetailFormSchemaType | null;
   supportingDocuments: any;
@@ -37,4 +37,14 @@ export const ComplaintDataStore = create<ComplaintStore>((set) => ({
     set((state) => ({
       data: { ...state.data, [key]: value },
     })),
+}));
+
+export const NewComplainIdState = create<{
+  id: string | null;
+  setId: (id: string | null) => void;
+}>((set) => ({
+  id: null,
+  setId: (val) => {
+    set({ id: val });
+  },
 }));

@@ -8342,17 +8342,26 @@ export type AddTicketMutationVariables = Exact<{
 
 export type AddTicketMutation = { __typename?: 'mutation_root', insert_nic_ccms_Complaint_one?: { __typename?: 'nic_ccms_Complaint', id: any } | null };
 
+export type FileUploadActionMutationVariables = Exact<{
+  base64: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  mime: Scalars['String']['input'];
+}>;
+
+
+export type FileUploadActionMutation = { __typename?: 'mutation_root', _upload?: { __typename?: 'UploadOutput', id: string, name: string, url: string } | null };
+
 export type RegulatedEntitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type RegulatedEntitiesQuery = { __typename?: 'query_root', RegulatedEntity: Array<{ __typename?: 'RegulatedEntity', id: any, name: string, entityType: string }> };
 
-export type GetTicetNumberQueryVariables = Exact<{
+export type GetTicketNumberQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
 }>;
 
 
-export type GetTicetNumberQuery = { __typename?: 'query_root', nic_ccms_Complaint_by_pk?: { __typename?: 'nic_ccms_Complaint', ticketNumber?: string | null, ticketType: string, id: any } | null };
+export type GetTicketNumberQuery = { __typename?: 'query_root', nic_ccms_Complaint_by_pk?: { __typename?: 'nic_ccms_Complaint', ticketNumber?: string | null, ticketType: string, id: any } | null };
 
 export type GetStatusQueryVariables = Exact<{
   _eq: Scalars['String']['input'];
@@ -8400,6 +8409,43 @@ export function useAddTicketMutation(baseOptions?: Apollo.MutationHookOptions<Ad
 export type AddTicketMutationHookResult = ReturnType<typeof useAddTicketMutation>;
 export type AddTicketMutationResult = Apollo.MutationResult<AddTicketMutation>;
 export type AddTicketMutationOptions = Apollo.BaseMutationOptions<AddTicketMutation, AddTicketMutationVariables>;
+export const FileUploadActionDocument = gql`
+    mutation fileUploadAction($base64: String!, $name: String!, $mime: String!) {
+  _upload(base64: $base64, name: $name, mime: $mime) {
+    id
+    name
+    url
+  }
+}
+    `;
+export type FileUploadActionMutationFn = Apollo.MutationFunction<FileUploadActionMutation, FileUploadActionMutationVariables>;
+
+/**
+ * __useFileUploadActionMutation__
+ *
+ * To run a mutation, you first call `useFileUploadActionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFileUploadActionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [fileUploadActionMutation, { data, loading, error }] = useFileUploadActionMutation({
+ *   variables: {
+ *      base64: // value for 'base64'
+ *      name: // value for 'name'
+ *      mime: // value for 'mime'
+ *   },
+ * });
+ */
+export function useFileUploadActionMutation(baseOptions?: Apollo.MutationHookOptions<FileUploadActionMutation, FileUploadActionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FileUploadActionMutation, FileUploadActionMutationVariables>(FileUploadActionDocument, options);
+      }
+export type FileUploadActionMutationHookResult = ReturnType<typeof useFileUploadActionMutation>;
+export type FileUploadActionMutationResult = Apollo.MutationResult<FileUploadActionMutation>;
+export type FileUploadActionMutationOptions = Apollo.BaseMutationOptions<FileUploadActionMutation, FileUploadActionMutationVariables>;
 export const RegulatedEntitiesDocument = gql`
     query RegulatedEntities {
   RegulatedEntity {
@@ -8444,8 +8490,8 @@ export type RegulatedEntitiesQueryResult = Apollo.QueryResult<RegulatedEntitiesQ
 export function refetchRegulatedEntitiesQuery(variables?: RegulatedEntitiesQueryVariables) {
       return { query: RegulatedEntitiesDocument, variables: variables }
     }
-export const GetTicetNumberDocument = gql`
-    query getTicetNumber($id: uuid!) {
+export const GetTicketNumberDocument = gql`
+    query getTicketNumber($id: uuid!) {
   nic_ccms_Complaint_by_pk(id: $id) {
     ticketNumber
     ticketType
@@ -8455,39 +8501,39 @@ export const GetTicetNumberDocument = gql`
     `;
 
 /**
- * __useGetTicetNumberQuery__
+ * __useGetTicketNumberQuery__
  *
- * To run a query within a React component, call `useGetTicetNumberQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTicetNumberQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTicketNumberQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTicketNumberQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetTicetNumberQuery({
+ * const { data, loading, error } = useGetTicketNumberQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetTicetNumberQuery(baseOptions: Apollo.QueryHookOptions<GetTicetNumberQuery, GetTicetNumberQueryVariables> & ({ variables: GetTicetNumberQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetTicketNumberQuery(baseOptions: Apollo.QueryHookOptions<GetTicketNumberQuery, GetTicketNumberQueryVariables> & ({ variables: GetTicketNumberQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTicetNumberQuery, GetTicetNumberQueryVariables>(GetTicetNumberDocument, options);
+        return Apollo.useQuery<GetTicketNumberQuery, GetTicketNumberQueryVariables>(GetTicketNumberDocument, options);
       }
-export function useGetTicetNumberLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTicetNumberQuery, GetTicetNumberQueryVariables>) {
+export function useGetTicketNumberLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTicketNumberQuery, GetTicketNumberQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTicetNumberQuery, GetTicetNumberQueryVariables>(GetTicetNumberDocument, options);
+          return Apollo.useLazyQuery<GetTicketNumberQuery, GetTicketNumberQueryVariables>(GetTicketNumberDocument, options);
         }
-export function useGetTicetNumberSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTicetNumberQuery, GetTicetNumberQueryVariables>) {
+export function useGetTicketNumberSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTicketNumberQuery, GetTicketNumberQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetTicetNumberQuery, GetTicetNumberQueryVariables>(GetTicetNumberDocument, options);
+          return Apollo.useSuspenseQuery<GetTicketNumberQuery, GetTicketNumberQueryVariables>(GetTicketNumberDocument, options);
         }
-export type GetTicetNumberQueryHookResult = ReturnType<typeof useGetTicetNumberQuery>;
-export type GetTicetNumberLazyQueryHookResult = ReturnType<typeof useGetTicetNumberLazyQuery>;
-export type GetTicetNumberSuspenseQueryHookResult = ReturnType<typeof useGetTicetNumberSuspenseQuery>;
-export type GetTicetNumberQueryResult = Apollo.QueryResult<GetTicetNumberQuery, GetTicetNumberQueryVariables>;
-export function refetchGetTicetNumberQuery(variables: GetTicetNumberQueryVariables) {
-      return { query: GetTicetNumberDocument, variables: variables }
+export type GetTicketNumberQueryHookResult = ReturnType<typeof useGetTicketNumberQuery>;
+export type GetTicketNumberLazyQueryHookResult = ReturnType<typeof useGetTicketNumberLazyQuery>;
+export type GetTicketNumberSuspenseQueryHookResult = ReturnType<typeof useGetTicketNumberSuspenseQuery>;
+export type GetTicketNumberQueryResult = Apollo.QueryResult<GetTicketNumberQuery, GetTicketNumberQueryVariables>;
+export function refetchGetTicketNumberQuery(variables: GetTicketNumberQueryVariables) {
+      return { query: GetTicketNumberDocument, variables: variables }
     }
 export const GetStatusDocument = gql`
     query getStatus($_eq: String!) {

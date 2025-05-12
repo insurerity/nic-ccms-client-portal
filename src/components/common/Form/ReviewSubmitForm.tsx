@@ -6,9 +6,25 @@ import { useState } from "react";
 import { toast } from "sonner";
 import ActionButton from "../ActionButton";
 import { TFormStep } from "@/types";
-import { useComplaintStore } from "@/hooks/use-complaint-store";
+import {
+  useComplaintStore,
+  useNewComplaintIdStore,
+} from "@/hooks/use-complaint-store";
 import { camelCaseToTitle, toCamelCase } from "@/lib/utils";
 import { InfoDisplay } from "../InfoDisplay";
+import {
+  Nic_Ccms_Complaint_Insert_Input,
+  useAddTicketMutation,
+  useFileUploadActionMutation,
+} from "@/graphql/generated";
+import { useUploadSupportingDocuments } from "@/hooks/use-upload-documents";
+import { transformComplaintData } from "@/lib/upload";
+import { showCustomToast } from "@/lib/errors";
+
+const uploadLoaderIDS = {
+  documents: "SD-LOADER",
+  complaints: "CS-LOADER",
+};
 
 interface ReviewSubmitFormProps {
   onPrevStep: () => void;
@@ -21,21 +37,69 @@ const ReviewSubmitForm = ({
   onComplete,
   formSteps,
 }: ReviewSubmitFormProps) => {
-  const { data } = useComplaintStore();
+  const { data, setData } = useComplaintStore();
+  const { setId } = useNewComplaintIdStore();
+  const [createComplaint, { loading, reset }] = useAddTicketMutation();
 
-  console.log("data", data);
+  const { uploadSupportingDocuments, uploadLoading } =
+    useUploadSupportingDocuments();
 
-  const [agreed, setAgreed] = useState(false);
+  const handleSubmit = async () => {
+    console.log("handling submit running");
+    toast.loading("Uploading supporting documents, please wait...", {
+      id: uploadLoaderIDS.documents,
+    });
+    try {
+      const documents = await uploadSupportingDocuments(
+        data.supportingDocuments
+      );
+      const payload = transformComplaintData(data);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!agreed) {
-      toast.error("You must agree to the terms and conditions");
-      return;
+      console.log("payload", payload);
+
+      if (documents) {
+        toast.success("Complaint Documents have been submitted");
+        toast.dismiss(uploadLoaderIDS.documents);
+        payload["ComplaintDocuments"] = {
+          data: documents,
+        };
+      }
+      toast.loading("Submitting your complaint, please wait...", {
+        id: uploadLoaderIDS.complaints,
+      });
+
+      createComplaint({
+        variables: {
+          object: payload,
+        },
+        onCompleted(data) {
+          setData("businessInformation", null);
+          setData("caseDetails", null);
+          setData("complaintDetails", null);
+          setData("petitionerProfile", null);
+          setData("supportingDocuments", null);
+          setData("victimProfile", null);
+          toast.dismiss(uploadLoaderIDS.complaints);
+          toast.dismiss(uploadLoaderIDS.documents);
+          setId(data.insert_nic_ccms_Complaint_one?.id as string);
+          onComplete();
+        },
+        onError(error) {
+          toast.dismiss(uploadLoaderIDS.complaints);
+          toast.dismiss(uploadLoaderIDS.documents);
+          console.log("error", error);
+          showCustomToast({
+            title: "Submission Failed",
+            type: "error",
+            description:
+              "We couldn't process your complaint. Please try again later.",
+          });
+        },
+      });
+    } catch (error) {
+      toast.dismiss(uploadLoaderIDS.complaints);
+      toast.dismiss(uploadLoaderIDS.documents);
     }
-
-    toast.success("Form submitted successfully!");
-    onComplete();
   };
 
   const filteredSteps = formSteps?.filter(
@@ -56,7 +120,7 @@ const ReviewSubmitForm = ({
         <ActionButton
           onClick={handleSubmit}
           text="Submit"
-          className="bg-white text-primaryLight font-medium py-2 px-4 rounded-full"
+          className="bg-white text-primaryLight font-medium py-2 px-4 rounded-full hover:bg-white/90"
         />
       </div>
 

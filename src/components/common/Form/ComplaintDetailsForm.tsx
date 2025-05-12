@@ -30,6 +30,15 @@ import { useComplaintStore } from "@/hooks/use-complaint-store";
 import { CLAIM_TYPES, NATURE_OF_CLAIMS } from "@/lib/state";
 import { useGetRegulatedEntities } from "@/hooks/use-get-regulated-entities";
 import ActionButton from "../ActionButton";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
 
 interface ComplaintDetailsFormProps {
   onNextStep: () => void;
@@ -50,7 +59,7 @@ const ComplaintDetailsForm = ({
           ...data.complaintDetails,
         }
       : {
-          dateOfIncident: "",
+          dateOfIncident: undefined,
           policyNumber: "",
           claimType: "",
           entityOfConcern: "",
@@ -90,13 +99,35 @@ const ComplaintDetailsForm = ({
             control={form.control}
             name="dateOfIncident"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Date of Incident <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} />
-                </FormControl>
+              <FormItem className="flex flex-col">
+                <FormLabel>Date of Incident</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal bg-gray-50",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value
+                          ? format(field.value, "PPP")
+                          : "Select a date"}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) => date > new Date()}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
               </FormItem>
             )}

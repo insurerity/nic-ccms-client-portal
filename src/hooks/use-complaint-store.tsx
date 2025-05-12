@@ -1,4 +1,4 @@
-import { ComplaintDataStore } from "@/lib/complaint-store";
+import { ComplaintDataStore, NewComplainIdState } from "@/lib/complaint-store";
 import { useStore } from "zustand";
 
 export const useComplaintStore = () => {
@@ -8,5 +8,15 @@ export const useComplaintStore = () => {
   return {
     data,
     setData,
+  };
+};
+
+export const useNewComplaintIdStore = () => {
+  const id = useStore(NewComplainIdState, (state) => state.id);
+  const setId = useStore(NewComplainIdState, (state) => state.setId);
+
+  return {
+    id,
+    setId,
   };
 };
