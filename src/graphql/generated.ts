@@ -3618,7 +3618,7 @@ export type Nic_Ccms_Complaint = {
   ComplaintStatuses_aggregate: Nic_Ccms_ComplaintStatus_Aggregate;
   EntityNote?: Maybe<Scalars['String']['output']>;
   IdType?: Maybe<Scalars['String']['output']>;
-  NationalId: Scalars['String']['output'];
+  NationalId?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   Office?: Maybe<Office>;
   /** An object relationship */
@@ -8368,7 +8368,14 @@ export type GetStatusQueryVariables = Exact<{
 }>;
 
 
-export type GetStatusQuery = { __typename?: 'query_root', nic_ccms_ComplaintStatus: Array<{ __typename?: 'nic_ccms_ComplaintStatus', isActive: boolean, status: string, id: any, Complaint: { __typename?: 'nic_ccms_Complaint', name: string, RegulatedEntity?: { __typename?: 'RegulatedEntity', name: string } | null } }> };
+export type GetStatusQuery = { __typename?: 'query_root', currentStatusData: Array<{ __typename?: 'nic_ccms_ComplaintStatus', isActive: boolean, status: string, id: any, created_at: any }>, allStatusesData: Array<{ __typename?: 'nic_ccms_Complaint', ComplaintStatuses: Array<{ __typename?: 'nic_ccms_ComplaintStatus', created_at: any, isActive: boolean, id: any, status: string, complaintId: any }> }> };
+
+export type GetComplaintStatusesByTicketNumberQueryVariables = Exact<{
+  _eq: Scalars['String']['input'];
+}>;
+
+
+export type GetComplaintStatusesByTicketNumberQuery = { __typename?: 'query_root', nic_ccms_Complaint: Array<{ __typename?: 'nic_ccms_Complaint', ComplaintStatuses: Array<{ __typename?: 'nic_ccms_ComplaintStatus', created_at: any, isActive: boolean, id: any, status: string, complaintId: any }> }> };
 
 export type OfficesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8537,17 +8544,21 @@ export function refetchGetTicketNumberQuery(variables: GetTicketNumberQueryVaria
     }
 export const GetStatusDocument = gql`
     query getStatus($_eq: String!) {
-  nic_ccms_ComplaintStatus(
-    where: {Complaint: {ticketNumber: {_eq: $_eq}, RegulatedEntity: {}}, isActive: {_eq: true}}
+  currentStatusData: nic_ccms_ComplaintStatus(
+    where: {Complaint: {ticketNumber: {_eq: $_eq}}}
   ) {
     isActive
     status
     id
-    Complaint {
-      name
-      RegulatedEntity {
-        name
-      }
+    created_at
+  }
+  allStatusesData: nic_ccms_Complaint(where: {ticketNumber: {_eq: $_eq}}) {
+    ComplaintStatuses {
+      created_at
+      isActive
+      id
+      status
+      complaintId
     }
   }
 }
@@ -8587,6 +8598,55 @@ export type GetStatusSuspenseQueryHookResult = ReturnType<typeof useGetStatusSus
 export type GetStatusQueryResult = Apollo.QueryResult<GetStatusQuery, GetStatusQueryVariables>;
 export function refetchGetStatusQuery(variables: GetStatusQueryVariables) {
       return { query: GetStatusDocument, variables: variables }
+    }
+export const GetComplaintStatusesByTicketNumberDocument = gql`
+    query getComplaintStatusesByTicketNumber($_eq: String!) {
+  nic_ccms_Complaint(where: {ticketNumber: {_eq: $_eq}}) {
+    ComplaintStatuses {
+      created_at
+      isActive
+      id
+      status
+      complaintId
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetComplaintStatusesByTicketNumberQuery__
+ *
+ * To run a query within a React component, call `useGetComplaintStatusesByTicketNumberQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetComplaintStatusesByTicketNumberQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetComplaintStatusesByTicketNumberQuery({
+ *   variables: {
+ *      _eq: // value for '_eq'
+ *   },
+ * });
+ */
+export function useGetComplaintStatusesByTicketNumberQuery(baseOptions: Apollo.QueryHookOptions<GetComplaintStatusesByTicketNumberQuery, GetComplaintStatusesByTicketNumberQueryVariables> & ({ variables: GetComplaintStatusesByTicketNumberQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetComplaintStatusesByTicketNumberQuery, GetComplaintStatusesByTicketNumberQueryVariables>(GetComplaintStatusesByTicketNumberDocument, options);
+      }
+export function useGetComplaintStatusesByTicketNumberLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetComplaintStatusesByTicketNumberQuery, GetComplaintStatusesByTicketNumberQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetComplaintStatusesByTicketNumberQuery, GetComplaintStatusesByTicketNumberQueryVariables>(GetComplaintStatusesByTicketNumberDocument, options);
+        }
+export function useGetComplaintStatusesByTicketNumberSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetComplaintStatusesByTicketNumberQuery, GetComplaintStatusesByTicketNumberQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetComplaintStatusesByTicketNumberQuery, GetComplaintStatusesByTicketNumberQueryVariables>(GetComplaintStatusesByTicketNumberDocument, options);
+        }
+export type GetComplaintStatusesByTicketNumberQueryHookResult = ReturnType<typeof useGetComplaintStatusesByTicketNumberQuery>;
+export type GetComplaintStatusesByTicketNumberLazyQueryHookResult = ReturnType<typeof useGetComplaintStatusesByTicketNumberLazyQuery>;
+export type GetComplaintStatusesByTicketNumberSuspenseQueryHookResult = ReturnType<typeof useGetComplaintStatusesByTicketNumberSuspenseQuery>;
+export type GetComplaintStatusesByTicketNumberQueryResult = Apollo.QueryResult<GetComplaintStatusesByTicketNumberQuery, GetComplaintStatusesByTicketNumberQueryVariables>;
+export function refetchGetComplaintStatusesByTicketNumberQuery(variables: GetComplaintStatusesByTicketNumberQueryVariables) {
+      return { query: GetComplaintStatusesByTicketNumberDocument, variables: variables }
     }
 export const OfficesDocument = gql`
     query Offices {

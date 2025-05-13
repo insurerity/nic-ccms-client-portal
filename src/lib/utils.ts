@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { format } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -33,3 +34,31 @@ export function camelCaseToTitle(input: string): string {
     .replace(/([A-Z])/g, " $1") // Add space before capital letters
     .replace(/^./, (str) => str.toUpperCase()); // Capitalize first letter
 }
+
+export const getLatestStatus = (statuses: any[]) => {
+  if (!statuses) return "Submitted";
+  const latestStatus = statuses?.reduce((latest, status) => {
+    return new Date(status?.created_at) > new Date(latest?.created_at)
+      ? status
+      : latest;
+  }, statuses[0]);
+
+  return latestStatus?.status as string;
+};
+export const getLatestStatusCreatedAt = (statuses: any[]) => {
+  if (!statuses) return "Submitted";
+  const latestStatus = statuses?.reduce((latest, status) => {
+    return new Date(status?.created_at) > new Date(latest?.created_at)
+      ? status
+      : latest;
+  }, statuses[0]);
+
+  return format(new Date(latestStatus?.created_at), "dd MMM yyyy");
+};
+
+export const getAssignee = (assignees: any[]) => {
+  if (!assignees) return "Unassigned";
+  const activeAssignee = assignees.filter((v) => v.isActive);
+
+  return activeAssignee[0]?.AssignedTo?.name as string;
+};

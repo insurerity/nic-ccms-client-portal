@@ -2,6 +2,16 @@
 
 import { TOCItem } from "@/components/common/table-of-contents";
 import { ReactNode } from "react";
+import { EComplaintStatuses } from "./state";
+import AwaitingMeetingIcon from "@/components/icons/statuses/AwaitingMeetingIcon";
+import AwaitingRespEntityIcon from "@/components/icons/statuses/AwaitingRespEntityIcon";
+import DecisionMadeIcon from "@/components/icons/statuses/DecisionMadeIcon";
+import InReviewIcon from "@/components/icons/statuses/InReviewIcon";
+import PendingReviewIcon from "@/components/icons/statuses/PendingReviewIcon";
+import ResponseReceivedIcon from "@/components/icons/statuses/ResponseReceivedIcon";
+import ResolvedIcon from "@/components/icons/statuses/ResolvedIcon";
+import SubmittedIcon from "@/components/icons/statuses/SubmittedIcon";
+import { StatusIconProps } from "@/types";
 
 export const PETITION_DETAILED_DATA = [
   {
@@ -192,3 +202,43 @@ export const GET_STARTED_STATUS_CONTENT: Record<any, ReactNode[]> = {
     </section>
   )),
 };
+
+export const STATUSES_WITH_ICONS: Record<EComplaintStatuses, React.ReactNode> =
+  {
+    "Awaiting Meeting": <AwaitingMeetingIcon />,
+    "Awaiting Response from Entity": <AwaitingRespEntityIcon />,
+    "Decision Made": <DecisionMadeIcon />,
+    "In Review": <InReviewIcon />,
+    "Pending Review": <PendingReviewIcon />,
+    "Response received from Entity": <ResponseReceivedIcon />,
+    [EComplaintStatuses.submitted]: <SubmittedIcon />,
+    [EComplaintStatuses.resolved]: <ResolvedIcon />,
+  };
+
+export const getStatusIcon = (
+  status: EComplaintStatuses,
+  props?: StatusIconProps
+): React.ReactNode => {
+  switch (status) {
+    case "Awaiting Meeting":
+      return <AwaitingMeetingIcon {...props} />;
+    case "Awaiting Response from Entity":
+      return <AwaitingRespEntityIcon {...props} />;
+    case "Decision Made":
+      return <DecisionMadeIcon {...props} />;
+    case "In Review":
+      return <InReviewIcon {...props} />;
+    case "Pending Review":
+      return <PendingReviewIcon {...props} />;
+    case "Response received from Entity":
+      return <ResponseReceivedIcon {...props} />;
+    case EComplaintStatuses.submitted:
+      return <SubmittedIcon {...props} />;
+    case EComplaintStatuses.resolved:
+      return <ResolvedIcon {...props} />;
+    default:
+      return <SubmittedIcon {...props} />;
+  }
+};
+
+export const COMPLAINT_STATUSES = Object.values(EComplaintStatuses);

@@ -1,7 +1,9 @@
-import React from "react";
+"use client";
 
-const page = () => {
-  return <div>Check your status here</div>;
+import ComplaintStatusTracker from "./components/CheckComplaint";
+
+const ComplaintStatusPage = () => {
+  return <ComplaintStatusTracker />;
 };
 
-export default page;
+export default ComplaintStatusPage;

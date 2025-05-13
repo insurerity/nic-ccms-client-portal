@@ -428,3 +428,66 @@ export const idTypes = [
   "NHIS Card",
   "Other",
 ];
+
+export enum EComplaintStatuses {
+  submitted = "Submitted",
+  inReview = "In Review",
+  pendingReview = "Pending Review",
+  awaitingResponseFromEnt = "Awaiting Response from Entity",
+  responseReceived = "Response received from Entity",
+  meeting = "Awaiting Meeting",
+  decisionMade = "Decision Made",
+  resolved = "Resolved",
+}
+
+export const ComplaintStatusDescriptions: Record<EComplaintStatuses, string> = {
+  [EComplaintStatuses.submitted]:
+    "We’ve received your complaint and it’s being prepared for processing .",
+
+  [EComplaintStatuses.inReview]:
+    "A dedicated complaints specialist is now examining your details and any supporting documents. They’re assessing what happened and determining next steps.",
+
+  [EComplaintStatuses.pendingReview]:
+    "We’re currently reviewing your complaint details before taking the next step.`",
+
+  [EComplaintStatuses.decisionMade]:
+    "Our complaints team has reached a conclusion based on all the evidence. We’re finalizing our formal decision letter, which will explain what we’ve decided and why.",
+
+  [EComplaintStatuses.awaitingResponseFromEnt]:
+    "We’ve reached out to involved parties, this includes your insurance provider to gather their input or records. We’re waiting for their reply.",
+
+  [EComplaintStatuses.responseReceived]:
+    "Your Insurance provider has sent us the information we requested. We’re now integrating their feedback into your file.",
+
+  [EComplaintStatuses.meeting]:
+    "At this stage, we’re arranging a call or face‑to‑face meeting (if needed) with you or other stakeholders to clarify key points, answer questions, or explore settlement options.",
+
+  [EComplaintStatuses.resolved]:
+    "The matter is closed. You’ve received our decision, any agreed‑upon remedies have been implemented, and there’s no further action pending ",
+};
+
+export const ComplaintStatusSubtext: Record<EComplaintStatuses, string> = {
+  [EComplaintStatuses.submitted]:
+    "This means we've received your complaint. You don't need to do anything just yet — we'll take it from here.",
+
+  [EComplaintStatuses.pendingReview]:
+    "This means your complaint is in the queue. We're reviewing it soon and will keep you updated.",
+
+  [EComplaintStatuses.inReview]:
+    "This means a specialist is actively reviewing your complaint. We'll reach out if we need more details.",
+
+  [EComplaintStatuses.awaitingResponseFromEnt]:
+    "This means we've contacted all involved parties and are waiting for their response before moving forward.",
+
+  [EComplaintStatuses.responseReceived]:
+    "This means the entity has responded to your complaint.",
+
+  [EComplaintStatuses.meeting]:
+    "A meeting is being arranged to further discuss and resolve the complaint. We’ll update you shortly.",
+
+  [EComplaintStatuses.decisionMade]:
+    "A final decision has been made on your complaint. We're preparing to communicate the outcome.",
+
+  [EComplaintStatuses.resolved]:
+    "This means your complaint has been resolved and no further action is needed.",
+};

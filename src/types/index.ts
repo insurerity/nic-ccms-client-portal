@@ -28,3 +28,7 @@ export type TFormStep = {
   identifier: string;
   label: string;
 };
+
+export type StatusIconProps = {
+  iconStatus?: "default" | "active" | "completed";
+};

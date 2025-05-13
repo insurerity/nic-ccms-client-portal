@@ -32,7 +32,7 @@ const SubmissionSuccess = () => {
   }, []);
 
   const onCheckStatus = () => {
-    router.replace(`/complaints/check-status?complaintId=${id}`);
+    router.replace(`/complaints/check-status`);
   };
 
   // Show loading state if either initialLoading is true or the query is loading

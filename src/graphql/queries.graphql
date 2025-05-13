@@ -15,20 +15,37 @@ query getTicketNumber($id: uuid!) {
 }
 
 query getStatus($_eq: String!) {
-  nic_ccms_ComplaintStatus(
+  currentStatusData: nic_ccms_ComplaintStatus(
     where: {
-      Complaint: { ticketNumber: { _eq: $_eq }, RegulatedEntity: {} }
+      Complaint: { ticketNumber: { _eq: $_eq } }
       isActive: { _eq: true }
     }
   ) {
     isActive
     status
     id
-    Complaint {
-      name
-      RegulatedEntity {
-        name
-      }
+    created_at
+  }
+
+  allStatusesData: nic_ccms_Complaint(where: { ticketNumber: { _eq: $_eq } }) {
+    ComplaintStatuses {
+      created_at
+      isActive
+      id
+      status
+      complaintId
+    }
+  }
+}
+
+query getComplaintStatusesByTicketNumber($_eq: String!) {
+  nic_ccms_Complaint(where: { ticketNumber: { _eq: $_eq } }) {
+    ComplaintStatuses {
+      created_at
+      isActive
+      id
+      status
+      complaintId
     }
   }
 }
