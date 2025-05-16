@@ -1,4 +1,8 @@
-import { ComplaintDataStore, NewComplainIdState } from "@/lib/complaint-store";
+import {
+  ComplaintDataStore,
+  EntityDrawerState,
+  NewComplainIdState,
+} from "@/lib/complaint-store";
 import { useStore } from "zustand";
 
 export const useComplaintStore = () => {
@@ -18,5 +22,17 @@ export const useNewComplaintIdStore = () => {
   return {
     id,
     setId,
+  };
+};
+
+export const useEntityDrawerStore = () => {
+  const showDrawer = useStore(EntityDrawerState, (state) => state.openModal);
+  const closeDrawer = useStore(EntityDrawerState, (state) => state.closeModal);
+  const drawerOpen = useStore(EntityDrawerState, (state) => state.isOpen);
+
+  return {
+    showDrawer,
+    closeDrawer,
+    drawerOpen,
   };
 };

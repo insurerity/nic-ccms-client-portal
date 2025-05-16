@@ -75,9 +75,9 @@ export function TableOfContents({
             key={item.id}
             href={`#${item.id}`}
             className={cn(
-              "flex items-center py-1 text-sm transition-colors hover:text-purple-700",
+              "flex items-center py-1 text-sm transition-colors hover:text-primary",
               activeId === item.id
-                ? "text-purple-700 font-medium"
+                ? "text-primary font-medium"
                 : "text-gray-700"
             )}
             onClick={(e) => {
@@ -92,7 +92,7 @@ export function TableOfContents({
                 className={cn(
                   "flex items-center justify-center w-6 h-6 rounded-full text-xs",
                   activeId === item.id
-                    ? "bg-purple-700 text-white"
+                    ? "bg-primary text-white"
                     : "bg-gray-100 text-gray-700"
                 )}
               >

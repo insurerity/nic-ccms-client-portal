@@ -21,6 +21,7 @@ import UploadIcon from "@/components/icons/UploadIcon";
 import { formatFileSize } from "@/lib/upload";
 import { useComplaintStore } from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
+import { toast } from "sonner";
 
 // This will be dynamically generated based on the documents array
 const createFormSchema = (documents: DocumentTypeT[]) => {
@@ -107,6 +108,19 @@ const DynamicSupportingDocumentsForm = ({
   ) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
+
+      // Check if this file already exists in any doc
+      const isDuplicate = Object.values(uploadedFiles).some(
+        (uploadedFile) =>
+          uploadedFile?.name === file.name && uploadedFile?.size === file.size
+      );
+
+      if (isDuplicate) {
+        toast.error(
+          "This file has already been uploaded for another document."
+        );
+        return;
+      }
 
       // Update the state
       setUploadedFiles((prev) => ({

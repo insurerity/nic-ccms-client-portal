@@ -40,7 +40,10 @@ import {
   complaintDetailFormSchema,
   complaintDetailFormSchemaType,
 } from "@/lib/schema";
-import { useComplaintStore } from "@/hooks/use-complaint-store";
+import {
+  useComplaintStore,
+  useEntityDrawerStore,
+} from "@/hooks/use-complaint-store";
 import { CLAIM_TYPES, NATURE_OF_CLAIMS } from "@/lib/state";
 import { useGetRegulatedEntities } from "@/hooks/use-get-regulated-entities";
 import ActionButton from "../ActionButton";
@@ -50,6 +53,7 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EntityDrawer } from "../EntityOfConcernDrawer";
 
 interface ComplaintDetailsFormProps {
   onNextStep: () => void;
@@ -60,6 +64,7 @@ const ComplaintDetailsForm = ({
   onNextStep,
   onPrevStep,
 }: ComplaintDetailsFormProps) => {
+  const { showDrawer } = useEntityDrawerStore();
   const { setData, data } = useComplaintStore();
   const { entities, loadingEntities } = useGetRegulatedEntities();
 
@@ -311,10 +316,13 @@ const ComplaintDetailsForm = ({
                         )}
                       </PopoverContent>
                     </Popover>
-                    <FormDescription>
-                      <a href="#" className="text-blue-600 hover:underline">
+                    <FormDescription
+                      onClick={showDrawer}
+                      className="cursor-pointer p-2 pl-0"
+                    >
+                      <p className="text-primaryLight hover:underline cursor-pointer">
                         Can't find your entity of concern?
-                      </a>
+                      </p>
                     </FormDescription>
                   </div>
                 </FormControl>
@@ -362,6 +370,8 @@ const ComplaintDetailsForm = ({
           </div>
         </form>
       </Form>
+
+      <EntityDrawer />
     </div>
   );
 };

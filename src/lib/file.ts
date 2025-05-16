@@ -10,7 +10,10 @@ export const convertFileToBase64 = (file: File) => {
           mime: file.type,
         });
       };
-      reader.onerror = (error) => reject(error);
+      reader.onerror = (error) => {
+        console.log("error converting to base 64", error);
+        reject(error);
+      };
     }
   );
 };

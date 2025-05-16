@@ -22,10 +22,12 @@ export function FAQSection({ faqs }: { faqs: FAQItem[] }) {
           <AccordionItem key={item.id} value={`item-${item.id}`}>
             <AccordionTrigger className="text-left">
               <div className="flex items-center gap-2">
-                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primaryLight text-white text-xs">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primaryLight text-white text-xs flex-shrink-0">
                   {item.id}
                 </div>
-                <span>{item.question}</span>
+                <div className="flex-1">
+                  <span>{item.question}</span>
+                </div>
               </div>
             </AccordionTrigger>
             <AccordionContent>{item.answer}</AccordionContent>

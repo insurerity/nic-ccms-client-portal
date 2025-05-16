@@ -14,6 +14,7 @@ import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
 import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupportingDocumentsForm";
 import ComplaintDetailsForm from "@/components/common/Form/ComplaintDetailsForm";
 import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
+import { FAQ_BY_FORM } from "@/lib/FAQs";
 
 const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "victim-profile": VictimsProfileForm,
@@ -49,6 +50,10 @@ const NormalPetition = () => {
     //@ts-ignore
     NORMAL_PETITION_FORM_STEPS["individual"][toSearchParam as any];
 
+  const currentFormStep = formSteps?.[currentStep - 1];
+
+  const currentFaq = FAQ_BY_FORM[currentFormStep.identifier];
+
   const renderStepContent = () => {
     if (isCompleted) {
       return <SubmissionSuccess />;
@@ -78,11 +83,7 @@ const NormalPetition = () => {
 
   return (
     <Suspense>
-      <FormLayout
-        currentStep={currentStep}
-        faqs={DEFAULT_FAQS}
-        steps={formSteps}
-      >
+      <FormLayout currentStep={currentStep} faqs={currentFaq} steps={formSteps}>
         {renderStepContent()}
       </FormLayout>
     </Suspense>

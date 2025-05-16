@@ -14,7 +14,6 @@ const StatusGuide: React.FC<StatusGuideProps> = ({
   created_at,
   allStatusesData,
 }) => {
-  console.log("all statuses data", allStatusesData);
   const activeIndex = activeStatus
     ? COMPLAINT_STATUSES.indexOf(activeStatus as EComplaintStatuses)
     : -1;

@@ -32,3 +32,9 @@ export type TFormStep = {
 export type StatusIconProps = {
   iconStatus?: "default" | "active" | "completed";
 };
+
+export type Faq = {
+  id: number;
+  question: string;
+  answer: string;
+};

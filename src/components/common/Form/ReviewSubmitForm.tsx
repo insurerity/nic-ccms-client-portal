@@ -1,8 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+
 import { toast } from "sonner";
 import ActionButton from "../ActionButton";
 import { TFormStep } from "@/types";
@@ -12,11 +11,7 @@ import {
 } from "@/hooks/use-complaint-store";
 import { camelCaseToTitle, toCamelCase } from "@/lib/utils";
 import { InfoDisplay } from "../InfoDisplay";
-import {
-  Nic_Ccms_Complaint_Insert_Input,
-  useAddTicketMutation,
-  useFileUploadActionMutation,
-} from "@/graphql/generated";
+import { useAddTicketMutation } from "@/graphql/generated";
 import { useUploadSupportingDocuments } from "@/hooks/use-upload-documents";
 import { transformComplaintData } from "@/lib/upload";
 import { showCustomToast } from "@/lib/errors";
@@ -45,18 +40,22 @@ const ReviewSubmitForm = ({
     useUploadSupportingDocuments();
 
   const handleSubmit = async () => {
-    toast.loading("Uploading supporting documents, please wait...", {
-      id: uploadLoaderIDS.documents,
-    });
     try {
+      toast.loading("Uploading supporting documents, please wait...", {
+        id: uploadLoaderIDS.documents,
+      });
       const documents = await uploadSupportingDocuments(
         data.supportingDocuments
       );
       console.log("uploaded documents", documents);
+
+      if (documents.length === 0) {
+        toast.dismiss(uploadLoaderIDS.documents);
+        toast.error("Failed to upload complaint documents");
+      }
       const payload = transformComplaintData(data);
 
-      if (documents) {
-        toast.success("Complaint Documents have been submitted");
+      if (documents && documents.length > 0) {
         toast.dismiss(uploadLoaderIDS.documents);
         payload["ComplaintDocuments"] = {
           data: documents,

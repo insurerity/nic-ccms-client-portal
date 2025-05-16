@@ -25,7 +25,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Go Back and Notification */}
             <div className="flex items-center gap-3">
-              <GoBack>
+              <GoBack closeForm>
                 Close Form
                 <X />
               </GoBack>

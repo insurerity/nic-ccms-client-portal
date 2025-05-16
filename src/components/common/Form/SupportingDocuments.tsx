@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { UploadCloud, X, FileText } from "lucide-react";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -40,7 +41,6 @@ const formSchema = z.object({
       })
     )
     .optional(),
-  additionalNotes: z.string().optional(),
 });
 
 interface SupportingDocumentsFormProps {
@@ -58,7 +58,6 @@ const SupportingDocumentsForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       documents: [],
-      additionalNotes: "",
     },
   });
 
@@ -68,8 +67,11 @@ const SupportingDocumentsForm = ({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("file upload.............");
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
+      console.log("uploaded files", files);
+      console.log("new File", newFiles);
       setFiles((prev) => [...prev, ...newFiles]);
 
       // Process files for the form
