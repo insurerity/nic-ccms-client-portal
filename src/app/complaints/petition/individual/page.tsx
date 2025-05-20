@@ -23,8 +23,6 @@ const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "review-submit": ReviewSubmitForm,
 };
 
-const REQUIRED_DOCUMENTS = NORMAL_PETITION_DOCUMENTS["individual"];
-
 const NormalPetition = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -45,6 +43,7 @@ const NormalPetition = () => {
   };
   const searchParams = useSearchParams();
   const toSearchParam = searchParams.get("to");
+  const REQUIRED_DOCUMENTS = NORMAL_PETITION_DOCUMENTS["individual"];
 
   const formSteps =
     //@ts-ignore

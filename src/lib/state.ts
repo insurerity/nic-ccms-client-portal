@@ -398,6 +398,26 @@ export const NORMAL_PETITION_DOCUMENTS: Record<
       label: "Additional Document 2",
       required: false,
     },
+    {
+      id: "additionalDoc3",
+      label: "Additional Document 3",
+      required: false,
+    },
+    {
+      id: "additionalDoc4",
+      label: "Additional Document 4",
+      required: false,
+    },
+    {
+      id: "additionalDoc2",
+      label: "Additional Document 5",
+      required: false,
+    },
+    {
+      id: "additionalDoc6",
+      label: "Additional Document 6",
+      required: false,
+    },
   ],
 };
 
