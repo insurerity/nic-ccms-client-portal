@@ -80,12 +80,40 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
         },
   });
 
-  const selectedIdType = form.watch("idType");
-
   const onSubmit = (values: VictimProfileSchemaType) => {
     setData("victimProfile", values);
     onNextStep();
   };
+
+  function generateDigitalAddress() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+
+        fetch("/api/gps", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ latitude, longitude }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              console.log("Digital Address:", data.digitalAddress);
+            } else {
+              console.error("Error:", data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching digital address:", error);
+          });
+      },
+      (error) => {
+        console.error("Error obtaining location:", error);
+      }
+    );
+  }
 
   return (
     <div className="bg-white rounded-[28px] shadow-sm p-6">
@@ -360,11 +388,14 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
                   <FormControl>
                     <div>
                       <Input placeholder="GS-000-0000" {...field} />
-                      <FormDescription className="text-xs mt-1">
+                      {/* <FormDescription
+                        className="text-xs mt-1"
+                        onClick={generateDigitalAddress}
+                      >
                         <a href="#" className="text-blue-600 hover:underline">
                           Find your digital address here
                         </a>
-                      </FormDescription>
+                      </FormDescription> */}
                     </div>
                   </FormControl>
                   <FormMessage />
