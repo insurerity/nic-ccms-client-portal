@@ -15,74 +15,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { useEntityDrawerStore } from "@/hooks/use-complaint-store";
 import { Separator } from "../ui/separator";
-import GoBack from "@/app/components/back-button";
 import Logo from "./Logo";
-
-// Sample data for insurance providers
-const insuranceProviders = [
-  {
-    id: 1,
-    name: "Santam Life Insurance Ghana Merges with Allianz Life Insurance Ghana",
-    shortName:
-      "Santam Life Insurance Ghana Merges with Allianz Life Insurance Ghana",
-    lastUpdate: "May 2024",
-    description:
-      "In May 2024, the National Insurance Commission (NIC) granted final approval for the merger of Santam and Allianz's Ghanaian subsidiaries. This consolidation resulted in the formation of SantamAllianz, a joint venture operating across 27 African countries with a combined enterprise value of nearly $4 billion. The merger integrated Santam Life Insurance Ghana with Allianz Life Insurance Ghana, and Santam General Insurance Ghana with Allianz Insurance Ghana, aiming to enhance market presence and operational efficiency in Ghana's insurance sector.",
-  },
-  {
-    id: 2,
-    name: "Phoenix Life Assurance Merges with Ghana Union Assurance Life",
-    shortName: "Phoenix Life Assurance Merges with Ghana Union Assurance Life",
-    lastUpdate: "March 2022",
-    description:
-      "On March 25, 2022, the NIC approved the merger of Phoenix Life Assurance Company Limited with Ghana Union Assurance Life Company Limited. Post-merger, the unified entity continues operations under the name Ghana Union Assurance Life Company Limited. All existing policyholders of Phoenix Life Assurance have been transitioned to the new entity, ensuring continuity of their insurance coverage.",
-  },
-  {
-    id: 3,
-    name: "Donewell Life Assurance Rebrands as Pinnacle Life Insurance",
-    shortName: "Donewell Life Assurance Rebrands as Pinnacle Life Insurance",
-    lastUpdate: "January 2023",
-    description:
-      "Donewell Life Assurance has officially rebranded as Pinnacle Life Insurance following approval from the National Insurance Commission. The rebranding reflects the company's strategic repositioning in the market and commitment to providing enhanced insurance solutions to its customers.",
-  },
-  {
-    id: 4,
-    name: "Beige Assure Company Limited Placed Under Statutory Management",
-    shortName: "Beige Assure Company Limited Placed Under Statutory Management",
-    lastUpdate: "November 2022",
-    description:
-      "The National Insurance Commission has placed Beige Assure Company Limited under statutory management due to concerns regarding the company's financial stability and compliance with regulatory requirements. This intervention aims to protect policyholders and ensure the company's operations align with industry standards.",
-  },
-  {
-    id: 5,
-    name: "Ghana Life Insurance Company Limited Under NIC Management",
-    shortName: "Ghana Life Insurance Company Limited Under NIC Management",
-    lastUpdate: "August 2023",
-    description:
-      "Ghana Life Insurance Company Limited has been placed under the direct supervision of the National Insurance Commission following identified irregularities in its financial reporting and operational practices. The NIC has appointed a temporary management team to oversee the company's affairs and implement necessary corrective measures.",
-  },
-  {
-    id: 6,
-    name: "RegencyNem Insurance Limited Supervised by NIC",
-    shortName: "RegencyNem Insurance Limited Supervised by NIC",
-    lastUpdate: "October 2023",
-    description:
-      "RegencyNem Insurance Limited is currently under the supervision of the National Insurance Commission as part of regulatory measures to ensure compliance with industry standards and protect the interests of policyholders. The NIC is working closely with the company's management to address identified areas of concern.",
-  },
-];
+import InsuranceProvidersList from "@/app/notifications/components/insurance-providers";
+import MainContent from "@/app/notifications/components/MainContent";
 
 export function EntityDrawer() {
   const { showDrawer, drawerOpen: open, closeDrawer } = useEntityDrawerStore();
-  const [selectedProvider, setSelectedProvider] = useState<number | null>(null);
+
   const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredProviders = insuranceProviders.filter((provider) =>
-    provider.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const handleProviderClick = (id: number) => {
-    setSelectedProvider(id);
-  };
 
   const setOpen = () => {
     if (open) {
@@ -141,48 +81,14 @@ export function EntityDrawer() {
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-4">
-                  {filteredProviders.map((provider, index) => (
-                    <div
-                      key={provider.id}
-                      className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer hover:bg-muted transition-colors ${
-                        selectedProvider === provider.id ? "bg-muted" : ""
-                      }`}
-                      onClick={() => handleProviderClick(provider.id)}
-                    >
-                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#6a1b9a] text-white">
-                        <span className="text-xs font-bold">{index + 1}</span>
-                      </div>
-                      <div className="text-sm">{provider.shortName}</div>
-                    </div>
-                  ))}
+              <div className="flex flex-col md:flex-row gap-8">
+                <div className="md:w-1/3 lg:w-1/4">
+                  <div className="sticky top-4">
+                    <InsuranceProvidersList />
+                  </div>
                 </div>
-
-                <div className="md:col-span-2 space-y-8">
-                  {selectedProvider ? (
-                    <>
-                      {insuranceProviders
-                        .filter((provider) => provider.id === selectedProvider)
-                        .map((provider) => (
-                          <div key={provider.id} className="space-y-4">
-                            <h3 className="text-xl font-semibold text-[#6a1b9a]">
-                              {provider.name}
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              Last Update: {provider.lastUpdate}
-                            </p>
-                            <p className="text-sm">{provider.description}</p>
-                          </div>
-                        ))}
-                    </>
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-center p-8">
-                      <p className="text-muted-foreground">
-                        Select an insurance provider to view details
-                      </p>
-                    </div>
-                  )}
+                <div className="md:w-2/3 lg:w-3/4">
+                  <MainContent />
                 </div>
               </div>
             </div>
