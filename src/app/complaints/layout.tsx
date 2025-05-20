@@ -2,6 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import GoBack from "../components/back-button";
 import { Bell, X } from "lucide-react";
 import Logo from "@/components/common/Logo";
+import NotificationButton from "@/components/common/NotificationButton";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -30,12 +31,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <X />
               </GoBack>
               <div className="relative">
-                <div className="w-12 h-12 rounded-full border border-[#59285F] flex items-center justify-center">
-                  <Bell className="w-6 h-6 text-[#59285F]" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center font-bold">
-                  1
-                </div>
+                <NotificationButton />
               </div>
             </div>
           </div>

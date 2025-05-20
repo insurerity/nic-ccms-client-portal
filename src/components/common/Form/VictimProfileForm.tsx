@@ -43,21 +43,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ComplaintFormProps } from "@/types";
 
-// const idTypes = [
-//   "Ghana Card",
-//   "Voter ID",
-//   "Passport",
-//   "Driver's License",
-//   "NHIS Card",
-//   "Other",
-// ];
-
-interface VictimsProfileFormProps {
-  onNextStep: () => void;
-}
-
-const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
+const VictimsProfileForm = ({
+  onNextStep,
+  onPrevStep,
+  currentStep,
+}: ComplaintFormProps) => {
   const { offices: regions, loading: loadingRegions } = useGetRegions();
   const { setData, data } = useComplaintStore();
 
@@ -286,7 +278,7 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
                             <CommandEmpty>No region found.</CommandEmpty>
                             <ScrollArea className="h-[200px]">
                               <CommandGroup>
-                                {regions.map((region) => (
+                                {regions?.map((region) => (
                                   <CommandItem
                                     key={region.id}
                                     value={region.label.toLowerCase()}
@@ -337,7 +329,7 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="w-full">
-                      {idTypes.map((type) => (
+                      {idTypes?.map((type) => (
                         <SelectItem key={type} value={type}>
                           {type}
                         </SelectItem>
@@ -406,13 +398,31 @@ const VictimsProfileForm = ({ onNextStep }: VictimsProfileFormProps) => {
 
           <Separator className="space-y-3" />
 
-          <div className="flex justify-end">
-            <ActionButton
-              text="Continue"
-              type="submit"
-              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
-            />
-          </div>
+          {onPrevStep && currentStep !== 1 ? (
+            <div className="flex justify-between">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onPrevStep}
+                className="rounded-full"
+              >
+                Back
+              </Button>
+              <ActionButton
+                text="Next"
+                type="submit"
+                className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+              />
+            </div>
+          ) : (
+            <div className="flex justify-end">
+              <ActionButton
+                text="Next"
+                type="submit"
+                className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+              />
+            </div>
+          )}
         </form>
       </Form>
     </div>

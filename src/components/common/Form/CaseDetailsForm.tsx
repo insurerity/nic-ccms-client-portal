@@ -1,8 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { Controller, useForm } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import {
@@ -30,10 +29,11 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { capitalize, cn } from "@/lib/utils";
-import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
-import { useComplaintStore } from "@/hooks/use-complaint-store";
+import { useComplaintStore, useSharedStore } from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
+import { z } from "zod";
+import { ComplaintFormProps } from "@/types";
 
 // Define the schema for the case details form
 const CaseDetailsSchema = z.object({
@@ -49,39 +49,34 @@ const CaseDetailsSchema = z.object({
 
 type CaseDetailsSchemaType = z.infer<typeof CaseDetailsSchema>;
 
-const claimTypes = [
-  "Death",
-  "Injury",
-  // "Property Damage",
-  // "Vehicle Damage",
-  // "Insurance Claim",
-  // "Contract Dispute",
-  // "Other",
-];
+const CaseDetailsForm = ({
+  onNextStep,
+  onPrevStep,
+  currentStep,
+}: ComplaintFormProps) => {
+  const { caseType } = useSharedStore();
 
-interface CaseDetailsFormProps {
-  onNextStep: () => void;
-  onPrevStep?: () => void;
-}
-
-const CaseDetailsForm = ({ onNextStep, onPrevStep }: CaseDetailsFormProps) => {
-  const searchParams = useSearchParams();
   const { data, setData } = useComplaintStore();
   const form = useForm<CaseDetailsSchemaType>({
     resolver: zodResolver(CaseDetailsSchema),
-    defaultValues: {
-      claimType: "",
-      vehicleNumber: "",
-      description: "",
-    },
+    defaultValues: data?.caseDetails
+      ? {
+          ...data.caseDetails,
+        }
+      : {
+          claimType: "",
+          vehicleNumber: "",
+          description: "",
+        },
   });
 
   useEffect(() => {
-    if (searchParams && !data.caseDetails) {
-      const caseType = searchParams?.get("caseType");
-      form.setValue("claimType", capitalize(caseType as string));
+    const isCaseDetailsMissing = !data.caseDetails || data.caseDetails === null;
+    if (isCaseDetailsMissing && caseType) {
+      console.log("we are setting case type...", capitalize(caseType));
+      form.setValue("claimType", capitalize(caseType));
     }
-  }, [data.caseDetails]);
+  }, [caseType, data.caseDetails, form]);
 
   const onSubmit = (values: CaseDetailsSchemaType) => {
     setData("caseDetails", values);
@@ -146,33 +141,25 @@ const CaseDetailsForm = ({ onNextStep, onPrevStep }: CaseDetailsFormProps) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
+              <Controller
                 name="claimType"
+                control={form.control}
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Case Type <span className="text-red-500">*</span>
-                    </FormLabel>
+                  <div className="space-y-2">
+                    <FormLabel htmlFor="caseType">Case Type</FormLabel>
                     <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      value={field.value}
+                      onValueChange={(value) => field.onChange(value)}
                     >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select claim type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="w-full">
-                        {claimTypes.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select claim type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Injury">Injury</SelectItem>
+                        <SelectItem value="Death">Death</SelectItem>
                       </SelectContent>
                     </Select>
-                    <FormMessage />
-                  </FormItem>
+                  </div>
                 )}
               />
 
@@ -214,23 +201,31 @@ const CaseDetailsForm = ({ onNextStep, onPrevStep }: CaseDetailsFormProps) => {
               />
             </div>
 
-            <div className="flex justify-between pt-4">
-              {onPrevStep && (
+            {onPrevStep && currentStep !== 1 ? (
+              <div className="flex justify-between">
                 <Button
                   type="button"
                   variant="outline"
-                  className="rounded-full"
                   onClick={onPrevStep}
+                  className="rounded-full"
                 >
                   Back
                 </Button>
-              )}
-              <ActionButton
-                text="Next"
-                type="submit"
-                className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
-              />
-            </div>
+                <ActionButton
+                  text="Next"
+                  type="submit"
+                  className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+                />
+              </div>
+            ) : (
+              <div className="flex justify-end">
+                <ActionButton
+                  text="Next"
+                  type="submit"
+                  className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+                />
+              </div>
+            )}
           </form>
         </Form>
       </div>

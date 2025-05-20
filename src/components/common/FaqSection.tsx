@@ -18,7 +18,7 @@ export function FAQSection({ faqs }: { faqs: FAQItem[] }) {
       </h2>
 
       <Accordion type="single" collapsible className="w-full">
-        {faqs.map((item) => (
+        {faqs?.map((item) => (
           <AccordionItem key={item.id} value={`item-${item.id}`}>
             <AccordionTrigger className="text-left">
               <div className="flex items-center gap-2">

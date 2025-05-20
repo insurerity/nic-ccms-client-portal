@@ -21,6 +21,12 @@ export interface SupportingDocumentsFormProps {
   onPrevStep: () => void;
 }
 
+export interface ComplaintFormProps {
+  onNextStep: () => void;
+  onPrevStep?: () => void;
+  currentStep: number;
+}
+
 export type ComplaintOwnerType = "individual" | "business";
 
 export type TFormStep = {

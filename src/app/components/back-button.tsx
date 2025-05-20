@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useComplaintStore, useSharedStore } from "@/hooks/use-complaint-store";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
 
@@ -11,10 +12,14 @@ export default function GoBack({
   children: ReactNode;
   closeForm?: boolean;
 }) {
+  const { reset } = useComplaintStore();
+  const { reset: resetSharedStore } = useSharedStore();
   const router = useRouter();
   const pathname = usePathname();
   const handleGoBack = () => {
     if (closeForm) {
+      reset();
+      resetSharedStore();
       return router.push("/get-started");
     }
 

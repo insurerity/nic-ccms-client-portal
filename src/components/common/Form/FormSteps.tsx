@@ -49,7 +49,7 @@ const FormSteps = ({ currentStep, steps }: FormStepsProps) => {
 
       <nav aria-label="Progress">
         <ol role="list" className="space-y-6">
-          {steps.map((step) => (
+          {steps?.map((step) => (
             <li
               key={step.id}
               className={cn(

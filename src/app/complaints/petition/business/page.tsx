@@ -6,14 +6,15 @@ import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupp
 import FormLayout from "@/components/common/Form/FormLayout";
 import PetitionerProfileForm from "@/components/common/Form/PetitionProfileForm";
 import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
-import SubmissionSuccess from "@/components/common/Form/SubmissionSucess";
+import SubmissionSuccess from "@/components/common/Form/SubmissionSuccess";
 import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
+import { useSharedStore } from "@/hooks/use-complaint-store";
 import {
   DEFAULT_FAQS,
   NORMAL_PETITION_DOCUMENTS,
   NORMAL_PETITION_FORM_STEPS,
 } from "@/lib/state";
-import { useSearchParams } from "next/navigation";
+
 import React, { Suspense, useState } from "react";
 
 const FORM_COMPONENTS: Record<string, React.FC<any>> = {
@@ -28,8 +29,7 @@ const FORM_COMPONENTS: Record<string, React.FC<any>> = {
 const REQUIRED_DOCUMENTS = NORMAL_PETITION_DOCUMENTS["business"];
 
 const NormalPetitionBusiness = () => {
-  const searchParams = useSearchParams();
-  const toSearchParam = searchParams.get("to");
+  const { complainantType } = useSharedStore();
   const [currentStep, setCurrentStep] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -49,7 +49,7 @@ const NormalPetitionBusiness = () => {
   };
   const formSteps =
     //  @ts-ignore
-    NORMAL_PETITION_FORM_STEPS["business"][toSearchParam as any];
+    NORMAL_PETITION_FORM_STEPS["business"][complainantType as any];
 
   const renderStepContent = () => {
     if (isCompleted) {
@@ -73,6 +73,7 @@ const NormalPetitionBusiness = () => {
       onComplete: handleComplete,
       documents: REQUIRED_DOCUMENTS,
       formSteps,
+      currentStep,
     };
 
     return <Component {...commonProps} />;
@@ -92,3 +93,7 @@ const NormalPetitionBusiness = () => {
 };
 
 export default NormalPetitionBusiness;
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+// Alternatively, you can use next/dynamic for client-only components, but for pages,
+// using "use client" and the above exports is the recommended approach in Next.js 13+.

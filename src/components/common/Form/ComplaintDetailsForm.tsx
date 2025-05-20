@@ -54,16 +54,13 @@ import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EntityDrawer } from "../EntityOfConcernDrawer";
-
-interface ComplaintDetailsFormProps {
-  onNextStep: () => void;
-  onPrevStep: () => void;
-}
+import { ComplaintFormProps } from "@/types";
 
 const ComplaintDetailsForm = ({
   onNextStep,
   onPrevStep,
-}: ComplaintDetailsFormProps) => {
+  currentStep,
+}: ComplaintFormProps) => {
   const { showDrawer } = useEntityDrawerStore();
   const { setData, data } = useComplaintStore();
   const { entities, loadingEntities } = useGetRegulatedEntities();
@@ -287,7 +284,7 @@ const ComplaintDetailsForm = ({
                               <CommandEmpty>No entity found.</CommandEmpty>
                               <CommandGroup>
                                 <ScrollArea className="h-[200px]">
-                                  {entities.map((entity) => (
+                                  {entities?.map((entity) => (
                                     <CommandItem
                                       key={entity.id}
                                       value={entity.label}
@@ -352,22 +349,31 @@ const ComplaintDetailsForm = ({
             )}
           />
 
-          <div className="flex justify-between pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onPrevStep}
-              className="rounded-full"
-            >
-              Back
-            </Button>
-
-            <ActionButton
-              text="Continue"
-              type="submit"
-              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
-            />
-          </div>
+          {onPrevStep && currentStep !== 1 ? (
+            <div className="flex justify-between">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onPrevStep}
+                className="rounded-full"
+              >
+                Back
+              </Button>
+              <ActionButton
+                text="Next"
+                type="submit"
+                className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+              />
+            </div>
+          ) : (
+            <div className="flex justify-end">
+              <ActionButton
+                text="Next"
+                type="submit"
+                className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+              />
+            </div>
+          )}
         </form>
       </Form>
 

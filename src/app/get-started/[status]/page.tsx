@@ -9,7 +9,7 @@ import {
 } from "@/lib/constant";
 import GetStartedCheckStatus from "./components/GetStartedCheckStatus";
 import GetStartedGetCompensation from "./components/GetStartedGetCompensation";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Suspense } from "react";
 
 export default function GetStartedStatus() {

@@ -75,7 +75,7 @@ const SupportingDocumentsForm = ({
       setFiles((prev) => [...prev, ...newFiles]);
 
       // Process files for the form
-      const fileObjects = newFiles.map((file) => ({
+      const fileObjects = newFiles?.map((file) => ({
         name: file.name,
         size: file.size,
         type: file.type,

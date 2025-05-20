@@ -1,35 +1,37 @@
 "use client";
-import CaseDetailsForm from "@/components/common/Form/CaseDetailsForm";
-import FormLayout from "@/components/common/Form/FormLayout";
-import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
-import PetitionerProfileForm from "@/components/common/Form/PetitionProfileForm";
+
+export const dynamic = "force-dynamic";
+
 import BusinessInformationForm from "@/components/common/Form/BusinessInformationForm";
+import ComplaintDetailsForm from "@/components/common/Form/ComplaintDetailsForm";
 import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupportingDocumentsForm";
+import FormLayout from "@/components/common/Form/FormLayout";
+import PetitionerProfileForm from "@/components/common/Form/PetitionProfileForm";
+import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
 import SubmissionSuccess from "@/components/common/Form/SubmissionSuccess";
+import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
+import { useSharedStore } from "@/hooks/use-complaint-store";
 import {
   DEFAULT_FAQS,
-  MOTOR_COMPENSATION_FORM_STEPS,
   NORMAL_PETITION_DOCUMENTS,
+  NORMAL_PETITION_FORM_STEPS,
 } from "@/lib/state";
 
-import { Suspense, useState } from "react";
-import { useSharedStore } from "@/hooks/use-complaint-store";
-
-const REQUIRED_DOCUMENTS = NORMAL_PETITION_DOCUMENTS["individual"];
+import React, { useState } from "react";
 
 const FORM_COMPONENTS: Record<string, React.FC<any>> = {
-  "business-information": BusinessInformationForm,
-  "case-details": CaseDetailsForm,
+  "victim-profile": VictimsProfileForm,
+  "complaint-details": ComplaintDetailsForm,
   "supporting-documents": DynamicSupportingDocumentsForm,
   "review-submit": ReviewSubmitForm,
   "petitioners-profile": PetitionerProfileForm,
+  "business-information": BusinessInformationForm,
 };
 
-const MCompBusiness = () => {
+const REQUIRED_DOCUMENTS = NORMAL_PETITION_DOCUMENTS["business"];
+
+const NormalPetitionBusiness = () => {
   const { complainantType } = useSharedStore();
-  const toSearchParam = complainantType as
-    | keyof (typeof MOTOR_COMPENSATION_FORM_STEPS)["individual"]
-    | null;
   const [currentStep, setCurrentStep] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -47,10 +49,9 @@ const MCompBusiness = () => {
     setIsCompleted(true);
     window.scrollTo(0, 0);
   };
-
-  const formSteps = toSearchParam
-    ? MOTOR_COMPENSATION_FORM_STEPS["business"][toSearchParam]
-    : [];
+  const formSteps =
+    //  @ts-ignore
+    NORMAL_PETITION_FORM_STEPS["business"][complainantType as any];
 
   const renderStepContent = () => {
     if (isCompleted) {
@@ -63,7 +64,7 @@ const MCompBusiness = () => {
       return null;
     }
 
-    const Component = FORM_COMPONENTS[currentFormStep.identifier];
+    const Component = FORM_COMPONENTS[currentFormStep?.identifier];
     if (!Component) {
       return <div>Unknown form step: {currentFormStep.identifier}</div>;
     }
@@ -81,18 +82,10 @@ const MCompBusiness = () => {
   };
 
   return (
-    <Suspense>
-      <FormLayout
-        currentStep={currentStep}
-        faqs={DEFAULT_FAQS}
-        steps={formSteps}
-      >
-        {renderStepContent()}
-      </FormLayout>
-    </Suspense>
+    <FormLayout currentStep={currentStep} faqs={DEFAULT_FAQS} steps={formSteps}>
+      {renderStepContent()}
+    </FormLayout>
   );
 };
-export default MCompBusiness;
 
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
+export default NormalPetitionBusiness;

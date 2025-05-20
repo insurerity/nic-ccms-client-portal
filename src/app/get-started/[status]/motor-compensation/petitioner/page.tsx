@@ -9,13 +9,14 @@ import PetitionerPersonIcon from "@/components/icons/PetitionerPersonIcon";
 import PetitionerOnBehalfIcon from "@/components/icons/PetitionerOnBehalfIcon";
 import OrganisationTypeIcon from "@/components/icons/OrganisationTypeIcon";
 import IndividualTypeIcon from "@/components/icons/IndividualTypeIcon";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSharedStore } from "@/hooks/use-complaint-store";
 
 export default function MotorCompensationPetitioner() {
   const [currentQuestion, setCurrentQuestion] = useState(1);
+  const { setPetitionerType, setComplainantType } = useSharedStore();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const questions = [
     {
@@ -65,23 +66,20 @@ export default function MotorCompensationPetitioner() {
 
   const handleOptionSelect = (optionId: string) => {
     setSelectedOption(optionId);
-    const url = new URL(window.location.href);
-    if (currentQuestion === 1) {
-      url.searchParams.set("to", optionId);
-    } else if (currentQuestion === 2) {
-      url.searchParams.set("type", optionId);
-    }
-    window.history.pushState({}, "", url.toString());
-  };
 
-  console.log("search params", searchParams);
+    if (currentQuestion === 1) {
+      setComplainantType(optionId);
+    } else if (currentQuestion === 2) {
+      setPetitionerType(optionId);
+    }
+  };
 
   const handleContinue = () => {
     if (currentQuestion === 2) {
       const gotoUrl =
         selectedOption === "individual"
-          ? `/complaints/compensation/individual?${searchParams}`
-          : `/complaints/compensation/business?${searchParams}`;
+          ? `/complaints/compensation/individual`
+          : `/complaints/compensation/business`;
       return router.push(gotoUrl);
     }
     if (selectedOption) {
@@ -119,7 +117,7 @@ export default function MotorCompensationPetitioner() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                  {currentQuestionData.options.map((option) => (
+                  {currentQuestionData?.options?.map((option) => (
                     <div
                       key={option.id}
                       className={cn(

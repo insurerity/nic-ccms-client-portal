@@ -116,7 +116,7 @@ export default function HeroSlider() {
 
         {/* Slider dots with animation */}
         <div className="flex items-center space-x-2">
-          {slides.map((_, index) => (
+          {slides?.map((_, index) => (
             <div key={index} className="relative">
               <button
                 onClick={() => goToSlide(index)}

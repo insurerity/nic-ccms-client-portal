@@ -5,10 +5,11 @@ import type React from "react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { RequiredDocuments } from "./components/RequiredDocuments";
 import MotorCompensationDeathIcon from "@/components/icons/MotorCompensationDeathIcon";
 import MotorCompensationInjuryIcon from "@/components/icons/MotorCompensationInjuryIcon";
+import { useSharedStore } from "@/hooks/use-complaint-store";
 
 const questions = [
   {
@@ -37,6 +38,7 @@ const questions = [
 
 export default function MotorCompensation() {
   const pathName = usePathname();
+  const { setCaseType } = useSharedStore();
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const router = useRouter();
@@ -57,9 +59,8 @@ export default function MotorCompensation() {
       <RequiredDocuments
         caseType={selectedOption as string}
         onComplete={() => {
-          return router.push(
-            `${pathName}/petitioner?caseType=${selectedOption}`
-          );
+          setCaseType(selectedOption as string);
+          return router.push(`${pathName}/petitioner`);
         }}
       />
     );
@@ -89,7 +90,7 @@ export default function MotorCompensation() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  {currentQuestionData.options.map((option) => (
+                  {currentQuestionData?.options?.map((option) => (
                     <div
                       key={option.id}
                       className={cn(

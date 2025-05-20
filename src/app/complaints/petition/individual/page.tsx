@@ -1,13 +1,11 @@
 "use client";
 
 import FormLayout from "@/components/common/Form/FormLayout";
-import SubmissionSuccess from "@/components/common/Form/SubmissionSucess";
+import SubmissionSuccess from "@/components/common/Form/SubmissionSuccess";
 import {
-  DEFAULT_FAQS,
   NORMAL_PETITION_DOCUMENTS,
   NORMAL_PETITION_FORM_STEPS,
 } from "@/lib/state";
-import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 
 import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
@@ -15,12 +13,15 @@ import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupp
 import ComplaintDetailsForm from "@/components/common/Form/ComplaintDetailsForm";
 import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
 import { FAQ_BY_FORM } from "@/lib/FAQs";
+import { useSharedStore } from "@/hooks/use-complaint-store";
+import PetitionerProfileForm from "@/components/common/Form/PetitionProfileForm";
 
 const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "victim-profile": VictimsProfileForm,
   "complaint-details": ComplaintDetailsForm,
   "supporting-documents": DynamicSupportingDocumentsForm,
   "review-submit": ReviewSubmitForm,
+  "petitioners-profile": PetitionerProfileForm,
 };
 
 const NormalPetition = () => {
@@ -41,17 +42,17 @@ const NormalPetition = () => {
     setIsCompleted(true);
     window.scrollTo(0, 0);
   };
-  const searchParams = useSearchParams();
-  const toSearchParam = searchParams.get("to");
+  const { complainantType } = useSharedStore();
+
   const REQUIRED_DOCUMENTS = NORMAL_PETITION_DOCUMENTS["individual"];
 
   const formSteps =
     //@ts-ignore
-    NORMAL_PETITION_FORM_STEPS["individual"][toSearchParam as any];
+    NORMAL_PETITION_FORM_STEPS["individual"][complainantType as any];
 
   const currentFormStep = formSteps?.[currentStep - 1];
 
-  const currentFaq = FAQ_BY_FORM[currentFormStep.identifier];
+  const currentFaq = FAQ_BY_FORM[currentFormStep?.identifier];
 
   const renderStepContent = () => {
     if (isCompleted) {
@@ -73,6 +74,7 @@ const NormalPetition = () => {
       onNextStep: handleNextStep,
       onPrevStep: handlePrevStep,
       onComplete: handleComplete,
+      currentStep,
       documents: REQUIRED_DOCUMENTS,
       formSteps,
     };
@@ -81,12 +83,13 @@ const NormalPetition = () => {
   };
 
   return (
-    <Suspense>
-      <FormLayout currentStep={currentStep} faqs={currentFaq} steps={formSteps}>
-        {renderStepContent()}
-      </FormLayout>
-    </Suspense>
+    <FormLayout currentStep={currentStep} faqs={currentFaq} steps={formSteps}>
+      {renderStepContent()}
+    </FormLayout>
   );
 };
 
 export default NormalPetition;
+
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";

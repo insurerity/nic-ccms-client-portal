@@ -5,8 +5,9 @@ import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupp
 import FormLayout from "@/components/common/Form/FormLayout";
 import PetitionerProfileForm from "@/components/common/Form/PetitionProfileForm";
 import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
-import SubmissionSuccess from "@/components/common/Form/SubmissionSucess";
+import SubmissionSuccess from "@/components/common/Form/SubmissionSuccess";
 import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
+import { useSharedStore } from "@/hooks/use-complaint-store";
 
 import {
   DEFAULT_FAQS,
@@ -14,7 +15,6 @@ import {
   NORMAL_PETITION_DOCUMENTS,
 } from "@/lib/state";
 
-import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 
 const REQUIRED_DOCUMENTS = NORMAL_PETITION_DOCUMENTS["individual"];
@@ -28,8 +28,7 @@ const FORM_COMPONENTS: Record<string, React.FC<any>> = {
 };
 
 const MotorCompIndividual = () => {
-  const searchParams = useSearchParams();
-  const toSearchParam = searchParams.get("to");
+  const { complainantType } = useSharedStore();
   const [currentStep, setCurrentStep] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -50,7 +49,7 @@ const MotorCompIndividual = () => {
 
   const formSteps =
     //@ts-ignore
-    MOTOR_COMPENSATION_FORM_STEPS["individual"][toSearchParam as any];
+    MOTOR_COMPENSATION_FORM_STEPS["individual"][complainantType as any];
 
   const renderStepContent = () => {
     if (isCompleted) {
@@ -72,6 +71,7 @@ const MotorCompIndividual = () => {
       onNextStep: handleNextStep,
       onPrevStep: handlePrevStep,
       onComplete: handleComplete,
+      currentStep,
       documents: REQUIRED_DOCUMENTS,
       formSteps,
     };
@@ -93,3 +93,6 @@ const MotorCompIndividual = () => {
 };
 
 export default MotorCompIndividual;
+
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";

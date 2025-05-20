@@ -28,16 +28,13 @@ import {
 import { useComplaintStore } from "@/hooks/use-complaint-store";
 import { FAMILY_MEMBER_TYPES, idTypes, PETITIONER_TYPES } from "@/lib/state";
 import ActionButton from "../ActionButton";
-
-interface PetitionerProfileFormProps {
-  onNextStep: () => void;
-  onPrevStep?: () => void;
-}
+import { ComplaintFormProps } from "@/types";
 
 const PetitionerProfileForm = ({
   onNextStep,
   onPrevStep,
-}: PetitionerProfileFormProps) => {
+  currentStep,
+}: ComplaintFormProps) => {
   const { data, setData } = useComplaintStore();
   const form = useForm<PetitionerProfileSchemaType>({
     resolver: zodResolver(PetitionerProfileSchema),
@@ -288,8 +285,8 @@ const PetitionerProfileForm = ({
 
           <Separator className="space-y-3" />
 
-          <div className="flex justify-between">
-            {onPrevStep && (
+          {onPrevStep && currentStep !== 1 ? (
+            <div className="flex justify-between">
               <Button
                 type="button"
                 variant="outline"
@@ -298,13 +295,21 @@ const PetitionerProfileForm = ({
               >
                 Back
               </Button>
-            )}
-            <ActionButton
-              text="Next"
-              type="submit"
-              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
-            />
-          </div>
+              <ActionButton
+                text="Next"
+                type="submit"
+                className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+              />
+            </div>
+          ) : (
+            <div className="flex justify-end">
+              <ActionButton
+                text="Next"
+                type="submit"
+                className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+              />
+            </div>
+          )}
         </form>
       </Form>
     </div>

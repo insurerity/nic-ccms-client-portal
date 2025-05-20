@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 import {
   BusinessInformationSchemaType,
   CaseDetailsSchemaType,
@@ -6,6 +7,37 @@ import {
   VictimProfileSchemaType,
   complaintDetailFormSchemaType,
 } from "./schema";
+
+type SharedStore = {
+  caseType: string | null;
+  petitionerType: string | null;
+  complainantType: string | null;
+  setCaseType: (value: string) => void;
+  setPetitionerType: (value: string) => void;
+  setComplainantType: (value: string) => void;
+
+  reset: () => void;
+};
+
+export const SharedState = create<SharedStore>()(
+  persist(
+    (set) => ({
+      caseType: null,
+      complainantType: null,
+      petitionerType: null,
+      setCaseType: (value) => set({ caseType: value }),
+      setPetitionerType: (value) => set({ petitionerType: value }),
+      setComplainantType: (value) => {
+        set({ complainantType: value });
+      },
+      reset: () => set({ caseType: null, petitionerType: null }),
+    }),
+    {
+      name: "shared-store", // unique name
+      storage: createJSONStorage(() => localStorage), // default is localStorage
+    }
+  )
+);
 
 export type ComplaintStoreData = {
   victimProfile: VictimProfileSchemaType | null;
@@ -22,6 +54,7 @@ interface ComplaintStore {
     key: K,
     value: ComplaintStoreData[K]
   ) => void;
+  reset: () => void;
 }
 
 export const ComplaintDataStore = create<ComplaintStore>((set) => ({
@@ -32,6 +65,18 @@ export const ComplaintDataStore = create<ComplaintStore>((set) => ({
     businessInformation: null,
     petitionerProfile: null,
     caseDetails: null,
+  },
+  reset: () => {
+    set({
+      data: {
+        businessInformation: null,
+        caseDetails: null,
+        complaintDetails: null,
+        petitionerProfile: null,
+        supportingDocuments: null,
+        victimProfile: null,
+      },
+    });
   },
   setData: (key, value) =>
     set((state) => ({

@@ -171,7 +171,7 @@ const DynamicSupportingDocumentsForm = ({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {documents.map((doc) => (
+            {documents?.map((doc) => (
               <FormField
                 key={doc.id}
                 control={form.control}

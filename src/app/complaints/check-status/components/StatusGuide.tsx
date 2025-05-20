@@ -25,7 +25,7 @@ const StatusGuide: React.FC<StatusGuideProps> = ({
       </h2>
 
       <div className="relative">
-        {COMPLAINT_STATUSES.map((v, index) => {
+        {COMPLAINT_STATUSES?.map((v, index) => {
           let iconStatus: "default" | "active" | "completed" = "default";
 
           if (index === activeIndex) {

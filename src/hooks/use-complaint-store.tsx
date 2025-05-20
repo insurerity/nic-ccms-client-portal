@@ -1,17 +1,22 @@
+"use client";
+
 import {
   ComplaintDataStore,
   EntityDrawerState,
   NewComplainIdState,
+  SharedState,
 } from "@/lib/complaint-store";
 import { useStore } from "zustand";
 
 export const useComplaintStore = () => {
   const data = useStore(ComplaintDataStore, (state) => state.data);
   const setData = useStore(ComplaintDataStore, (state) => state.setData);
+  const reset = useStore(ComplaintDataStore, (state) => state.reset);
 
   return {
     data,
     setData,
+    reset,
   };
 };
 
@@ -34,5 +39,34 @@ export const useEntityDrawerStore = () => {
     showDrawer,
     closeDrawer,
     drawerOpen,
+  };
+};
+
+export const useSharedStore = () => {
+  const caseType = useStore(SharedState, (state) => state.caseType);
+  const setCaseType = useStore(SharedState, (state) => state.setCaseType);
+  const petitionerType = useStore(SharedState, (state) => state.petitionerType);
+  const setPetitionerType = useStore(
+    SharedState,
+    (state) => state.setPetitionerType
+  );
+  const complainantType = useStore(
+    SharedState,
+    (state) => state.complainantType
+  );
+  const setComplainantType = useStore(
+    SharedState,
+    (state) => state.setComplainantType
+  );
+  const reset = useStore(SharedState, (state) => state.reset);
+
+  return {
+    caseType,
+    setCaseType,
+    petitionerType,
+    setPetitionerType,
+    reset,
+    complainantType,
+    setComplainantType,
   };
 };

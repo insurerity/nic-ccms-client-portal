@@ -41,7 +41,7 @@ export function RequiredDocuments({
     if (type === "death") {
       const deathItems = MOTOR_COMP_REQUIRED_DOCUMENTS["death"];
 
-      return deathItems.map((v) => {
+      return deathItems?.map((v) => {
         return {
           id: v,
           text: v,
@@ -55,7 +55,7 @@ export function RequiredDocuments({
     }
 
     const injuryItems = MOTOR_COMP_REQUIRED_DOCUMENTS["injury"];
-    return injuryItems.map((v) => {
+    return injuryItems?.map((v) => {
       return {
         id: v,
         text: v,
@@ -72,7 +72,7 @@ export function RequiredDocuments({
   const requirements = customRequirements || getDefaultRequirements(caseType);
 
   const uniqueRequirements = Array.from(
-    new Map(requirements.map((item) => [item.id, item])).values()
+    new Map(requirements?.map((item) => [item.id, item])).values()
   );
 
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(

@@ -8,6 +8,7 @@ import { TFormStep } from "@/types";
 import {
   useComplaintStore,
   useNewComplaintIdStore,
+  useSharedStore,
 } from "@/hooks/use-complaint-store";
 import { camelCaseToTitle, toCamelCase } from "@/lib/utils";
 import { InfoDisplay } from "../InfoDisplay";
@@ -32,7 +33,8 @@ const ReviewSubmitForm = ({
   onComplete,
   formSteps,
 }: ReviewSubmitFormProps) => {
-  const { data, setData } = useComplaintStore();
+  const { data, setData, reset: resetComplaintData } = useComplaintStore();
+  const { reset: resetSharedStore } = useSharedStore();
   const { setId } = useNewComplaintIdStore();
   const [createComplaint, { loading, reset }] = useAddTicketMutation();
 
@@ -70,12 +72,8 @@ const ReviewSubmitForm = ({
           object: payload,
         },
         onCompleted(data) {
-          setData("businessInformation", null);
-          setData("caseDetails", null);
-          setData("complaintDetails", null);
-          setData("petitionerProfile", null);
-          setData("supportingDocuments", null);
-          setData("victimProfile", null);
+          resetComplaintData();
+          resetSharedStore();
           toast.dismiss(uploadLoaderIDS.complaints);
           toast.dismiss(uploadLoaderIDS.documents);
           setId(data.insert_nic_ccms_Complaint_one?.id as string);
@@ -141,7 +139,7 @@ const ReviewSubmitForm = ({
             Supporting Documents
           </h3>
           <div className="mt-2 p-4 rounded-lg grid grid-cols-2 gap-4">
-            {Object.entries(data.supportingDocuments).map(([key, value]) => {
+            {Object.entries(data.supportingDocuments)?.map(([key, value]) => {
               if (!value) return;
               return (
                 <div key={key} className="space-y-1">
