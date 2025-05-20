@@ -8,14 +8,13 @@ import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupp
 import SubmissionSuccess from "@/components/common/Form/SubmissionSuccess";
 import {
   DEFAULT_FAQS,
+  MOTOR_COMP_REQUIRED_DOCUMENTS_DETAILED,
   MOTOR_COMPENSATION_FORM_STEPS,
   NORMAL_PETITION_DOCUMENTS,
 } from "@/lib/state";
 
 import { Suspense, useState } from "react";
 import { useSharedStore } from "@/hooks/use-complaint-store";
-
-const REQUIRED_DOCUMENTS = NORMAL_PETITION_DOCUMENTS["individual"];
 
 const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "business-information": BusinessInformationForm,
@@ -26,12 +25,17 @@ const FORM_COMPONENTS: Record<string, React.FC<any>> = {
 };
 
 const MCompBusiness = () => {
-  const { complainantType } = useSharedStore();
+  const { complainantType, caseType } = useSharedStore();
+  console.log("case type", caseType);
   const toSearchParam = complainantType as
     | keyof (typeof MOTOR_COMPENSATION_FORM_STEPS)["individual"]
     | null;
   const [currentStep, setCurrentStep] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
+
+  const REQUIRED_DOCUMENTS = caseType
+    ? MOTOR_COMP_REQUIRED_DOCUMENTS_DETAILED[caseType?.toLowerCase()]
+    : [];
 
   const handleNextStep = () => {
     setCurrentStep((prev) => prev + 1);

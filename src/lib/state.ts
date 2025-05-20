@@ -21,6 +21,13 @@ export const GET_STARTED_STATUS_PAGE_DATA: Record<any, any> = {
   },
 };
 
+const REQUIRED_DOCS_MOTOR = [
+  "Original Police Accident report",
+  "Original Medical report",
+  "The claimant's National ID card, preferably Ghana card",
+  "Two (2) passport sized pictures endorsed by the Medical Doctor",
+];
+
 export const MOTOR_COMP_REQUIRED_DOCUMENTS: Record<any, string[]> = {
   injury: [
     "Original Police Accident report",
@@ -46,6 +53,22 @@ export const MOTOR_COMP_REQUIRED_DOCUMENTS: Record<any, string[]> = {
     "An affidavit of instruction/ authorization if a solicitor is involved",
     "Repudiation letter if there is an insurance company mentioned on the Police Accident report",
   ],
+};
+
+export const MOTOR_COMP_REQUIRED_DOCUMENTS_DETAILED: Record<
+  string,
+  DocumentTypeT[]
+> = {
+  injury: MOTOR_COMP_REQUIRED_DOCUMENTS.injury.map((doc, index) => ({
+    id: `injuryDoc${index + 1}`,
+    label: doc,
+    required: REQUIRED_DOCS_MOTOR.includes(doc),
+  })),
+  death: MOTOR_COMP_REQUIRED_DOCUMENTS.death.map((doc, index) => ({
+    id: `deathDoc${index + 1}`,
+    label: doc,
+    required: REQUIRED_DOCS_MOTOR.includes(doc),
+  })),
 };
 
 export const MOTOR_COMPENSATION_FORM_STEPS = {

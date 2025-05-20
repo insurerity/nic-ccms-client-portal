@@ -34,7 +34,7 @@ const ReviewSubmitForm = ({
   formSteps,
 }: ReviewSubmitFormProps) => {
   const { data, setData, reset: resetComplaintData } = useComplaintStore();
-  const { reset: resetSharedStore } = useSharedStore();
+  const { reset: resetSharedStore, caseType } = useSharedStore();
   const { setId } = useNewComplaintIdStore();
   const [createComplaint, { loading, reset }] = useAddTicketMutation();
 
@@ -138,7 +138,11 @@ const ReviewSubmitForm = ({
           <h3 className="text-lg font-medium text-primaryLight">
             Supporting Documents
           </h3>
-          <div className="mt-2 p-4 rounded-lg grid grid-cols-2 gap-4">
+          <div
+            className={`mt-2 p-4 rounded-lg grid grid-cols-1  ${
+              caseType ? "md:grid-cols-1" : "md:grid-cols-2"
+            } gap-4`}
+          >
             {Object.entries(data.supportingDocuments)?.map(([key, value]) => {
               if (!value) return;
               return (

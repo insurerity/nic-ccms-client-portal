@@ -72,7 +72,7 @@ export default function InsuranceProvidersList() {
   return (
     <div className="p-4">
       <ul className="space-y-4">
-        {providers.map((provider) => (
+        {providers?.map((provider) => (
           <li key={provider.id} className="flex gap-3">
             <div
               className={`flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0 transition-colors ${

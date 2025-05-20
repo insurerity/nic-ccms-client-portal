@@ -19,7 +19,7 @@ import { DocumentTypeT, SupportingDocumentsFormProps } from "@/types";
 import { ACCEPTED_FILE_TYPES, MAX_FILE_SIZE } from "@/lib/state";
 import UploadIcon from "@/components/icons/UploadIcon";
 import { formatFileSize } from "@/lib/upload";
-import { useComplaintStore } from "@/hooks/use-complaint-store";
+import { useComplaintStore, useSharedStore } from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
 import { toast } from "sonner";
 
@@ -71,6 +71,7 @@ const DynamicSupportingDocumentsForm = ({
   onNextStep,
   onPrevStep,
 }: SupportingDocumentsFormProps) => {
+  const { caseType } = useSharedStore();
   const { data, setData } = useComplaintStore();
   // Track uploaded files for each document type
   const [uploadedFiles, setUploadedFiles] = useState<
@@ -170,7 +171,11 @@ const DynamicSupportingDocumentsForm = ({
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            className={`grid grid-cols-1 ${
+              caseType ? "md:grid-cols-1" : "md:grid-cols-2"
+            } gap-6`}
+          >
             {documents?.map((doc) => (
               <FormField
                 key={doc.id}
@@ -178,7 +183,7 @@ const DynamicSupportingDocumentsForm = ({
                 name={doc.id}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
+                    <FormLabel className="text-sm">
                       {doc.label}{" "}
                       {doc.required && <span className="text-red-500">*</span>}
                     </FormLabel>
