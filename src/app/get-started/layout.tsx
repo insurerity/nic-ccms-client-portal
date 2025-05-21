@@ -1,14 +1,13 @@
 import { Separator } from "@/components/ui/separator";
 import GoBack from "../components/back-button";
-import { Bell } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import NotificationButton from "@/components/common/NotificationButton";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#59285F] p-4 md:p-8 flex items-center justify-center">
-      <div className="w-full max-w-7xl h-[90vh] rounded-3xl border-4 bg-white overflow-hidden shadow-2xl flex flex-col">
-        <div className="sticky top-0 z-10 bg-white p-6 pb-0 md:p-8 md:pb-0">
+    <div className="min-h-screen md:bg-[#59285F] bg-white  md:p-8 flex items-center justify-center">
+      <div className="w-full md:max-w-7xl md:w-full h-screen md:h-[90vh] md:rounded-3xl md:border-4 bg-white overflow-hidden md:shadow-2xl flex flex-col">
+        <div className="sticky top-0 z-10 bg-white p-4 pb-0 md:p-8 md:pb-0">
           <div className="flex justify-between items-center">
             <Logo />
 
@@ -42,8 +41,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           </div>
-          <Separator className="w-full mt-6" />
         </div>
+        <Separator className="w-full mt-6" />
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-6 md:p-8">{children}</div>

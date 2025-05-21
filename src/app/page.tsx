@@ -5,14 +5,21 @@ import NotificationButton from "@/components/common/NotificationButton";
 
 export default function Home() {
   return (
-    <div className="flex justify-between h-screen w-full bg-white overflow-hidden ">
-      <div className="p-8 max-w-[340px] md:max-w-[680px]">
+    <div className="flex md:flex-row flex-col md:justify-between h-screen w-full bg-white ">
+      <div className="md:hidden flex justify-between items-center p-4">
+        <Logo />
+
+        <div className="relative">
+          <NotificationButton />
+        </div>
+      </div>
+      <div className="md:p-8 p-4 md:max-w-[680px] mb-4">
         <HeroSlider />
       </div>
       {/* Right side - White background with content */}
-      <div className="hidden md:flex max-w-[340px] md:max-w-[980px] md:w-full bg-white flex-col  p-8">
+      <div className=" md:flex md:max-w-[980px] md:w-full w-full bg-white flex-col p-8">
         {/* Top header with logo and notification */}
-        <div className="flex justify-between items-center">
+        <div className="md:flex hidden justify-between items-center">
           <Logo />
 
           <div className="relative">
@@ -21,26 +28,28 @@ export default function Home() {
         </div>
 
         {/* Main content */}
-        <div className="flex flex-col items-center justify-center flex-grow px-8 mt-20">
-          <h2 className="text-5xl text-center font-bold text-gray-900 mb-4">
+        <div className="flex flex-col items-center justify-center flex-grow md:mt-20 md:mb-0 mb-4">
+          <h2 className="md:text-5xl text-2xl text-center font-bold text-gray-900 mb-4">
             Welcome to the
             <br />
             NIC Complaints Portal
           </h2>
-          <p className="text-gray-600 mb-12">
+          <p className="text-gray-600 md:mb-12 mb-4">
             Protecting the interests of policy holders
           </p>
 
           <ActionButton
             goTo="/get-started"
             text="Get Started"
-            className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full cursor-pointer"
+            className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full cursor-pointer w-full md:w-[200px]"
           />
         </div>
 
         {/* Footer */}
         <div className="mt-auto text-center">
-          <p className="text-sm text-gray-500">Powered by Insurerity Digital</p>
+          <p className="text-sm text-gray-500">
+            Powered by <span className="font-bold">Insurerity Digital</span>
+          </p>
         </div>
       </div>
     </div>

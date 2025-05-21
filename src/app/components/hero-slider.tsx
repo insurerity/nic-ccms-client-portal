@@ -2,33 +2,40 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-// Dummy data for the slides
-const slides = [
-  {
-    id: 1,
-    image: "/images/landing-1.png",
-    title: "File a Complaint or Petition to the NIC",
-    description:
-      "The NIC is here to ensure fair treatment for all insurance customers in Ghana. Got a concern? We're listening.",
-  },
-  {
-    id: 2,
-    image: "/images/landing-2.png",
-    title: "Seek Help After a Road accident",
-    description:
-      "If you've been involved in an accident with an uninsured or unidentified driver, you may qualify for support from the Motor Compensation Fund.",
-  },
-  {
-    id: 3,
-    image: "/images/landing-3.png",
-    title: "Track Your Complaint Status in Real-Time",
-    description:
-      "Stay informed about the progress of your complaint with our transparent tracking system.",
-  },
-];
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function HeroSlider() {
+  const isMobile = useIsMobile();
+  const slides = [
+    {
+      id: 1,
+      image: isMobile
+        ? "/images/landing-1-mobile.png"
+        : "/images/landing-1.png",
+      title: "File a Complaint or Petition to the NIC",
+      description:
+        "The NIC is here to ensure fair treatment for all insurance customers in Ghana. Got a concern? We're listening.",
+    },
+    {
+      id: 2,
+      image: isMobile
+        ? "/images/landing-2-mobile.png"
+        : "/images/landing-2.png",
+      title: "Seek Help After a Road accident",
+      description:
+        "If you've been involved in an accident with an uninsured or unidentified driver, you may qualify for support from the Motor Compensation Fund.",
+    },
+    {
+      id: 3,
+      image: isMobile
+        ? "/images/landing-3-mobile.png"
+        : "/images/landing-3.png",
+      title: "Track Your Complaint Status in Real-Time",
+      description:
+        "Stay informed about the progress of your complaint with our transparent tracking system.",
+    },
+  ];
+  console.log("is mobile", isMobile);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
@@ -62,7 +69,7 @@ export default function HeroSlider() {
   }, [currentSlide]);
 
   return (
-    <div className="relative  h-full rounded-[32px] bg-gradient-to-b from-primaryLight via-primaryLight to-primaryLight text-white overflow-hidden">
+    <div className="relative md:h-full h-[600px] rounded-[32px] bg-gradient-to-b from-primaryLight via-primaryLight to-primaryLight text-white overflow-hidden">
       {/* Slides */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -71,7 +78,7 @@ export default function HeroSlider() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: transitionDuration }}
-          className="h-full w-full"
+          className="md:h-full w-full"
         >
           <img
             src={slides[currentSlide].image || "/placeholder.svg"}
@@ -79,7 +86,7 @@ export default function HeroSlider() {
             className="object-cover h-full w-full"
           />
           <div
-            className="absolute inset-0 bg-gradient-to-t from-primaryLight via-primaryLight to-transparent h-full pointer-events-none"
+            className="absolute inset-0 bg-gradient-to-t from-primaryLight/4 via-primaryLight/80 to-transparent h-full pointer-events-none"
             style={{ top: "40%" }}
           ></div>
         </motion.div>
@@ -97,12 +104,12 @@ export default function HeroSlider() {
             transition={{ duration: transitionDuration, delay: 0.2 }}
             className="mt-auto"
           >
-            <h1 className="text-4xl font-bold mb-4">
+            <h1 className="md:text-4xl text-2xl font-bold mb-4">
               {slides[currentSlide].title.split(" ").slice(0, 3).join(" ")}
               <br />
               {slides[currentSlide].title.split(" ").slice(3).join(" ")}
             </h1>
-            <p className="text-lg opacity-90 mb-12">
+            <p className="md:text-lg text-sm  opacity-90 mb-12">
               {slides[currentSlide].description.split(".")[0]}
               <br />
               {slides[currentSlide].description
@@ -125,23 +132,6 @@ export default function HeroSlider() {
                 } transition-all duration-300 cursor-pointer `}
                 aria-label={`Go to slide ${index + 1}`}
               />
-
-              {/* {index === currentSlide && (
-                <motion.div
-                  className="absolute top-0 left-0 h-2 bg-white rounded-full"
-                  initial={{ width: "0%" }}
-                  animate={{
-                    width: ["0%", "100%", "0%"],
-                    left: ["0%", "0%", "100%"],
-                  }}
-                  transition={{
-                    duration: animationDuration / 1000,
-                    times: [0, 0.9, 1],
-                    repeat: Number.POSITIVE_INFINITY,
-                    repeatDelay: 0,
-                  }}
-                />
-              )} */}
             </div>
           ))}
         </div>
