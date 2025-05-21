@@ -15,9 +15,9 @@ const slides = [
   {
     id: 2,
     image: "/images/landing-2.png",
-    title: "Get Expert Assistance with Your Insurance Issues",
+    title: "Seek Help After a Road accident",
     description:
-      "Our team of professionals is ready to help resolve your insurance disputes quickly and efficiently.",
+      "If you've been involved in an accident with an uninsured or unidentified driver, you may qualify for support from the Motor Compensation Fund.",
   },
   {
     id: 3,
@@ -62,7 +62,7 @@ export default function HeroSlider() {
   }, [currentSlide]);
 
   return (
-    <div className="relative w-full md:w-1/2 bg-gradient-to-b from-purple-700 via-purple-800 to-purple-900 text-white overflow-hidden">
+    <div className="relative  h-full rounded-[32px] bg-gradient-to-b from-primaryLight via-primaryLight to-primaryLight text-white overflow-hidden">
       {/* Slides */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -79,7 +79,7 @@ export default function HeroSlider() {
             className="object-cover h-full w-full"
           />
           <div
-            className="absolute inset-0 bg-gradient-to-t from-purple-900 via-purple-900/80 to-transparent h-full pointer-events-none"
+            className="absolute inset-0 bg-gradient-to-t from-primaryLight via-primaryLight to-transparent h-full pointer-events-none"
             style={{ top: "40%" }}
           ></div>
         </motion.div>

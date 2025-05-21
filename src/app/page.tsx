@@ -1,4 +1,3 @@
-import { Bell } from "lucide-react";
 import HeroSlider from "./components/hero-slider";
 import ActionButton from "@/components/common/ActionButton";
 import Logo from "@/components/common/Logo";
@@ -6,10 +5,12 @@ import NotificationButton from "@/components/common/NotificationButton";
 
 export default function Home() {
   return (
-    <div className="flex h-screen w-full overflow-hidden">
-      <HeroSlider />
+    <div className="flex justify-between h-screen w-full bg-white overflow-hidden ">
+      <div className="p-8 max-w-[340px] md:max-w-[680px]">
+        <HeroSlider />
+      </div>
       {/* Right side - White background with content */}
-      <div className="hidden md:flex md:w-1/2 bg-white flex-col  p-8">
+      <div className="hidden md:flex max-w-[340px] md:max-w-[980px] md:w-full bg-white flex-col  p-8">
         {/* Top header with logo and notification */}
         <div className="flex justify-between items-center">
           <Logo />
