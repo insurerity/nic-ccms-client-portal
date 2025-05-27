@@ -42,6 +42,10 @@ export default function HeroSlider() {
   const animationDuration = 5000;
   const transitionDuration = 0.75;
 
+  // Always have the latest slide index in a ref
+  const slideIndexRef = useRef(currentSlide);
+  slideIndexRef.current = currentSlide;
+
   // Function to go to a specific slide
   const goToSlide = (index: number) => {
     if (!isAnimating) {
@@ -50,10 +54,11 @@ export default function HeroSlider() {
       setTimeout(() => setIsAnimating(false), transitionDuration * 1000);
     }
   };
+  
 
   // Function to go to the next slide
   const goToNextSlide = () => {
-    const nextSlide = (currentSlide + 1) % slides.length;
+    const nextSlide = (slideIndexRef.current + 1) % slides.length;
     goToSlide(nextSlide);
   };
 
@@ -66,7 +71,7 @@ export default function HeroSlider() {
         clearInterval(autoPlayRef.current);
       }
     };
-  }, [currentSlide]);
+  }, []);
 
   return (
     <div className="relative md:h-full h-[600px] rounded-[32px] bg-gradient-to-b from-primaryLight via-primaryLight to-primaryLight text-white overflow-hidden">
@@ -83,11 +88,11 @@ export default function HeroSlider() {
           <img
             src={slides[currentSlide].image || "/placeholder.svg"}
             alt={`Slide ${currentSlide + 1}`}
-            className="object-cover h-full w-full"
+            className="object-cover h-full w-full "
           />
           <div
-            className="absolute inset-0 bg-gradient-to-t from-primaryLight/4 via-primaryLight/80 to-transparent h-full pointer-events-none"
-            style={{ top: "40%" }}
+            className="absolute inset-0 bg-gradient-to-t from-primaryLight via-primaryLight/95 h-full pointer-events-none"
+            style={{ top: "20%" }}
           ></div>
         </motion.div>
       </AnimatePresence>
@@ -104,7 +109,7 @@ export default function HeroSlider() {
             transition={{ duration: transitionDuration, delay: 0.2 }}
             className="mt-auto"
           >
-            <h1 className="md:text-4xl text-2xl font-bold mb-4">
+            <h1 className="md:text-3xl text-2xl font-bold mb-4">
               {slides[currentSlide].title.split(" ").slice(0, 3).join(" ")}
               <br />
               {slides[currentSlide].title.split(" ").slice(3).join(" ")}

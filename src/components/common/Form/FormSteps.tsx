@@ -28,7 +28,7 @@ const FormSteps = ({ currentStep, steps }: FormStepsProps) => {
   }, [currentStep]);
 
   return (
-    <div className="bg-white rounded-[28px] shadow-sm p-6">
+    <div className="bg-white lg:rounded-[28px] shadow-sm lg:p-6 px-4">
       <style jsx global>{`
         @keyframes stepActivate {
           0% {
@@ -48,7 +48,7 @@ const FormSteps = ({ currentStep, steps }: FormStepsProps) => {
       `}</style>
 
       <nav aria-label="Progress">
-        <ol role="list" className="space-y-6">
+        <ol role="list" className="lg:space-y-6 flex flex-row lg:flex-col">
           {steps?.map((step) => (
             <li
               key={step.id}
@@ -58,7 +58,7 @@ const FormSteps = ({ currentStep, steps }: FormStepsProps) => {
                 animatingSteps.includes(step.id) && "step-animate"
               )}
             >
-              <div className="flex items-center">
+              <div className="flex flex-col md:flex-row items-center">
                 <div
                   className={cn(
                     "flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-colors duration-300",
@@ -78,7 +78,7 @@ const FormSteps = ({ currentStep, steps }: FormStepsProps) => {
                 <div className="ml-4">
                   <p
                     className={cn(
-                      "text-sm font-medium transition-colors duration-300",
+                      "lg:text-sm text-[8px] w-11 lg:w-fit font-medium transition-colors duration-300",
                       currentStep === step.id
                         ? "text-primaryLight"
                         : "text-gray-900"

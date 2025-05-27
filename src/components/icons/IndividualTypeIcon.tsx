@@ -1,10 +1,10 @@
 import React from "react";
 
-const IndividualTypeIcon = () => {
+const IndividualTypeIcon = ({width ="128", height = "156"} : {width: string, height: string}) => {
   return (
     <svg
-      width="128"
-      height="156"
+      width={width}
+      height={height}
       viewBox="0 0 128 156"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

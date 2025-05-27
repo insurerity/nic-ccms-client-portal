@@ -5,7 +5,7 @@ import NotificationButton from "@/components/common/NotificationButton";
 
 export default function Home() {
   return (
-    <div className="flex md:flex-row flex-col md:justify-between h-screen w-full bg-white ">
+    <div className="flex md:flex-row flex-col md:justify-between lg:justify-center h-screen w-full bg-white ">
       <div className="md:hidden flex justify-between items-center p-4">
         <Logo />
 
@@ -13,11 +13,11 @@ export default function Home() {
           <NotificationButton />
         </div>
       </div>
-      <div className="md:p-8 p-4 md:max-w-[680px] mb-4">
+      <div className="md:p-8 p-4 lg:max-w-[768px]  mb-4">
         <HeroSlider />
       </div>
       {/* Right side - White background with content */}
-      <div className=" md:flex md:max-w-[980px] md:w-full w-full bg-white flex-col p-8">
+      <div className=" md:flex lg:max-w-[768px] md:w-full w-full bg-white flex-col p-8">
         {/* Top header with logo and notification */}
         <div className="md:flex hidden justify-between items-center">
           <Logo />
@@ -29,7 +29,7 @@ export default function Home() {
 
         {/* Main content */}
         <div className="flex flex-col items-center justify-center flex-grow md:mt-20 md:mb-0 mb-4">
-          <h2 className="md:text-5xl text-2xl text-center font-bold text-gray-900 mb-4">
+          <h2 className="md:text-3xl text-xl text-center font-bold text-gray-900 mb-4">
             Welcome to the
             <br />
             NIC Complaints Portal

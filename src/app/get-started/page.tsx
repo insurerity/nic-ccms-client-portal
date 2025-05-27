@@ -8,9 +8,9 @@ import {
 
 export default function GetStarted() {
   return (
-    <div className="p-6 md:p-8 md:pt-0">
+    <div className="p-1 lg:p-8 lg:pt-0">
       <div className="max-w-3xl mx-auto rounded-lg p-6 pt-0">
-        <h1 className="text-center text-3xl md:text-4xl font-bold text-[#333] mb-2">
+        <h1 className="text-center text-xl md:text-2xl font-bold text-[#333] mb-2">
           What do you want to do?
         </h1>
         <p className="text-center text-gray-600">
@@ -21,63 +21,33 @@ export default function GetStarted() {
       {/* Options */}
       <div className="w-full">
         {/* Cards */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-x-6 rounded-lg p-6">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 rounded-lg lg:p-6 space-y-6 lg:space-y-0">
           {/* Card 1 */}
-          <CustomCard>
-            <div className="w-48 h-48 mb-4 flex items-center justify-center">
-              <ComplaintIcon />
-            </div>
-            <h2 className="text-base font-bold text-[#333] mb-3">
-              File a Complaint or Petition
-            </h2>
-            <p className="text-center text-gray-600 mb-8">
-              Submit a complaint or concern about your insurance provider or
-              service. Complete our petition form with the necessary details.
-            </p>
-            <ActionButton
-              goTo="/get-started/petition"
-              className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full mt-auto cursor-pointer"
-              text="Learn More"
-            />
-          </CustomCard>
+          <CustomCard
+            icon={<ComplaintIcon />}
+            title=" File a Complaint or Petition"
+            description="Submit a complaint or concern about your insurance provider or
+              service. Complete our petition form with the necessary details."
+            goto="/get-started/petition"
+          ></CustomCard>
 
           {/* Card 2 */}
-          <CustomCard>
-            <div className="w-48 h-48 mb-4 flex items-center justify-center">
-              <AccidentIcon />
-            </div>
-            <h2 className="text-base font-bold text-[#333] mb-3">
-              Get Compensation for an Accident
-            </h2>
-            <p className="text-center text-gray-600 mb-8">
-              Apply for compensation from the Motor Compensation Fund if you've
-              been injured or affected by an uninsured vehicle accident.
-            </p>
-            <ActionButton
-              goTo="/get-started/compensation"
-              className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full mt-auto cursor-pointer"
-              text="Learn More"
-            />
-          </CustomCard>
+          <CustomCard
+            icon={<AccidentIcon />}
+            title=" Get Compensation for an Accident"
+            description="Apply for compensation from the Motor Compensation Fund if you've
+              been injured or affected by an uninsured vehicle accident."
+            goto="/get-started/compensation"
+          ></CustomCard>
 
           {/* Card 3 */}
-          <CustomCard>
-            <div className="w-48 h-48 mb-4 flex items-center justify-center">
-              <StatusIcon />
-            </div>
-            <h2 className="text-base font-bold text-[#333] mb-3">
-              Check My Complaint Status
-            </h2>
-            <p className="text-center text-gray-600 mb-8">
-              Enter your ticket number to check the status and progress of your
-              complaint or petition submitted through the portal.
-            </p>
-            <ActionButton
-              goTo="/get-started/status"
-              className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full mt-auto cursor-pointer"
-              text="Learn More"
-            />
-          </CustomCard>
+          <CustomCard
+            icon={<StatusIcon />}
+            title="Check My Complaint Status"
+            description="Enter your ticket number to check the status and progress of your
+              complaint or petition submitted through the portal."
+            goto="/get-started/status"
+          ></CustomCard>
         </div>
       </div>
     </div>

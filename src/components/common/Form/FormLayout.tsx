@@ -18,8 +18,8 @@ const FormLayout = ({
   faqs,
 }: FormLayoutProps) => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr_300px] gap-6">
-      <div className="bg-gray-100 rounded-lg p-4 lg:sticky lg:top-6 h-fit">
+    <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr_300px] lg:gap-6">
+      <div className="bg-gray-100 rounded-lg lg:p-4 lg:sticky lg:top-6 h-fit">
         <FormSteps currentStep={currentStep} steps={steps} />
       </div>
 

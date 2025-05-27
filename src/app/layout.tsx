@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import ApolloClientProvider from "@/lib/apollo-client-provider";
 import { Toaster } from "sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
+
+const raleway = Raleway({
+  variable: "--font-raleway",
   subsets: ["latin"],
-});
+}); 
 
 export const metadata: Metadata = {
   title: "NIC CCMS Client Portal",
   description:
-    "Submit insurance complaints against companies in Ghana through this portal.",
+    "Your trusted hub for resolving insurance complaints",
 };
 
 export default function RootLayout({
@@ -28,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${raleway.className} antialiased`}
       >
         <ApolloClientProvider>{children}</ApolloClientProvider>
         <Toaster />
