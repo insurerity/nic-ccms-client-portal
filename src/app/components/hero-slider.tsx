@@ -74,7 +74,7 @@ export default function HeroSlider() {
   }, []);
 
   return (
-    <div className="relative md:h-full h-[600px] rounded-[32px] bg-gradient-to-b from-primaryLight via-primaryLight to-primaryLight text-white overflow-hidden">
+    <div className="relative md:h-full h-[400px] rounded-[32px] bg-gradient-to-b from-primaryLight via-primaryLight to-primaryLight text-white overflow-hidden">
       {/* Slides */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -92,7 +92,7 @@ export default function HeroSlider() {
           />
           <div
             className="absolute inset-0 bg-gradient-to-t from-primaryLight via-primaryLight/95 h-full pointer-events-none"
-            style={{ top: "20%" }}
+            style={{ top: isMobile ? "10%" : "20%"}}
           ></div>
         </motion.div>
       </AnimatePresence>

@@ -17,7 +17,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       {...props}
       className={`${
         props.className || ""
-      } cursor-pointer hover:bg-primaryLight/90`}
+      } hover:cursor-pointer hover:bg-primaryLight/90`}
       onClick={(e) => {
         if (goTo) {
           router.push(goTo);

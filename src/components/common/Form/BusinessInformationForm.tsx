@@ -20,7 +20,7 @@ import {
   BusinessInformationSchema,
   BusinessInformationSchemaType,
 } from "@/lib/schema";
-import { useComplaintStore } from "@/hooks/use-complaint-store";
+import { useComplaintStore, useFaqsDialogStore } from "@/hooks/use-complaint-store";
 import { useGetRegions } from "@/hooks/use-get-regions";
 import { Skeleton } from "@/components/ui/skeleton";
 import { capitalize, cn } from "@/lib/utils";
@@ -39,6 +39,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface BusinessInformationFormProps {
   onNextStep: () => void;
@@ -52,7 +53,9 @@ const BusinessInformationForm = ({
   const { offices: regions, loading: loadingRegions } = useGetRegions();
 
   const { data, setData } = useComplaintStore();
-
+  const isMobile = useIsMobile();
+  const { showDialog } = useFaqsDialogStore();
+  
   const form = useForm<BusinessInformationSchemaType>({
     resolver: zodResolver(BusinessInformationSchema),
     defaultValues: data.businessInformation
@@ -76,12 +79,16 @@ const BusinessInformationForm = ({
   };
 
   return (
-    <div className="bg-white rounded-[28px] shadow-sm p-6">
-      <div className="bg-primaryLight text-white p-6 rounded-lg mb-6">
-        <h2 className="text-xl font-bold">Business Information</h2>
+    <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
+      <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-lg mb-6 flex">
+        <div>
+ <h2 className="text-sm lg:text-xl font-bold">Business Information</h2>
         <p className="text-sm mt-2">
           Tell us about the business affected by the issue.
         </p>
+        </div>
+              {isMobile && <Button variant={"default"} className="border rounded-2xl" onClick={() => showDialog()}>Learn More</Button>}
+
       </div>
 
       <p className="mb-4 text-sm">

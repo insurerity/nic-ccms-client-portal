@@ -104,8 +104,8 @@ const ReviewSubmitForm = ({
   );
 
   return (
-    <div className="bg-white rounded-[28px] shadow-sm p-6">
-      <div className="bg-primaryLight text-white p-6 rounded-lg mb-6 flex items-center justify-between">
+    <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
+      <div className="bg-primaryLight text-white p-6 rounded-xl mb-6 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold">Review & Submit</h2>
           <p className="text-sm mt-2">

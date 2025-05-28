@@ -25,6 +25,7 @@ export interface ComplaintFormProps {
   onNextStep: () => void;
   onPrevStep?: () => void;
   currentStep: number;
+  triggerFaqs : ()=> void;
 }
 
 export type ComplaintOwnerType = "individual" | "business";

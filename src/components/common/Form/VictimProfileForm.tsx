@@ -33,7 +33,7 @@ import { capitalize, cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { VictimProfileSchema, VictimProfileSchemaType } from "@/lib/schema";
-import { useComplaintStore } from "@/hooks/use-complaint-store";
+import { useComplaintStore, useFaqsDialogStore } from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
 import { idTypes } from "@/lib/state";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -54,6 +54,7 @@ const VictimsProfileForm = ({
   const { offices: regions, loading: loadingRegions } = useGetRegions();
   const { setData, data } = useComplaintStore();
   const isMobile = useIsMobile();
+  const { showDialog } = useFaqsDialogStore();
 
   const form = useForm<VictimProfileSchemaType>({
     resolver: zodResolver(VictimProfileSchema),
@@ -118,7 +119,7 @@ const VictimsProfileForm = ({
           Tell us about the individual affected by the issue.
         </p>
         </div>
-       {isMobile && <Button variant={"default"} className="border rounded-2xl">Learn More</Button>}
+       {isMobile && <Button variant={"default"} className="border rounded-2xl" onClick={() => showDialog()}>Learn More</Button>}
       </div>
 
       <p className="mb-4 text-sm">

@@ -103,3 +103,13 @@ export const EntityDrawerState = create<{
   openModal: () => set({ isOpen: true }),
   closeModal: () => set({ isOpen: false }),
 }));
+
+export const FaqDialogState = create<{
+  isOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+}>((set) => ({
+  isOpen: false,
+  openModal: () => set({ isOpen: true }),
+  closeModal: () => set({ isOpen: false }),
+}));

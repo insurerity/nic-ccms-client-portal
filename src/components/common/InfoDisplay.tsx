@@ -12,7 +12,7 @@ export const InfoDisplay = ({ data }: InfoDisplayProps) => {
   const { entities } = useGetRegulatedEntities();
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {Object.entries(data)?.map(([key, value]) => {
+      {Object?.entries(data)?.map(([key, value]) => {
         let val = value;
         if (key === "region") {
           const selectedOffice = offices.find((office) => office.id === val);
