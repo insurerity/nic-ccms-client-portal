@@ -8,7 +8,7 @@ const Logo = () => {
   };
   return (
     <div
-      className="flex items-center md:space-x-4 space-x-2"
+      className="flex items-center md:space-x-4 space-x-2 hover:cursor-pointer"
       onClick={handleClick}
     >
       <img src={"/images/nic-logo.png"} alt="NIC Logo" />

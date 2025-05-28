@@ -2,6 +2,7 @@
 
 import ActionButton from "@/components/common/ActionButton";
 import { Input } from "@/components/ui/input";
+import { useComplaintStore, useSharedStore } from "@/hooks/use-complaint-store";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 const UnderstandRequirements = ({
@@ -9,12 +10,12 @@ const UnderstandRequirements = ({
   type,
 }: {
   continueText: string;
-  type?: string;
+  type: string;
 }) => {
   const [understood, setUnderstood] = useState(false);
   const pathName = usePathname();
   const router = useRouter();
-
+  const {setComplaintType} = useSharedStore();
   const labelText =
     type == "compensation"
       ? "I understand and meet all the requirements for applying Motor Compensation Fund"
@@ -53,6 +54,7 @@ const UnderstandRequirements = ({
           }`}
           disabled={!understood}
           text={continueText}
+         
         />
       </div>
     </div>

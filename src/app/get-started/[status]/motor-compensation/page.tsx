@@ -10,8 +10,20 @@ import { RequiredDocuments } from "./components/RequiredDocuments";
 import MotorCompensationDeathIcon from "@/components/icons/MotorCompensationDeathIcon";
 import MotorCompensationInjuryIcon from "@/components/icons/MotorCompensationInjuryIcon";
 import { useSharedStore } from "@/hooks/use-complaint-store";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-const questions = [
+
+
+export default function MotorCompensation() {
+  const pathName = usePathname();
+  const { setCaseType } = useSharedStore();
+  const [currentQuestion, setCurrentQuestion] = useState(1);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const router = useRouter();
+  const [showRequiredDocuments, setShowRequiredDocuments] = useState(false);
+  const isMobile = useIsMobile();
+
+  const questions = [
   {
     id: 1,
     title: "What type of case are you applying for?",
@@ -23,26 +35,18 @@ const questions = [
         title: "Death",
         description:
           "For cases where the victim passed away as a result of the accident.",
-        icon: <MotorCompensationDeathIcon />,
+        icon: <MotorCompensationDeathIcon width={isMobile ? "120" : "150"} height={isMobile ? "104" :"156"} />,
       },
       {
         id: "injury",
         title: "Injury",
         description:
           "For cases where the victim was injured but survived the accident.",
-        icon: <MotorCompensationInjuryIcon />,
+        icon: <MotorCompensationInjuryIcon width={isMobile ? "120" : "142"} height={isMobile ? "104" :"176"}   />,
       },
     ],
   },
 ];
-
-export default function MotorCompensation() {
-  const pathName = usePathname();
-  const { setCaseType } = useSharedStore();
-  const [currentQuestion, setCurrentQuestion] = useState(1);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const router = useRouter();
-  const [showRequiredDocuments, setShowRequiredDocuments] = useState(false);
 
   const handleOptionSelect = (optionId: string) => {
     setSelectedOption(optionId);
@@ -67,7 +71,7 @@ export default function MotorCompensation() {
   }
 
   return (
-    <div className="flex justify-center items-center p-4">
+    <div className="flex justify-center items-center lg:p-4">
       <div className="w-full max-w-4xl">
         <AnimatePresence mode="wait">
           <motion.div
@@ -76,12 +80,12 @@ export default function MotorCompensation() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="p-6 md:p-8"
+            className="p-6 md:p-0"
           >
             {currentQuestionData && (
               <>
                 <div className="mb-4">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  <h1 className="text-2xl font-bold text-gray-900 mb-2">
                     {currentQuestionData.title}
                   </h1>
                   <p className="text-gray-600">
@@ -89,12 +93,12 @@ export default function MotorCompensation() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                   {currentQuestionData?.options?.map((option) => (
                     <div
                       key={option.id}
                       className={cn(
-                        "border rounded-lg p-6 cursor-pointer transition-all",
+                        "border rounded-2xl p-6 cursor-pointer transition-all flex flex-row lg:flex-col items-center lg:items-start gap-2",
                         selectedOption === option.id
                           ? "border-[#5D2D79] border-2 bg-white"
                           : "border-gray-200 hover:bg-primaryLight/10 hover:border-[#5D2D79] hover:border-1  bg-customCard"
@@ -102,13 +106,16 @@ export default function MotorCompensation() {
                       onClick={() => handleOptionSelect(option.id)}
                     >
                       <div className="flex flex-col items-center text-center">
-                        <div className="mb-4">{option.icon}</div>
-                        <h3 className="text-xl font-semibold mb-2">
-                          {option.title}
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          {option.description}
-                        </p>
+                        {option.icon}
+                      </div>
+                      <div>
+                        
+                      <h3 className="text-sm lg:text-xl font-semibold mb-2">
+                        {option.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm">
+                        {option.description}
+                      </p>
                       </div>
                     </div>
                   ))}

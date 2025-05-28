@@ -2,16 +2,32 @@ import { z } from "zod";
 
 export const VictimProfileSchema = z
   .object({
-    firstName: z.string().min(1, { message: "First name is required" }),
-    lastName: z.string().min(1, { message: "Last name is required" }),
-    email: z.string().email({ message: "Invalid email address" }),
-    phoneNumber: z
+    firstName: z
       .string()
-      .min(10, { message: "Phone number must be at least 10 digits" }),
+      .min(1, { message: "First name is required" })
+      .min(3, { message: "Invalid name length" })
+      .max(30, { message: "Invalid First Name provided" }),
+    lastName: z
+      .string()
+      .min(1, { message: "Last name is required" })
+      .min(3, { message: "Invalid name length" })
+      .max(30, { message: "Invalid Last Name provided" }),
+    email: z.string().email({ message: "Invalid email address" }),
+    phoneNumber: z.string().regex(/^0\d{9}$/, {
+      message: "Phone number must start with 0 and be exactly 10 digits",
+    }),
     residentialAddress: z
       .string()
-      .min(1, { message: "Residential address is required" }),
-    digitalAddress: z.string().optional(),
+      .min(1, { message: "Residential address is required" })
+      .min(3, { message: "Invalid residential address" })
+      .max(255, { message: "Invalid Residential Address provided" }),
+    digitalAddress: z
+      .string()
+      .optional()
+      .refine((val) => !val || /^[A-Z]{2}-\d{3}-\d{4}$/.test(val), {
+        message:
+          "Enter the digital address as GR-000-0000 in uppercase, or leave it empty.",
+      }),
     region: z.string().min(1, { message: "Region is required" }),
     idType: z.string({
       required_error: "Please select an ID type",
@@ -43,6 +59,12 @@ export const VictimProfileSchema = z
           code: z.ZodIssueCode.custom,
           message: "ID number is required",
         });
+      } else if (data.idNumber.length > 10) {
+        ctx.addIssue({
+          path: ["idNumber"],
+          code: z.ZodIssueCode.custom,
+          message: "ID number must not exceed 10 characters",
+        });
       }
     }
   });
@@ -53,7 +75,13 @@ export const complaintDetailFormSchema = z.object({
     .refine((date) => date !== null && !isNaN(date.getTime()), {
       message: "Date of incident is required",
     }),
-  policyNumber: z.string().optional(),
+  policyNumber: z
+    .string()
+    .optional()
+    .refine((val) => !val || (val.length >= 3 && val.length <= 70), {
+      message:
+        "Policy number might be invalid, check the number again or leave it empty.",
+    }),
   claimType: z.string().min(1, { message: "Claim type is required" }),
   entityOfConcern: z
     .string()
@@ -66,24 +94,25 @@ export const complaintDetailFormSchema = z.object({
 
 // Define the schema for the business information form
 export const BusinessInformationSchema = z.object({
-  businessName: z.string().min(2, {
-    message: "Business name is required",
-  }),
+  businessName: z
+    .string()
+    .min(2, { message: "Business name is required" })
+    .min(3, { message: "Invalid Business name length" })
+    .max(30, { message: "Invalid Business Name provided" }),
   businessAddress: z.string().min(5, {
     message: "Please enter a valid business address",
-  }),
+  }).max(255, { message: "Invalid Business Address provided" }),
   businessPhoneNumber: z
     .string()
     .optional()
-
     .refine(
       (val) =>
         val === null ||
         val === undefined ||
         val.trim() === "" ||
-        val.length >= 10,
+        val.length === 10,
       {
-        message: "Phone number must be at least 10 digits",
+        message: "Phone number must be at least 10 digits or left empty",
       }
     ),
   businessEmail: z.string().email({
@@ -110,16 +139,18 @@ export const PetitionerProfileSchema = z
       required_error: "Please select a petitioner type",
     }),
     name: z.string().min(2, {
-      message: "Name must be at least 2 characters",
-    }),
+      message: "Invalid name provided",
+    }).max(30,{
+      message: "Exceeded maximum name limit",
+    } ),
     email: z
       .string()
       .email({
         message: "Please enter a valid email address",
       })
       .optional(),
-    phoneNumber: z.string().min(10, {
-      message: "Phone number must be at least 10 digits",
+    phoneNumber: z.string().regex(/^0\d{9}$/, {
+      message: "Phone number must start with 0 and be exactly 10 digits",
     }),
     idType: z.string({
       required_error: "Please select an ID type",
@@ -171,6 +202,12 @@ export const PetitionerProfileSchema = z
           path: ["idNumber"],
           code: z.ZodIssueCode.custom,
           message: "ID number is required",
+        });
+      } else if (data.idNumber.length > 10) {
+        ctx.addIssue({
+          path: ["idNumber"],
+          code: z.ZodIssueCode.custom,
+          message: "ID number must not exceed 10 characters",
         });
       }
     }

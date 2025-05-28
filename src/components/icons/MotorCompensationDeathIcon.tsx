@@ -1,10 +1,10 @@
 import React from "react";
 
-const MotorCompensationDeathIcon = () => {
+const MotorCompensationDeathIcon = ({width ="150", height = "156"} : {width: string, height: string}) => {
   return (
     <svg
-      width="150"
-      height="156"
+      width={width}
+      height={height}
       viewBox="0 0 150 156"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -44,11 +44,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 interface BusinessInformationFormProps {
   onNextStep: () => void;
   onPrevStep?: () => void;
+  currentStep : number;
 }
 
 const BusinessInformationForm = ({
   onNextStep,
   onPrevStep,
+  currentStep,
 }: BusinessInformationFormProps) => {
   const { offices: regions, loading: loadingRegions } = useGetRegions();
 
@@ -326,8 +328,8 @@ const BusinessInformationForm = ({
 
           <Separator className="space-y-3" />
 
-          <div className="flex justify-between">
-            {onPrevStep && (
+          {onPrevStep && currentStep !== 1 ? (
+            <div className="flex justify-between">
               <Button
                 type="button"
                 variant="outline"
@@ -336,16 +338,21 @@ const BusinessInformationForm = ({
               >
                 Back
               </Button>
-            )}
-            <ActionButton
-              text="Next"
-              type="submit"
-              className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
-            />
-            {/* <Button type="submit" className="ml-auto">
-              Next
-            </Button> */}
-          </div>
+              <ActionButton
+                text="Next"
+                type="submit"
+                className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+              />
+            </div>
+          ) : (
+            <div className="flex justify-end">
+              <ActionButton
+                text="Next"
+                type="submit"
+                className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+              />
+            </div>
+          )}
         </form>
       </Form>
     </div>

@@ -63,7 +63,7 @@ export default function GetStartedStatus() {
               </div>
             </div>
           </div>
-          <UnderstandRequirements continueText={pageData?.continueText} />
+          <UnderstandRequirements continueText={pageData?.continueText} type="petition"/>
         </div>
         <div>
           <ContentLayout tocItems={tocItems}>

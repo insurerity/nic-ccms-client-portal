@@ -30,10 +30,15 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { capitalize, cn } from "@/lib/utils";
 import { Suspense, useEffect } from "react";
-import { useComplaintStore, useSharedStore } from "@/hooks/use-complaint-store";
+import {
+  useComplaintStore,
+  useFaqsDialogStore,
+  useSharedStore,
+} from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
 import { z } from "zod";
 import { ComplaintFormProps } from "@/types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Define the schema for the case details form
 const CaseDetailsSchema = z.object({
@@ -57,6 +62,9 @@ const CaseDetailsForm = ({
   const { caseType } = useSharedStore();
 
   const { data, setData } = useComplaintStore();
+  const isMobile = useIsMobile();
+  const { showDialog } = useFaqsDialogStore();
+
   const form = useForm<CaseDetailsSchemaType>({
     resolver: zodResolver(CaseDetailsSchema),
     defaultValues: data?.caseDetails
@@ -85,12 +93,24 @@ const CaseDetailsForm = ({
 
   return (
     <Suspense>
-      <div className="bg-white rounded-[28px] shadow-sm p-6">
-        <div className="bg-primaryLight text-white p-6 rounded-lg mb-6">
-          <h2 className="text-xl font-bold">Case Details</h2>
-          <p className="text-sm mt-2">
-            Provide the details for your application.
-          </p>
+      <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
+        <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
+          <div>
+            <h2 className=" text-sm lg:text-xl font-bold">Case Details</h2>
+            <p className="text-sm mt-2">
+              Provide the details for your application.
+            </p>
+          </div>
+
+          {isMobile && (
+            <Button
+              variant={"default"}
+              className="border rounded-2xl"
+              onClick={() => showDialog()}
+            >
+              Learn More
+            </Button>
+          )}
         </div>
 
         <p className="mb-4 text-sm">

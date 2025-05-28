@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { cn, truncateText } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { DocumentTypeT, SupportingDocumentsFormProps } from "@/types";
 import { ACCEPTED_FILE_TYPES, MAX_FILE_SIZE } from "@/lib/state";
 import UploadIcon from "@/components/icons/UploadIcon";
@@ -257,8 +257,8 @@ useEffect(() => {
                               </Button>
                             </div>
                             <div className="text-left">
-                              <p className="text-sm font-medium truncate">
-                                {truncateText(uploadedFiles[doc.id]?.name || '', isMobile ? 40 : 20)}
+                              <p className="text-sm font-medium line-clamp-1 w-fit">
+                                {uploadedFiles[doc.id]?.name }
                               </p>
                               <p className="text-xs text-gray-500">
                                 {uploadedFiles[doc.id] &&
