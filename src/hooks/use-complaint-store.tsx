@@ -3,6 +3,7 @@
 import {
   ComplaintDataStore,
   EntityDrawerState,
+  FaqDialogState,
   NewComplainIdState,
   SharedState,
 } from "@/lib/complaint-store";
@@ -42,13 +43,30 @@ export const useEntityDrawerStore = () => {
   };
 };
 
+export const useFaqsDialogStore = () => {
+  const showDialog = useStore(FaqDialogState, (state) => state.openModal);
+  const closeDialog = useStore(FaqDialogState, (state) => state.closeModal);
+  const dialogOpen = useStore(FaqDialogState, (state) => state.isOpen);
+
+  return {
+    showDialog,
+    closeDialog,
+    dialogOpen,
+  };
+};
+
 export const useSharedStore = () => {
   const caseType = useStore(SharedState, (state) => state.caseType);
   const setCaseType = useStore(SharedState, (state) => state.setCaseType);
   const petitionerType = useStore(SharedState, (state) => state.petitionerType);
+  const complaintType = useStore(SharedState, (state) => state.complaintType);
   const setPetitionerType = useStore(
     SharedState,
     (state) => state.setPetitionerType
+  );
+  const setComplaintType = useStore(
+    SharedState,
+    (state) => state.setComplaintType
   );
   const complainantType = useStore(
     SharedState,
@@ -64,6 +82,8 @@ export const useSharedStore = () => {
     caseType,
     setCaseType,
     petitionerType,
+    complaintType,
+    setComplaintType,
     setPetitionerType,
     reset,
     complainantType,

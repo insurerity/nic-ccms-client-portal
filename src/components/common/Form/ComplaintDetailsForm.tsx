@@ -43,6 +43,7 @@ import {
 import {
   useComplaintStore,
   useEntityDrawerStore,
+  useFaqsDialogStore,
 } from "@/hooks/use-complaint-store";
 import { CLAIM_TYPES, NATURE_OF_CLAIMS } from "@/lib/state";
 import { useGetRegulatedEntities } from "@/hooks/use-get-regulated-entities";
@@ -55,6 +56,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EntityDrawer } from "../EntityOfConcernDrawer";
 import { ComplaintFormProps } from "@/types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const ComplaintDetailsForm = ({
   onNextStep,
@@ -64,6 +66,8 @@ const ComplaintDetailsForm = ({
   const { showDrawer } = useEntityDrawerStore();
   const { setData, data } = useComplaintStore();
   const { entities, loadingEntities } = useGetRegulatedEntities();
+  const isMobile = useIsMobile();
+  const { showDialog } = useFaqsDialogStore();
 
   const form = useForm<complaintDetailFormSchemaType>({
     resolver: zodResolver(complaintDetailFormSchema),
@@ -93,12 +97,16 @@ const ComplaintDetailsForm = ({
   };
 
   return (
-    <div className="bg-white rounded-[28px] shadow-sm p-6">
-      <div className="bg-primaryLight text-white p-6 rounded-lg mb-6">
-        <h2 className="text-xl font-bold">Complaint Details</h2>
+    <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
+      <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
+        <div>
+        <h2 className="text-sm lg:text-xl font-bold">Complaint Details</h2>
         <p className="text-sm mt-2">
           Provide information about the complaint or incident.
         </p>
+        </div>
+      {isMobile && <Button variant={"default"} className="border rounded-2xl" onClick={() => showDialog()}>Learn More</Button>}
+
       </div>
 
       <p className="mb-4 text-sm">

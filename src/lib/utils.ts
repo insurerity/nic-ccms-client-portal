@@ -62,3 +62,4 @@ export const getAssignee = (assignees: any[]) => {
 
   return activeAssignee[0]?.AssignedTo?.name as string;
 };
+

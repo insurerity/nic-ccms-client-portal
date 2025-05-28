@@ -1,10 +1,10 @@
 import React from "react";
 
-const OrganisationTypeIcon = () => {
+const OrganisationTypeIcon = ({width ="192", height = "172"} : {width: string, height: string}) => {
   return (
     <svg
-      width="192"
-      height="172"
+      width={width}
+      height={height}
       viewBox="0 0 192 172"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

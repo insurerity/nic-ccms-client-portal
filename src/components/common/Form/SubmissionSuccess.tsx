@@ -39,7 +39,7 @@ const SubmissionSuccess = () => {
   const isLoading = initialLoading || loading;
 
   return (
-    <div className="min-h-[500px] bg-white flex items-center justify-center p-4 rounded-[28px] shadow-sm">
+    <div className="min-h-[500px] bg-white flex items-center justify-center p-4 lg:rounded-[28px] shadow-sm">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-6">
           <div className="relative w-24 h-24">

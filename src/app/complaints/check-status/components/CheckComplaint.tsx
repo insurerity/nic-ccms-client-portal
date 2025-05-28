@@ -16,6 +16,7 @@ import { getLatestStatus, getLatestStatusCreatedAt } from "@/lib/utils";
 import { ComplaintStatusDescriptions, EComplaintStatuses } from "@/lib/state";
 import StatusGuide from "./StatusGuide";
 import { useRouter } from "next/navigation";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const ticketSchema = z.object({
   ticketNumber: z
@@ -27,6 +28,7 @@ export default function ComplaintStatusTracker() {
   const [getStatus, { loading: isLoading, data, error }] =
     useGetStatusLazyQuery();
   const router = useRouter();
+  const isMobile = useIsMobile()
   const {
     register,
     handleSubmit,
@@ -56,7 +58,7 @@ export default function ComplaintStatusTracker() {
   return (
     <div className="flex flex-col lg:flex-row gap-6">
       {/* Left side - Status Guide */}
-      <div className="w-full lg:w-2/5">
+     { !isMobile && <div className="w-full lg:w-2/5">
         <StatusGuide
           activeStatus={
             data ? getLatestStatus(data?.currentStatusData) : undefined
@@ -66,19 +68,19 @@ export default function ComplaintStatusTracker() {
           }
           allStatusesData={data ? data.allStatusesData : undefined}
         />
-      </div>
+      </div>}
 
       {/* Right side - Status Checker */}
-      <div className="w-full lg:w-3/5">
-        <div className="bg-white rounded-[28px] overflow-hidden shadow-sm border border-gray-100 p-8">
-          <div className="bg-primaryLight rounded-[12px] text-white p-6 text-center">
+      <div className="w-full lg:w-3/5 ">
+        <div className="bg-white lg:rounded-[28px] overflow-hidden shadow-sm border border-gray-100 lg:p-8 px-2 py-5 ">
+          <div className="bg-primaryLight rounded-[12px] text-white p-3 lg:p-6 lg:text-center text-start">
             <p className="">
               Provide the <span className="font-bold">ticket number</span> to
               check <br /> the status of your complaint/petition
             </p>
           </div>
 
-          <form onSubmit={handleCheckStatus} className="p-6">
+          <form onSubmit={handleCheckStatus} className="lg:p-6 p-2">
             <div className="mb-6">
               <label
                 htmlFor="ticketNumber"

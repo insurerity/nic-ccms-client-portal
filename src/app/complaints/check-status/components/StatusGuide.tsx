@@ -19,7 +19,7 @@ const StatusGuide: React.FC<StatusGuideProps> = ({
     : -1;
 
   return (
-    <div className="bg-white p-6 rounded-[28px]">
+    <div className="bg-white p-6 lg:rounded-[28px]">
       <h2 className="text-xl grid place-content-center font-semibold text-primaryLight mb-6 bg-customCard rounded-[28px] p-6">
         Complaint Status Guide
       </h2>

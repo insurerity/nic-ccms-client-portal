@@ -1,10 +1,10 @@
 import React from "react";
 
-const MotorCompensationInjuryIcon = () => {
+const MotorCompensationInjuryIcon = ({width ="142", height = "172"} : {width: string, height: string}) => {
   return (
     <svg
-      width="142"
-      height="172"
+      width={width}
+      height={height}
       viewBox="0 0 142 172"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

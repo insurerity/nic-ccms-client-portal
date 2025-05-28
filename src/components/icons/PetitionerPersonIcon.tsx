@@ -1,8 +1,8 @@
-const PetitionerPersonIcon = () => {
+const PetitionerPersonIcon = ({width ="200", height = "184"} : {width: string, height: string}) => {
   return (
     <svg
-      width="200"
-      height="184"
+      width={width}
+      height={height}
       viewBox="0 0 200 184"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

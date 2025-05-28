@@ -19,9 +19,14 @@ import { DocumentTypeT, SupportingDocumentsFormProps } from "@/types";
 import { ACCEPTED_FILE_TYPES, MAX_FILE_SIZE } from "@/lib/state";
 import UploadIcon from "@/components/icons/UploadIcon";
 import { formatFileSize } from "@/lib/upload";
-import { useComplaintStore, useSharedStore } from "@/hooks/use-complaint-store";
+import {
+  useComplaintStore,
+  useFaqsDialogStore,
+  useSharedStore,
+} from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // This will be dynamically generated based on the documents array
 const createFormSchema = (documents: DocumentTypeT[]) => {
@@ -78,8 +83,11 @@ const DynamicSupportingDocumentsForm = ({
     Record<string, File | null>
   >({});
 
+  const isMobile = useIsMobile();
+  const { showDialog } = useFaqsDialogStore();
   // Create the schema based on the documents array
   const formSchema = createFormSchema(documents);
+
 
   // Create default values based on documents
   const defaultValues: Record<string, any> = {};
@@ -97,6 +105,7 @@ const DynamicSupportingDocumentsForm = ({
   });
 
   console.log("default documents", data.supportingDocuments);
+  console.log("default ", data.supportingDocuments);
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setData("supportingDocuments", values);
@@ -128,6 +137,8 @@ const DynamicSupportingDocumentsForm = ({
         ...prev,
         [docId]: file,
       }));
+      
+      console.log('form', uploadedFiles)
 
       // Update the form
       form.setValue(
@@ -140,6 +151,7 @@ const DynamicSupportingDocumentsForm = ({
         },
         { shouldValidate: true }
       );
+      console.log('form', form)
     }
   };
 
@@ -154,19 +166,30 @@ const DynamicSupportingDocumentsForm = ({
     form.setValue(docId, undefined, { shouldValidate: true });
   };
 
-  useEffect(() => {
-    if (data?.supportingDocuments) {
-      form.reset(data.supportingDocuments);
-    }
-  }, [data?.supportingDocuments, form]);
+useEffect(() => {
+  if (Object.keys(data?.supportingDocuments || {}).length > 0) {
+    form.reset(data.supportingDocuments);
+  }
+}, [JSON.stringify(data?.supportingDocuments)]);
 
   return (
-    <div className="bg-white rounded-[28px] shadow-sm  p-6">
-      <div className="bg-primaryLight text-white p-6 rounded-lg mb-6">
-        <h2 className="text-xl font-bold">Supporting Documents</h2>
-        <p className="text-sm mt-2">
-          Upload any documents or evidence related to your complaint.
-        </p>
+    <div className="bg-white lg:rounded-[28px] shadow-sm  p-6">
+      <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
+        <div>
+          <h2 className="text-sm lg:text-xl font-bold">Supporting Documents</h2>
+          <p className="text-sm mt-2">
+            Upload any documents or evidence related to your complaint.
+          </p>
+        </div>
+        {isMobile && (
+          <Button
+            variant={"default"}
+            className="border rounded-2xl"
+            onClick={() => showDialog()}
+          >
+            Learn More
+          </Button>
+        )}
       </div>
 
       <Form {...form}>
@@ -178,31 +201,31 @@ const DynamicSupportingDocumentsForm = ({
           >
             {documents?.map((doc) => (
               <FormField
-                key={doc.id}
+                key={doc?.id}
                 control={form.control}
-                name={doc.id}
+                name={doc?.id}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm">
-                      {doc.label}{" "}
-                      {doc.required && <span className="text-red-500">*</span>}
+                      {doc?.label}{" "}
+                      {doc?.required && <span className="text-red-500">*</span>}
                     </FormLabel>
                     <FormControl>
                       <div
                         className={cn(
                           "border-2 border-dashed rounded-lg p-6 text-center transition-colors h-[100px] flex flex-col items-center justify-center bg-customCard",
-                          uploadedFiles[doc.id]
+                          uploadedFiles[doc?.id]
                             ? "border-purple-300 bg-purple-50"
                             : "border-primaryLight hover:bg-gray-50"
                         )}
                       >
-                        {!uploadedFiles[doc.id] ? (
+                        {!uploadedFiles[doc?.id] ? (
                           <label className="cursor-pointer w-full flex items-center justify-center">
                             <input
                               type="file"
                               className="hidden"
                               accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
-                              onChange={(e) => handleFileChange(doc.id, e)}
+                              onChange={(e) => handleFileChange(doc?.id, e)}
                             />
                             <UploadIcon />
                             <p className="mt-1 text-sm text-gray-600">
@@ -234,8 +257,8 @@ const DynamicSupportingDocumentsForm = ({
                               </Button>
                             </div>
                             <div className="text-left">
-                              <p className="text-sm font-medium truncate">
-                                {uploadedFiles[doc.id]?.name}
+                              <p className="text-sm font-medium line-clamp-1 w-fit">
+                                {uploadedFiles[doc.id]?.name }
                               </p>
                               <p className="text-xs text-gray-500">
                                 {uploadedFiles[doc.id] &&

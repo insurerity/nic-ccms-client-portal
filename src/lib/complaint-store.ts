@@ -12,9 +12,11 @@ type SharedStore = {
   caseType: string | null;
   petitionerType: string | null;
   complainantType: string | null;
+  complaintType: string | null;
   setCaseType: (value: string) => void;
   setPetitionerType: (value: string) => void;
   setComplainantType: (value: string) => void;
+  setComplaintType: (value: string) => void;
 
   reset: () => void;
 };
@@ -25,12 +27,14 @@ export const SharedState = create<SharedStore>()(
       caseType: null,
       complainantType: null,
       petitionerType: null,
+      complaintType : null,
       setCaseType: (value) => set({ caseType: value }),
       setPetitionerType: (value) => set({ petitionerType: value }),
+      setComplaintType: (value) => set({ complaintType: value }),
       setComplainantType: (value) => {
         set({ complainantType: value });
       },
-      reset: () => set({ caseType: null, petitionerType: null }),
+      reset: () => set({ caseType: null, petitionerType: null , complaintType : null, complainantType: null}),
     }),
     {
       name: "shared-store", // unique name
@@ -95,6 +99,16 @@ export const NewComplainIdState = create<{
 }));
 
 export const EntityDrawerState = create<{
+  isOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+}>((set) => ({
+  isOpen: false,
+  openModal: () => set({ isOpen: true }),
+  closeModal: () => set({ isOpen: false }),
+}));
+
+export const FaqDialogState = create<{
   isOpen: boolean;
   openModal: () => void;
   closeModal: () => void;

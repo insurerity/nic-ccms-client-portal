@@ -7,6 +7,18 @@ export const formatFileSize = (bytes: number): string => {
   return (bytes / (1024 * 1024)).toFixed(1) + " MB";
 };
 
+export const normalizePhoneNumber = (phoneNumber?: string): string | undefined  => {
+  if (!phoneNumber) return undefined;
+
+  const trimmed = phoneNumber.trim();
+
+  if (trimmed.startsWith("0")) {
+    return "233" + trimmed.slice(1);
+  }
+
+  return trimmed;
+}
+
 export function transformComplaintData(data: ComplaintStoreData) {
   const {
     businessInformation,
@@ -25,7 +37,7 @@ export function transformComplaintData(data: ComplaintStoreData) {
     mutObj["petitioner_email"] = petitionerProfile?.email;
     mutObj["petitioner_id_card"] = petitionerProfile.idNumber;
     mutObj["petitioner_id_type"] = petitionerProfile.idType;
-    (mutObj["petitioner_phone_number"] = petitionerProfile.phoneNumber),
+    (mutObj["petitioner_phone_number"] = normalizePhoneNumber(petitionerProfile.phoneNumber)),
       (mutObj["petitioner_type"] = petitionerProfile.petitionerType);
     mutObj["pe"];
   }
@@ -33,7 +45,7 @@ export function transformComplaintData(data: ComplaintStoreData) {
   if (victimProfile && victimProfile !== null) {
     mutObj["name"] = `${victimProfile.firstName} ${victimProfile.lastName}`;
     mutObj["email"] = victimProfile.email;
-    mutObj["contactNumber"] = victimProfile.phoneNumber;
+    mutObj["contactNumber"] = normalizePhoneNumber(victimProfile.phoneNumber);
     mutObj["digitalAddress"] = victimProfile.digitalAddress ?? undefined;
     mutObj["residentialAddress"] = victimProfile.residentialAddress;
     mutObj["officeId"] = victimProfile.region;
@@ -56,7 +68,7 @@ export function transformComplaintData(data: ComplaintStoreData) {
     mutObj["name"] = businessInformation.businessName;
     mutObj["email"] = businessInformation.businessEmail;
     mutObj["contactNumber"] =
-      businessInformation.businessPhoneNumber ?? undefined;
+      normalizePhoneNumber(businessInformation.businessPhoneNumber) ?? undefined;
     mutObj["residentialAddress"] = businessInformation.businessAddress;
     mutObj["officeId"] = businessInformation.region;
     mutObj["contactPersonName"] = businessInformation.contactPersonName;

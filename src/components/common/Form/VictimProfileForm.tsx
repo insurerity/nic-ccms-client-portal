@@ -33,7 +33,7 @@ import { capitalize, cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { VictimProfileSchema, VictimProfileSchemaType } from "@/lib/schema";
-import { useComplaintStore } from "@/hooks/use-complaint-store";
+import { useComplaintStore, useFaqsDialogStore } from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
 import { idTypes } from "@/lib/state";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -44,6 +44,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ComplaintFormProps } from "@/types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const VictimsProfileForm = ({
   onNextStep,
@@ -52,6 +53,8 @@ const VictimsProfileForm = ({
 }: ComplaintFormProps) => {
   const { offices: regions, loading: loadingRegions } = useGetRegions();
   const { setData, data } = useComplaintStore();
+  const isMobile = useIsMobile();
+  const { showDialog } = useFaqsDialogStore();
 
   const form = useForm<VictimProfileSchemaType>({
     resolver: zodResolver(VictimProfileSchema),
@@ -108,12 +111,15 @@ const VictimsProfileForm = ({
   }
 
   return (
-    <div className="bg-white rounded-[28px] shadow-sm p-6">
-      <div className="bg-primaryLight text-white p-6 rounded-lg mb-6">
-        <h2 className="text-xl font-bold">Victim's Profile</h2>
+    <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
+      <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
+        <div>
+        <h2 className="text-sm lg:text-xl font-bold">Victim's Profile</h2>
         <p className="text-sm mt-2">
           Tell us about the individual affected by the issue.
         </p>
+        </div>
+       {isMobile && <Button variant={"default"} className="border rounded-2xl" onClick={() => showDialog()}>Learn More</Button>}
       </div>
 
       <p className="mb-4 text-sm">

@@ -11,12 +11,15 @@ import OrganisationTypeIcon from "@/components/icons/OrganisationTypeIcon";
 import IndividualTypeIcon from "@/components/icons/IndividualTypeIcon";
 import { useRouter } from "next/navigation";
 import { useSharedStore } from "@/hooks/use-complaint-store";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function MotorCompensationPetitioner() {
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const { setPetitionerType, setComplainantType } = useSharedStore();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const router = useRouter();
+  const isMobile = useIsMobile();
+  
 
   const questions = [
     {
@@ -29,14 +32,14 @@ export default function MotorCompensationPetitioner() {
           title: "I'm the person affected",
           description:
             "You are the one directly involved in the issue or accident.",
-          icon: <PetitionerPersonIcon />,
+          icon: <PetitionerPersonIcon  width={isMobile ? "120" : "200"} height={isMobile ? "104" :"184" }/>,
         },
         {
           id: "behalf",
           title: "I'm filing on someone's behalf",
           description:
             "You are a legal representative or relative submitting this for another person.",
-          icon: <PetitionerOnBehalfIcon />,
+          icon: <PetitionerOnBehalfIcon width={isMobile ? "100" : "184"} height={isMobile ? "95" :"174" } />,
         },
       ],
     },
@@ -51,14 +54,14 @@ export default function MotorCompensationPetitioner() {
           title: "Individual",
           description:
             "For complaints where the victim is a single person or private individual.",
-          icon: <IndividualTypeIcon />,
+          icon: <IndividualTypeIcon width={isMobile ? "88" : "128"} height={isMobile ? "126" :"156" }/>,
         },
         {
           id: "organization",
           title: "Organization",
           description:
             "For complaints where the victim a business or registered organization.",
-          icon: <OrganisationTypeIcon />,
+          icon: <OrganisationTypeIcon width={isMobile ? "88" : "180"} height={isMobile ? "126" :"162" } />,
         },
       ],
     },
@@ -91,7 +94,7 @@ export default function MotorCompensationPetitioner() {
   const currentQuestionData = questions.find((q) => q.id === currentQuestion);
 
   return (
-    <div className="flex justify-center items-center p-4">
+    <div className="flex justify-center items-center lg:p-4">
       <div className="w-full max-w-4xl">
         <AnimatePresence mode="wait">
           <motion.div
@@ -108,7 +111,7 @@ export default function MotorCompensationPetitioner() {
                   <div className="text-gray-500 text-sm mb-2">
                     Question {currentQuestion} of {questions.length}
                   </div>
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  <h1 className="text-2xl font-bold text-gray-900 mb-2">
                     {currentQuestionData.title}
                   </h1>
                   <p className="text-gray-600">
@@ -121,21 +124,25 @@ export default function MotorCompensationPetitioner() {
                     <div
                       key={option.id}
                       className={cn(
-                        "border rounded-lg p-6 cursor-pointer transition-all",
+                        "border rounded-lg p-6 cursor-pointer transition-all flex flex-row lg:flex-col items-center lg:items-start gap-2",
                         selectedOption === option.id
                           ? "border-[#5D2D79] border-2 bg-white"
                           : "border-gray-200 hover:bg-primaryLight/10 hover:border-[#5D2D79] hover:border-1  bg-customCard"
                       )}
                       onClick={() => handleOptionSelect(option.id)}
                     >
-                      <div className="flex flex-col items-center text-center">
-                        <div className="mb-4">{option.icon}</div>
-                        <h3 className="text-xl font-semibold mb-2">
-                          {option.title}
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          {option.description}
-                        </p>
+                       <div className="flex flex-col items-center text-center">
+                        {option.icon}
+                        
+                      </div>
+                      <div>
+                        
+                      <h3 className="text-sm lg:text-xl font-semibold mb-2">
+                        {option.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm">
+                        {option.description}
+                      </p>
                       </div>
                     </div>
                   ))}

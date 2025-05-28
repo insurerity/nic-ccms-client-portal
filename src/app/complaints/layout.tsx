@@ -1,28 +1,46 @@
+"use client";
+
 import { Separator } from "@/components/ui/separator";
 import GoBack from "../components/back-button";
 import { Bell, X } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import NotificationButton from "@/components/common/NotificationButton";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useSharedStore } from "@/hooks/use-complaint-store";
+import { usePathname } from "next/navigation";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const isMobile = useIsMobile();
+  const { complainantType } = useSharedStore();
+  const pathName = usePathname();
   return (
-    <div className="min-h-screen bg-[#59285F] flex items-center justify-center">
-      <div className="w-full max-w-7xl h-[90vh] rounded-3xl border-4 bg-white overflow-hidden shadow-2xl flex flex-col">
+    <div className="min-h-screen md:bg-[url(/images/background_lady.png)] md:bg-cover bg-white  md:p-8 flex items-center justify-center">
+      <div className="w-full max-w-7xl md:w-full h-screen md:h-[90vh] 2xl:h-fit md:rounded-3xl border-4 bg-white overflow-hidden shadow-2xl flex flex-col">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-white">
           <div className="flex justify-between items-center  p-6 pb-0 md:p-8 md:pb-0">
             {/* Logo and Title */}
             <Logo />
 
-            <div className="flex flex-col items-center">
-              <h2 className="text-2xl font-semibold">
-                Petitioner / Solicitor Form
-              </h2>
-              <p className="text-base">
-                Complete this form to submit a complaint/petition on behalf of
-                someone to the NIC
-              </p>
-            </div>
+            {!isMobile &&
+              (pathName.includes("check-status") ? (
+                <h2 className="text-2xl font-semibold">
+                  {"Check Complaint / Application Status"}
+                </h2>
+              ) : (
+                <div className="flex flex-col items-center">
+                  <h2 className="text-2xl font-semibold">
+                    {complainantType === "self"
+                      ? "Complaint/Petition Form"
+                      : "Petitioner / Solicitor Form"}
+                  </h2>
+                  <p className="text-base">
+                    {complainantType === "self"
+                      ? " Complete this form to submit a complaint/petition to the NIC"
+                      : "Complete this form to submit a complaint/petition on behalf of someone to the NIC"}
+                  </p>
+                </div>
+              ))}
 
             {/* Go Back and Notification */}
             <div className="flex items-center gap-3">
@@ -38,8 +56,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Separator className="w-full mt-6" />
         </div>
 
+        {isMobile &&
+          (pathName.includes("check-status") ? (
+            <h2 className="text-xl lg:text-2xl font-semibold text-center py-2 ">
+              {"Check Complaint / Application Status"}
+            </h2>
+          ) : (
+            <div className="flex flex-col items-center px-3 py-2">
+              <h2 className="text-2xl font-semibold">
+                {complainantType === "self"
+                  ? "Complaint/Petition Form"
+                  : "Petitioner / Solicitor Form"}
+              </h2>
+              <p className="text-base">
+                {complainantType === "self"
+                  ? " Complete this form to submit a complaint/petition to the NIC"
+                  : "Complete this form to submit a complaint/petition on behalf of someone to the NIC"}
+              </p>
+            </div>
+          ))}
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-customCard">
+        <div className="flex-1 overflow-y-auto  md:p-8 bg-customCard">
           {children}
         </div>
       </div>

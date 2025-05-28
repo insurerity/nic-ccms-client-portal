@@ -86,6 +86,15 @@ export function RequiredDocuments({
     }));
   };
 
+  const handleCheckAll = () => {
+    const newValue = !allChecked;
+    const updated = Object.keys(checkedItems).reduce((acc, key) => {
+      acc[key] = newValue;
+      return acc;
+    }, {} as Record<string, boolean>);
+
+    setCheckedItems(updated);
+  };
   console.log("checked items", checkedItems);
 
   const allChecked = Object.values(checkedItems).every(
@@ -102,22 +111,31 @@ export function RequiredDocuments({
 
   return (
     <div className=" p-6 max-w-3xl mx-auto">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold mb-2">
+      <div className="text-start lg:text-center mb-6">
+        <h2 className="text-xl lg:text-2xl font-bold mb-2">
           {title || `Requirement Check: ${capitalize(caseType)} Case`}
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 text-sm lg:text-base">
           {description ||
             `Below is the list of required documents for ${capitalize(
               caseType
             )} Case Application. Confirm and select the availability of all these documents to continue.`}
         </p>
-        <p className="text-gray-600 mt-1">All documents are required</p>
+        <p className="text-gray-600 mt-1 text-sm lg:text-base">All documents are required</p>
       </div>
 
       <div className="space-y-4 mt-8">
+        <div className="flex text-sm lg:text-base flex-row items-center gap-2 justify-between">
+          <p>Select All</p>{" "}
+          <Input
+            type="checkbox"
+            checked={allChecked}
+            onChange={() => handleCheckAll()}
+            className="h-5 w-5 rounded border-gray-300 text-[#5D2D79] focus:ring-[#5D2D79]"
+          />
+        </div>
         {requirements.map((requirement) => (
-          <div key={requirement.id} className="flex items-start gap-4">
+          <div key={requirement.id} className="flex items-start gap-4 text-sm lg:text-base">
             <div className="mt-1">{requirement.icon}</div>
             <div className="flex-1">{requirement.text}</div>
             <div className="flex items-center justify-center">

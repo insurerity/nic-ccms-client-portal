@@ -15,15 +15,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { ACCEPTED_FILE_TYPES } from "@/lib/state";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
-const ACCEPTED_FILE_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-];
+
 
 const formSchema = z.object({
   documents: z

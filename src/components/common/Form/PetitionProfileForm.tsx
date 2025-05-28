@@ -25,10 +25,11 @@ import {
   PetitionerProfileSchema,
   PetitionerProfileSchemaType,
 } from "@/lib/schema";
-import { useComplaintStore } from "@/hooks/use-complaint-store";
+import { useComplaintStore, useFaqsDialogStore } from "@/hooks/use-complaint-store";
 import { FAMILY_MEMBER_TYPES, idTypes, PETITIONER_TYPES } from "@/lib/state";
 import ActionButton from "../ActionButton";
 import { ComplaintFormProps } from "@/types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const PetitionerProfileForm = ({
   onNextStep,
@@ -36,6 +37,8 @@ const PetitionerProfileForm = ({
   currentStep,
 }: ComplaintFormProps) => {
   const { data, setData } = useComplaintStore();
+    const isMobile = useIsMobile();
+    const { showDialog } = useFaqsDialogStore();
   const form = useForm<PetitionerProfileSchemaType>({
     resolver: zodResolver(PetitionerProfileSchema),
     defaultValues: data?.petitionerProfile
@@ -55,12 +58,16 @@ const PetitionerProfileForm = ({
   };
 
   return (
-    <div className="bg-white rounded-[28px] shadow-sm p-6">
-      <div className="bg-primaryLight text-white p-6 rounded-lg mb-6">
+    <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
+      <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
+        <div>
         <h2 className="text-xl font-bold">Petitioner's Profile</h2>
         <p className="text-sm mt-2">
           Tell us about the individual submitting this petition.
         </p>
+        </div>
+        {isMobile && <Button variant={"default"} className="border rounded-2xl" onClick={() => showDialog()}>Learn More</Button>}
+
       </div>
 
       <p className="mb-4 text-sm">

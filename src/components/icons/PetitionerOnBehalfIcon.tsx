@@ -1,8 +1,8 @@
-const PetitionerOnBehalfIcon = () => {
+const PetitionerOnBehalfIcon = ({width ="184", height = "174"} : {width: string, height: string}) => {
   return (
     <svg
-      width="184"
-      height="174"
+      width={width}
+      height={height}
       viewBox="0 0 184 174"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
