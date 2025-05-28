@@ -62,7 +62,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {"Check Complaint / Application Status"}
             </h2>
           ) : (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center px-3 py-2">
               <h2 className="text-2xl font-semibold">
                 {complainantType === "self"
                   ? "Complaint/Petition Form"
