@@ -9,7 +9,7 @@ import {
 export default function GetStarted() {
   return (
     <div className="p-1 lg:p-8 lg:pt-0">
-      <div className="max-w-3xl mx-auto rounded-lg p-6 pt-0">
+      <div className="max-w-3xl mx-auto rounded-lg p-6 pt-2">
         <h1 className="text-center text-xl md:text-2xl font-bold text-[#333] mb-2">
           What do you want to do?
         </h1>
@@ -21,7 +21,7 @@ export default function GetStarted() {
       {/* Options */}
       <div className="w-full">
         {/* Cards */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 rounded-lg lg:p-6 space-y-6 lg:space-y-0">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 rounded-lg lg:p-6 space-y-6 lg:space-y-0 px-2">
           {/* Card 1 */}
           <CustomCard
             icon={<ComplaintIcon />}
