@@ -25,7 +25,7 @@ const UnderstandRequirements = ({
       <div className="flex items-center justify-between mb-6">
         <label
           htmlFor="understand-requirements"
-          className="font-semibold text-[#171717]"
+          className="font-semibold text-[#171717] text-sm lg:text-[16px]"
         >
           {labelText}
         </label>

@@ -94,7 +94,9 @@ export function FAQSection({ faqs }: { faqs: FAQItem[] }) {
             </DialogHeader>
           </DialogContent>
         </Dialog>
-      )}
+      )
+      
+      }
     </>
   );
 }

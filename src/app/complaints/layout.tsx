@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const pathName = usePathname();
   return (
     <div className="min-h-screen md:bg-[url(/images/background_lady.png)] md:bg-cover bg-white  md:p-8 flex items-center justify-center">
-      <div className="w-full max-w-7xl md:w-full h-screen md:h-[90vh] 2xl:h-fit md:rounded-3xl border-4 bg-white overflow-hidden shadow-2xl flex flex-col">
+      <div className="w-full max-w-7xl md:w-full h-full md:h-[90vh] 2xl:h-fit md:rounded-3xl border-4 bg-white overflow-hidden shadow-2xl flex flex-col">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-white">
           <div className="flex justify-between items-center  p-6 pb-0 md:p-8 md:pb-0">
@@ -46,7 +46,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-3">
               <GoBack closeForm>
                 Close Form
-                <X />
+                <X  size={isMobile ? 15 : 20}/>
               </GoBack>
               <div className="relative">
                 <NotificationButton />
@@ -62,13 +62,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {"Check Complaint / Application Status"}
             </h2>
           ) : (
-            <div className="flex flex-col items-center px-3 py-2">
+            <div className="flex flex-col text-center items-center px-3 py-2">
               <h2 className="text-2xl font-semibold">
                 {complainantType === "self"
                   ? "Complaint/Petition Form"
                   : "Petitioner / Solicitor Form"}
               </h2>
-              <p className="text-base">
+              <p className="text-sm">
                 {complainantType === "self"
                   ? " Complete this form to submit a complaint/petition to the NIC"
                   : "Complete this form to submit a complaint/petition on behalf of someone to the NIC"}
