@@ -34,7 +34,7 @@ export default function Home() {
             <br />
             NIC Complaints Portal
           </h2>
-          <p className="text-gray-600 md:mb-12 mb-4">
+          <p className="text-gray-600 md:mb-12 mb-4 text-center">
             Protecting the interests of policy holders
           </p>
 

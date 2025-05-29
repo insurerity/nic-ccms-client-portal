@@ -19,7 +19,7 @@ const GetStartedCheckStatus = ({
         </h1>
         <p className="text-center text-gray-600 text-sm lg:text-base px-6">{subText}</p>
         <div className="relative w-full my-4 rounded-xl overflow-hidden">
-          <div className="bg-gradient-to-r from-[#59285F]/80 to-[#59285F]/60 relative h-[250px] lg:h-[318px] rounded-xl overflow-hidden">
+          <div className="bg-gradient-to-r from-[#59285F]/80 to-[#59285F]/60 relative h-[220px] lg:h-[318px] rounded-xl overflow-hidden">
             <img
               src="/images/video-bg.png"
               alt="Filing a complaint"

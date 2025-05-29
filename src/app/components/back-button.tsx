@@ -30,7 +30,7 @@ export default function GoBack({
   return (
     <button
       onClick={handleGoBack}
-      className={clsx("flex items-center gap-2 md:px-6 md:py-2  py-1.5 rounded-full border border-[#59285F] text-[#59285F] font-medium", closeForm ? "px-2": "px-4")}
+      className={clsx("flex items-center  md:px-6 md:py-2 rounded-full border border-[#59285F] text-[#59285F] font-medium", closeForm ? "text-[10px] lg:text-base px-1 py-2 gap-1": "px-2 gap-2 text-sm py-1.5 ")}
     >
       {children}
     </button>

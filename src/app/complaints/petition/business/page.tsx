@@ -8,6 +8,7 @@ import PetitionerProfileForm from "@/components/common/Form/PetitionProfileForm"
 import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
 import SubmissionSuccess from "@/components/common/Form/SubmissionSuccess";
 import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
+import Loader from "@/components/common/Loader";
 import { useSharedStore } from "@/hooks/use-complaint-store";
 import {
   DEFAULT_FAQS,
