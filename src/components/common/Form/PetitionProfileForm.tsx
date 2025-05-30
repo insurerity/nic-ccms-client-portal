@@ -56,7 +56,14 @@ const PetitionerProfileForm = ({
     setData("petitionerProfile", values);
     onNextStep();
   };
-
+    const handleBackClick = () => {
+      const currentValues = form.getValues();
+      setData("petitionerProfile", currentValues as PetitionerProfileSchemaType);
+      if (onPrevStep) {
+        onPrevStep();
+      }
+    };
+  
   return (
     <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
       <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
@@ -297,7 +304,7 @@ const PetitionerProfileForm = ({
               <Button
                 type="button"
                 variant="outline"
-                onClick={onPrevStep}
+                onClick={handleBackClick}
                 className="rounded-full"
               >
                 Back

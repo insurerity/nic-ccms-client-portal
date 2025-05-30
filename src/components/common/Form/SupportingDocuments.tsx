@@ -16,8 +16,9 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ACCEPTED_FILE_TYPES } from "@/lib/state";
+import { useComplaintStore } from "@/hooks/use-complaint-store";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15 MB
 
 
 const formSchema = z.object({
@@ -25,7 +26,7 @@ const formSchema = z.object({
     .array(
       z.object({
         name: z.string(),
-        size: z.number().max(MAX_FILE_SIZE, "File size must be less than 5MB"),
+        size: z.number().max(MAX_FILE_SIZE, "File size must be less than 15MB"),
         type: z
           .string()
           .refine(
@@ -48,11 +49,12 @@ const SupportingDocumentsForm = ({
   onPrevStep,
 }: SupportingDocumentsFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
-
+  const { data, setData } = useComplaintStore();
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      documents: [],
+      documents: [...data.supportingDocuments],
     },
   });
 
@@ -60,6 +62,14 @@ const SupportingDocumentsForm = ({
     console.log(values);
     onNextStep();
   };
+
+ const handleBackClick = () => {
+      const currentValues = form.getValues().documents || [];
+      setData("supportingDocuments", currentValues as z.infer<typeof formSchema>);
+      if (onPrevStep) {
+        onPrevStep();
+      }
+    };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("file upload.............");
@@ -179,7 +189,7 @@ const SupportingDocumentsForm = ({
           </FormItem>
 
           <div className="flex justify-between pt-4">
-            <Button type="button" variant="outline" onClick={onPrevStep}>
+            <Button type="button" variant="outline" onClick={handleBackClick}>
               Back
             </Button>
             <Button type="submit">Continue</Button>

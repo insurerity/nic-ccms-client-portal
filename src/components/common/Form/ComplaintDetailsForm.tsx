@@ -95,7 +95,13 @@ const ComplaintDetailsForm = ({
     setData("complaintDetails", values);
     onNextStep();
   };
-
+    const handleBackClick = () => {
+    const currentValues = form.getValues();
+    setData("complaintDetails", currentValues as complaintDetailFormSchemaType);
+    if (onPrevStep) {
+      onPrevStep();
+    }
+  };
   return (
     <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
       <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
@@ -362,7 +368,7 @@ const ComplaintDetailsForm = ({
               <Button
                 type="button"
                 variant="outline"
-                onClick={onPrevStep}
+                onClick={handleBackClick}
                 className="rounded-full"
               >
                 Back

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import OptimizedImage from "./optimized-image";
 
 export default function HeroSlider() {
   const isMobile = useIsMobile();
@@ -15,6 +16,8 @@ export default function HeroSlider() {
       title: "File a Complaint or Petition to the NIC",
       description:
         "The NIC is here to ensure fair treatment for all insurance customers in Ghana. Got a concern? We're listening.",
+        width: 1200,
+      height: 800,
     },
     {
       id: 2,
@@ -24,6 +27,8 @@ export default function HeroSlider() {
       title: "Seek Help After a Road accident",
       description:
         "If you've been involved in an accident with an uninsured or unidentified driver, you may qualify for support from the Motor Compensation Fund.",
+        width: 1200,
+      height: 800,
     },
     {
       id: 3,
@@ -33,6 +38,8 @@ export default function HeroSlider() {
       title: "Track Your Complaint Status in Real-Time",
       description:
         "Stay informed about the progress of your complaint with our transparent tracking system.",
+        width: 1200,
+      height: 800,
     },
   ];
   console.log("is mobile", isMobile);
@@ -76,6 +83,7 @@ export default function HeroSlider() {
   return (
     <div className="relative md:h-full h-[400px] rounded-[32px] bg-gradient-to-b from-primaryLight via-primaryLight to-primaryLight text-white overflow-hidden">
       {/* Slides */}
+
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
@@ -83,12 +91,14 @@ export default function HeroSlider() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: transitionDuration }}
-          className="md:h-full w-full"
+          className=" md:h-full w-full"
         >
-          <img
+          <OptimizedImage
             src={slides[currentSlide].image || "/placeholder.svg"}
             alt={`Slide ${currentSlide + 1}`}
-            className="object-cover h-full w-full "
+            className="object-cover"
+            width={slides[currentSlide].width}
+            height={slides[currentSlide].height}
           />
           <div
             className="absolute inset-0 bg-gradient-to-t from-primaryLight via-primaryLight/95 h-full pointer-events-none"
@@ -96,6 +106,7 @@ export default function HeroSlider() {
           ></div>
         </motion.div>
       </AnimatePresence>
+    
 
       {/* Content overlay */}
       <div className="absolute inset-0 flex flex-col justify-between p-8">
@@ -132,9 +143,9 @@ export default function HeroSlider() {
             <div key={index} className="relative">
               <button
                 onClick={() => goToSlide(index)}
-                className={`w-2 h-2 rounded-full ${
+                className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${
                   index === currentSlide ? "bg-white" : "bg-white/40"
-                } transition-all duration-300 cursor-pointer `}
+                }  `}
                 aria-label={`Go to slide ${index + 1}`}
               />
             </div>

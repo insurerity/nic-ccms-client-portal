@@ -79,6 +79,14 @@ const BusinessInformationForm = ({
     setData("businessInformation", values);
     onNextStep();
   };
+  
+  const handleBackClick = () => {
+      const currentValues = form.getValues();
+      setData("businessInformation", currentValues as BusinessInformationSchemaType);
+      if (onPrevStep) {
+        onPrevStep();
+      }
+    };
 
   return (
     <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
@@ -333,7 +341,7 @@ const BusinessInformationForm = ({
               <Button
                 type="button"
                 variant="outline"
-                onClick={onPrevStep}
+                onClick={handleBackClick}
                 className="rounded-full"
               >
                 Back

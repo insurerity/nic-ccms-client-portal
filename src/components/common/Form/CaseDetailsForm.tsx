@@ -91,6 +91,14 @@ const CaseDetailsForm = ({
     onNextStep();
   };
 
+  const handleBackClick = () => {
+      const currentValues = form.getValues();
+      setData("caseDetails", currentValues as CaseDetailsSchemaType);
+      if (onPrevStep) {
+        onPrevStep();
+      }
+    };
+
   return (
     <Suspense>
       <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
@@ -226,7 +234,7 @@ const CaseDetailsForm = ({
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={onPrevStep}
+                  onClick={handleBackClick}
                   className="rounded-full"
                 >
                   Back
