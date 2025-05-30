@@ -88,7 +88,6 @@ const DynamicSupportingDocumentsForm = ({
   // Create the schema based on the documents array
   const formSchema = createFormSchema(documents);
 
-
   // Create default values based on documents
   const defaultValues: Record<string, any> = {};
   documents.forEach((doc) => {
@@ -99,17 +98,23 @@ const DynamicSupportingDocumentsForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: data?.supportingDocuments
       ? {
-          ...data.supportingDocuments,
+          ...data.supportingDocuments, // Initialize form with store data
         }
       : defaultValues,
   });
 
-  console.log("default documents", data.supportingDocuments);
-  console.log("default ", data.supportingDocuments);
-
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setData("supportingDocuments", values);
     onNextStep();
+  };
+
+  const handleBackClick = () => {
+    const currentValues = form.getValues().documents || [];
+    const currentFormValues = form.getValues();
+    setData("supportingDocuments", currentFormValues);
+    if (onPrevStep) {
+      onPrevStep();
+    }
   };
 
   const handleFileChange = (
@@ -137,8 +142,8 @@ const DynamicSupportingDocumentsForm = ({
         ...prev,
         [docId]: file,
       }));
-      
-      console.log('form', uploadedFiles)
+
+      console.log("form", uploadedFiles);
 
       // Update the form
       form.setValue(
@@ -151,7 +156,7 @@ const DynamicSupportingDocumentsForm = ({
         },
         { shouldValidate: true }
       );
-      console.log('form', form)
+      console.log("form", form);
     }
   };
 
@@ -166,11 +171,33 @@ const DynamicSupportingDocumentsForm = ({
     form.setValue(docId, undefined, { shouldValidate: true });
   };
 
-useEffect(() => {
-  if (Object.keys(data?.supportingDocuments || {}).length > 0) {
-    form.reset(data.supportingDocuments);
-  }
-}, [JSON.stringify(data?.supportingDocuments)]);
+  // Effect to reset the form when store data changes
+  useEffect(() => {
+    if (data.supportingDocuments && Object.keys(data.supportingDocuments).length > 0) {
+      form.reset(data.supportingDocuments);
+    } else {
+      // If store is empty, reset form to initial default values
+      const initialDefaultValues: Record<string, any> = {};
+      documents.forEach((doc) => {
+        initialDefaultValues[doc.id] = undefined;
+      });
+      form.reset(initialDefaultValues);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.supportingDocuments, documents]); // form.reset is not added to prevent potential loops
+
+  // Effect to synchronize the local uploadedFiles state (for UI) with the store
+  useEffect(() => {
+    const newUiFiles: Record<string, File | null> = {};
+    if (data.supportingDocuments) {
+      documents.forEach(doc => {
+        const docId = doc.id;
+        const storeFileEntry = data.supportingDocuments[docId];
+        newUiFiles[docId] = (storeFileEntry && storeFileEntry.file instanceof File) ? storeFileEntry.file : null;
+      });
+    }
+    setUploadedFiles(newUiFiles);
+  }, [data.supportingDocuments, documents]);
 
   return (
     <div className="bg-white lg:rounded-[28px] shadow-sm  p-6">
@@ -258,7 +285,7 @@ useEffect(() => {
                             </div>
                             <div className="text-left">
                               <p className="text-sm font-medium line-clamp-1 w-fit">
-                                {uploadedFiles[doc.id]?.name }
+                                {uploadedFiles[doc.id]?.name}
                               </p>
                               <p className="text-xs text-gray-500">
                                 {uploadedFiles[doc.id] &&
@@ -280,7 +307,7 @@ useEffect(() => {
             <Button
               type="button"
               variant="outline"
-              onClick={onPrevStep}
+              onClick={handleBackClick}
               className="rounded-full"
             >
               Back

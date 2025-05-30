@@ -365,7 +365,7 @@ export const NATURE_OF_CLAIMS: Record<string, string[]> = {
   ],
 };
 
-export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+export const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15 MB
 export const ACCEPTED_FILE_TYPES = [
   "image/jpeg",
   "image/png",

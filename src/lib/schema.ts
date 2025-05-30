@@ -99,9 +99,12 @@ export const BusinessInformationSchema = z.object({
     .min(2, { message: "Business name is required" })
     .min(3, { message: "Invalid Business name length" })
     .max(30, { message: "Invalid Business Name provided" }),
-  businessAddress: z.string().min(5, {
-    message: "Please enter a valid business address",
-  }).max(255, { message: "Invalid Business Address provided" }),
+  businessAddress: z
+    .string()
+    .min(5, {
+      message: "Please enter a valid business address",
+    })
+    .max(255, { message: "Invalid Business Address provided" }),
   businessPhoneNumber: z
     .string()
     .optional()
@@ -121,9 +124,19 @@ export const BusinessInformationSchema = z.object({
   contactPersonName: z.string().min(2, {
     message: "Contact person name is required",
   }),
-  contactPhoneNumber: z.string().min(10, {
-    message: "Phone number is required",
-  }),
+  contactPhoneNumber: z
+    .string()
+    .optional()
+    .refine(
+      (val) =>
+        val === null ||
+        val === undefined ||
+        val.trim() === "" ||
+        val.length === 10,
+      {
+        message: "Phone number must be at least 10 digits or left empty",
+      }
+    ),
   region: z
     .string({
       required_error: "Please select a region",
@@ -138,11 +151,14 @@ export const PetitionerProfileSchema = z
     petitionerType: z.string({
       required_error: "Please select a petitioner type",
     }),
-    name: z.string().min(2, {
-      message: "Invalid name provided",
-    }).max(30,{
-      message: "Exceeded maximum name limit",
-    } ),
+    name: z
+      .string()
+      .min(2, {
+        message: "Invalid name provided",
+      })
+      .max(30, {
+        message: "Exceeded maximum name limit",
+      }),
     email: z
       .string()
       .email({

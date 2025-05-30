@@ -50,7 +50,7 @@ const UnderstandRequirements = ({
           className={`px-8 py-3 rounded-full text-white font-medium transition-colors ${
             understood
               ? "bg-[#59285F] hover:bg-[#59285F]/90"
-              : "bg-gray-400 cursor-not-allowed"
+              : "bg-gray-400 cursor-not-allowed hover:cursor-not-allowed"
           }`}
           disabled={!understood}
           text={continueText}

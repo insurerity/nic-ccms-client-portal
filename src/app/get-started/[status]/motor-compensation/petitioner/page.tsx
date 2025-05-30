@@ -119,12 +119,12 @@ export default function MotorCompensationPetitioner() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 lg:text-center">
                   {currentQuestionData?.options?.map((option) => (
                     <div
                       key={option.id}
                       className={cn(
-                        "border rounded-lg p-6 cursor-pointer transition-all flex flex-row lg:flex-col items-center lg:items-start gap-2",
+                        "border rounded-lg p-6 cursor-pointer transition-all flex flex-row lg:flex-col items-center lg:items-center gap-2",
                         selectedOption === option.id
                           ? "border-[#5D2D79] border-2 bg-white"
                           : "border-gray-200 hover:bg-primaryLight/10 hover:border-[#5D2D79] hover:border-1  bg-customCard"

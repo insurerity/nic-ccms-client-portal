@@ -33,7 +33,10 @@ import { capitalize, cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { VictimProfileSchema, VictimProfileSchemaType } from "@/lib/schema";
-import { useComplaintStore, useFaqsDialogStore } from "@/hooks/use-complaint-store";
+import {
+  useComplaintStore,
+  useFaqsDialogStore,
+} from "@/hooks/use-complaint-store";
 import ActionButton from "../ActionButton";
 import { idTypes } from "@/lib/state";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -80,6 +83,8 @@ const VictimsProfileForm = ({
     onNextStep();
   };
 
+ 
+
   function generateDigitalAddress() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -114,12 +119,20 @@ const VictimsProfileForm = ({
     <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
       <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
         <div>
-        <h2 className="text-sm lg:text-xl font-bold">Victim's Profile</h2>
-        <p className="text-sm mt-2">
-          Tell us about the individual affected by the issue.
-        </p>
+          <h2 className="text-sm lg:text-xl font-bold">Victim's Profile</h2>
+          <p className="text-sm mt-2">
+            Tell us about the individual affected by the issue.
+          </p>
         </div>
-       {isMobile && <Button variant={"default"} className="border rounded-2xl" onClick={() => showDialog()}>Learn More</Button>}
+        {isMobile && (
+          <Button
+            variant={"default"}
+            className="border rounded-2xl"
+            onClick={() => showDialog()}
+          >
+            Learn More
+          </Button>
+        )}
       </div>
 
       <p className="mb-4 text-sm">

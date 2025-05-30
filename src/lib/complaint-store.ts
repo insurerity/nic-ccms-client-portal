@@ -117,3 +117,13 @@ export const FaqDialogState = create<{
   openModal: () => set({ isOpen: true }),
   closeModal: () => set({ isOpen: false }),
 }));
+
+export const NoticeDialogState = create<{
+  isOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+}>((set) => ({
+  isOpen: false,
+  openModal: () => set({ isOpen: true }),
+  closeModal: () => set({ isOpen: false }),
+}));
