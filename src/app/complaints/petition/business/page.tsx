@@ -23,7 +23,7 @@ const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "complaint-details": ComplaintDetailsForm,
   "supporting-documents": DynamicSupportingDocumentsForm,
   "review-submit": ReviewSubmitForm,
-  "petitioners-profile": PetitionerProfileForm,
+  "petitioners-profile": PetitionerProfileForm, 
   "business-information": BusinessInformationForm,
 };
 
@@ -51,6 +51,8 @@ const NormalPetitionBusiness = () => {
   const formSteps =
     //  @ts-ignore
     NORMAL_PETITION_FORM_STEPS["business"][complainantType as any];
+
+  console.log('stpeps', formSteps)
 
   const renderStepContent = () => {
     if (isCompleted) {

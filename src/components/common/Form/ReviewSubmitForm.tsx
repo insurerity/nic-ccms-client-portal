@@ -38,6 +38,9 @@ const ReviewSubmitForm = ({
   const { setId } = useNewComplaintIdStore();
   const [createComplaint, { loading, reset }] = useAddTicketMutation();
 
+
+  console.log('vder', data)
+
   const { uploadSupportingDocuments, uploadLoading } =
     useUploadSupportingDocuments();
 
@@ -121,6 +124,7 @@ const ReviewSubmitForm = ({
 
       <div className="space-y-6">
         {filteredSteps?.map((v) => {
+          console.log('v', v)
           return (
             <div key={v.identifier}>
               <h3 className="text-lg font-medium text-primaryLight">

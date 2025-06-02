@@ -45,7 +45,7 @@ import {
   useEntityDrawerStore,
   useFaqsDialogStore,
 } from "@/hooks/use-complaint-store";
-import { CLAIM_TYPES, NATURE_OF_CLAIMS } from "@/lib/state";
+import { CLAIM_TYPES, NATURE_OF_CLAIMS, PETITION_REASON } from "@/lib/state";
 import { useGetRegulatedEntities } from "@/hooks/use-get-regulated-entities";
 import ActionButton from "../ActionButton";
 
@@ -82,10 +82,19 @@ const ComplaintDetailsForm = ({
           entityOfConcern: "",
           natureOfClaim: "",
           description: "",
+          petitionReason : "",
+          otherPetitionReason: "",
+          otherNatureOfClaim : "",
+          vehicleNumber : "",
         },
   });
 
   const selectedClaimType = form.watch("claimType");
+  const petitionReason = form.watch("petitionReason");
+  const natureOfClaim = form.watch("natureOfClaim");
+
+
+  console.log('selected cliant', selectedClaimType)
 
   const natureOfClaims = selectedClaimType
     ? NATURE_OF_CLAIMS[selectedClaimType]
@@ -95,7 +104,7 @@ const ComplaintDetailsForm = ({
     setData("complaintDetails", values);
     onNextStep();
   };
-    const handleBackClick = () => {
+  const handleBackClick = () => {
     const currentValues = form.getValues();
     setData("complaintDetails", currentValues as complaintDetailFormSchemaType);
     if (onPrevStep) {
@@ -106,13 +115,20 @@ const ComplaintDetailsForm = ({
     <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
       <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
         <div>
-        <h2 className="text-sm lg:text-xl font-bold">Complaint Details</h2>
-        <p className="text-sm mt-2">
-          Provide information about the complaint or incident.
-        </p>
+          <h2 className="text-sm lg:text-xl font-bold">Complaint Details</h2>
+          <p className="text-sm mt-2">
+            Provide information about the complaint or incident.
+          </p>
         </div>
-      {isMobile && <Button variant={"default"} className="border rounded-2xl" onClick={() => showDialog()}>Learn More</Button>}
-
+        {isMobile && (
+          <Button
+            variant={"default"}
+            className="border rounded-2xl"
+            onClick={() => showDialog()}
+          >
+            Learn More
+          </Button>
+        )}
       </div>
 
       <p className="mb-4 text-sm">
@@ -122,44 +138,100 @@ const ComplaintDetailsForm = ({
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="dateOfIncident"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Date of Incident</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
+          <div className="grid md:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="dateOfIncident"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Date of Incident</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full pl-3 text-left font-normal bg-gray-50",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? format(field.value, "PPP")
+                            : "Select a date"}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) => date > new Date()}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="petitionReason"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Petition Reason <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full pl-3 text-left font-normal bg-gray-50",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value
-                          ? format(field.value, "PPP")
-                          : "Select a date"}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select petition reason" />
+                      </SelectTrigger>
                     </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) => date > new Date()}
-                      initialFocus
+                    <SelectContent className="w-full">
+                      {PETITION_REASON.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          {petitionReason === "Others" && (
+            <FormField
+              control={form.control}
+              name="otherPetitionReason"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Specify Other Petition Reason{" "}
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your specific petition reason"
+                      {...field}
+                      // maxLength={200} // Optional: if you want a visual cue, but Zod handles validation
                     />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
+
+         
+        
           <div className="grid md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -207,7 +279,9 @@ const ComplaintDetailsForm = ({
               )}
             />
           </div>
+              <div className="grid md:grid-cols-2 gap-4">
 
+            
           <FormField
             control={form.control}
             name="natureOfClaim"
@@ -237,6 +311,50 @@ const ComplaintDetailsForm = ({
               </FormItem>
             )}
           />
+          {natureOfClaim === "Other" && (
+            <FormField
+              control={form.control}
+              name="otherNatureOfClaim"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Specify Other Nature of Claim{" "}
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your specific nature of claim "
+                      {...field}
+                      // maxLength={200} // Optional: if you want a visual cue, but Zod handles validation
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+            </div>
+
+          {selectedClaimType === "Motor Compensation" && <FormField
+              control={form.control}
+              name="vehicleNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Vehicle Number{" "}
+                    {/* <span className="text-red-500">*</span> */}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your vehicle number "
+                      {...field}
+                      // maxLength={200} // Optional: if you want a visual cue, but Zod handles validation
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />}
 
           <FormField
             control={form.control}

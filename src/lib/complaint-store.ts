@@ -47,7 +47,7 @@ export type ComplaintStoreData = {
   victimProfile: VictimProfileSchemaType | null;
   complaintDetails: complaintDetailFormSchemaType | null;
   supportingDocuments: any;
-  petitionerProfile: PetitionerProfileSchemaType | null;
+  petitionersProfile: PetitionerProfileSchemaType | null;
   businessInformation: BusinessInformationSchemaType | null;
   caseDetails: CaseDetailsSchemaType | null;
 };
@@ -67,7 +67,7 @@ export const ComplaintDataStore = create<ComplaintStore>((set) => ({
     complaintDetails: null,
     supportingDocuments: null,
     businessInformation: null,
-    petitionerProfile: null,
+    petitionersProfile: null,
     caseDetails: null,
   },
   reset: () => {
@@ -76,7 +76,7 @@ export const ComplaintDataStore = create<ComplaintStore>((set) => ({
         businessInformation: null,
         caseDetails: null,
         complaintDetails: null,
-        petitionerProfile: null,
+        petitionersProfile: null,
         supportingDocuments: null,
         victimProfile: null,
       },

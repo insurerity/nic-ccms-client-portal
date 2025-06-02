@@ -24,7 +24,7 @@ export function transformComplaintData(data: ComplaintStoreData) {
     businessInformation,
     caseDetails,
     complaintDetails,
-    petitionerProfile,
+    petitionersProfile,
 
     victimProfile,
   } = data;
@@ -32,13 +32,13 @@ export function transformComplaintData(data: ComplaintStoreData) {
   const mutObj: Nic_Ccms_Complaint_Insert_Input = {
     sourceChannel: "CLIENT",
   };
-  if (petitionerProfile && petitionerProfile !== null) {
-    mutObj["pertitioner_name"] = petitionerProfile.name;
-    mutObj["petitioner_email"] = petitionerProfile?.email;
-    mutObj["petitioner_id_card"] = petitionerProfile.idNumber;
-    mutObj["petitioner_id_type"] = petitionerProfile.idType;
-    (mutObj["petitioner_phone_number"] = normalizePhoneNumber(petitionerProfile.phoneNumber)),
-      (mutObj["petitioner_type"] = petitionerProfile.petitionerType);
+  if (petitionersProfile && petitionersProfile !== null) {
+    mutObj["pertitioner_name"] = petitionersProfile.name;
+    mutObj["petitioner_email"] = petitionersProfile?.email;
+    mutObj["petitioner_id_card"] = petitionersProfile.idNumber;
+    mutObj["petitioner_id_type"] = petitionersProfile.idType;
+    (mutObj["petitioner_phone_number"] = normalizePhoneNumber(petitionersProfile.phoneNumber)),
+      (mutObj["petitioner_type"] = petitionersProfile.petitionerType);
     mutObj["pe"];
   }
 
@@ -58,7 +58,9 @@ export function transformComplaintData(data: ComplaintStoreData) {
     mutObj["dateOfIncidence"] = complaintDetails.dateOfIncident;
     mutObj["policyNumber"] = complaintDetails.policyNumber ?? undefined;
     mutObj["claimType"] = complaintDetails.claimType;
-    mutObj["claimTypeValue"] = complaintDetails.natureOfClaim;
+    mutObj["petition_reason"] = complaintDetails.petitionReason === "Others" ? complaintDetails?.otherPetitionReason : complaintDetails.petitionReason;
+    mutObj["claimTypeValue"] = complaintDetails.natureOfClaim === "Other" ? complaintDetails?.otherNatureOfClaim : complaintDetails.natureOfClaim;
+    mutObj["vehicle_number"] = complaintDetails.vehicleNumber;
     mutObj["description"] = complaintDetails.description;
     mutObj["regulatedEntityId"] = complaintDetails.entityOfConcern;
     mutObj["ticketType"] = "PETITION";
@@ -72,7 +74,7 @@ export function transformComplaintData(data: ComplaintStoreData) {
     mutObj["residentialAddress"] = businessInformation.businessAddress;
     mutObj["officeId"] = businessInformation.region;
     mutObj["contactPersonName"] = businessInformation.contactPersonName;
-    mutObj["contactPersonPhone"] = businessInformation.contactPhoneNumber;
+    mutObj["contactPersonPhone"] = normalizePhoneNumber(businessInformation.contactPhoneNumber);
     mutObj["complainantType"] = "CORPORATE";
   }
 
