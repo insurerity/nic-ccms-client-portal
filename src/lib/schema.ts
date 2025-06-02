@@ -59,38 +59,90 @@ export const VictimProfileSchema = z
           code: z.ZodIssueCode.custom,
           message: "ID number is required",
         });
-      } else if (data.idNumber.length > 10) {
-        ctx.addIssue({
-          path: ["idNumber"],
-          code: z.ZodIssueCode.custom,
-          message: "ID number must not exceed 10 characters",
-        });
+      } else {
+        // Additional check for Voters and Health ID types: must be numeric
+        if (
+          (data.idType === "Voter ID" || data.idType === "NHIS Card") &&
+          !/^\d+$/.test(data.idNumber)
+        ) {
+          ctx.addIssue({
+            path: ["idNumber"],
+            code: z.ZodIssueCode.custom,
+            message: `${data.idType} ID must contain only numbers`,
+          });
+        } else if (data.idNumber.length > 10) {
+          ctx.addIssue({
+            path: ["idNumber"],
+            code: z.ZodIssueCode.custom,
+            message: "ID number must not exceed 10 characters",
+          });
+        }
       }
     }
   });
 
-export const complaintDetailFormSchema = z.object({
-  dateOfIncident: z
-    .date()
-    .refine((date) => date !== null && !isNaN(date.getTime()), {
-      message: "Date of incident is required",
+export const complaintDetailFormSchema = z
+  .object({
+    dateOfIncident: z
+      .date()
+      .refine((date) => date !== null && !isNaN(date.getTime()), {
+        message: "Date of incident is required",
+      }),
+    policyNumber: z
+      .string()
+      .optional()
+      .refine((val) => !val || (val.length >= 3 && val.length <= 70), {
+        message:
+          "Policy number might be invalid, check the number again or leave it empty.",
+      }),
+    claimType: z.string().min(1, { message: "Claim type is required" }),
+    petitionReason: z
+      .string()
+      .min(1, { message: "Petition reason is required" }),
+    entityOfConcern: z
+      .string()
+      .min(1, { message: "Entity of concern is required" }),
+    natureOfClaim: z
+      .string()
+      .min(1, { message: "Nature of claim is required" }),
+    description: z.string().min(10, {
+      message: "Please describe the complaint with at least 10 characters",
     }),
-  policyNumber: z
-    .string()
-    .optional()
-    .refine((val) => !val || (val.length >= 3 && val.length <= 70), {
-      message:
-        "Policy number might be invalid, check the number again or leave it empty.",
-    }),
-  claimType: z.string().min(1, { message: "Claim type is required" }),
-  entityOfConcern: z
-    .string()
-    .min(1, { message: "Entity of concern is required" }),
-  natureOfClaim: z.string().min(1, { message: "Nature of claim is required" }),
-  description: z.string().min(10, {
-    message: "Please describe the complaint with at least 10 characters",
-  }),
-});
+    otherPetitionReason: z.string().optional(),
+    otherNatureOfClaim: z.string().optional(),
+    vehicleNumber: z.string().optional().refine((val) => !val || (val.length >= 3 && val.length <= 15), {
+        message:
+          "Vehicle Number is invalid, check the number again or leave it empty.",
+      }),
+  })
+  .refine(
+    (data) => {
+      if (data.petitionReason === "Others") {
+        return (
+          data.otherPetitionReason && data.otherPetitionReason.trim().length > 0
+        );
+      }
+      return true; 
+    },
+    {
+      message: "Please specify your reason when 'Others' is selected.",
+      path: ["otherPetitionReason"], 
+    },
+  )
+  .refine(
+    (data) => {
+      if (data.natureOfClaim === "Other") {
+        return (
+          data.otherNatureOfClaim && data.otherNatureOfClaim.trim().length > 0
+        );
+      }
+      return true;
+    },
+    {
+      message: "Please specify the nature of claim when 'Other' is selected.",
+      path: ["otherNatureOfClaim"],
+    },
+  );
 
 // Define the schema for the business information form
 export const BusinessInformationSchema = z.object({
@@ -213,11 +265,15 @@ export const PetitionerProfileSchema = z
       }
     } else {
       // For other ID types, make sure it's not empty
-      if (!data.idNumber || data.idNumber.trim() === "") {
+      // Additional check for Voters and Health ID types: must be numeric
+      if (
+        (data.idType === "Voter ID" || data.idType === "NHIS Card") &&
+        !/^\d+$/.test(data.idNumber)
+      ) {
         ctx.addIssue({
           path: ["idNumber"],
           code: z.ZodIssueCode.custom,
-          message: "ID number is required",
+          message: `${data.idType} must contain only numbers`,
         });
       } else if (data.idNumber.length > 10) {
         ctx.addIssue({

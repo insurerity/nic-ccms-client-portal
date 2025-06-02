@@ -79,13 +79,19 @@ const CaseDetailsForm = ({
   });
 
   useEffect(() => {
-    const isCaseDetailsMissing = !data.caseDetails || data.caseDetails === null;
-    if (isCaseDetailsMissing && caseType) {
-      console.log("we are setting case type...", capitalize(caseType));
+    // If a global caseType is provided and there isn't already a
+    // specific claimType set in the stored caseDetails,
+    // then pre-fill the form's claimType with the global caseType.
+    if (caseType && !data.caseDetails?.claimType) {
+      console.log(
+        "Pre-filling claimType from global caseType:",
+        capitalize(caseType)
+      );
       form.setValue("claimType", capitalize(caseType));
     }
-  }, [caseType, data.caseDetails, form]);
-
+    // This effect depends on the global caseType, the specific claimType
+    // within the stored caseDetails, and the setValue function.
+  }, [caseType, data.caseDetails?.claimType, form.setValue]);
   const onSubmit = (values: CaseDetailsSchemaType) => {
     setData("caseDetails", values);
     onNextStep();
@@ -177,6 +183,7 @@ const CaseDetailsForm = ({
                     <FormLabel htmlFor="caseType">Case Type</FormLabel>
                     <Select
                       value={field.value}
+                      disabled={caseType !== null ? true : false}
                       onValueChange={(value) => field.onChange(value)}
                     >
                       <SelectTrigger className="w-full">

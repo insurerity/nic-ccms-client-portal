@@ -38,7 +38,7 @@ const createFormSchema = (documents: DocumentTypeT[]) => {
           name: z.string().min(1, "This document is required"),
           size: z
             .number()
-            .max(MAX_FILE_SIZE, "File size must be less than 5MB"),
+            .max(MAX_FILE_SIZE, "File size must be less than 15MB"),
           type: z
             .string()
             .refine(
@@ -52,7 +52,7 @@ const createFormSchema = (documents: DocumentTypeT[]) => {
             name: z.string().optional(),
             size: z
               .number()
-              .max(MAX_FILE_SIZE, "File size must be less than 5MB")
+              .max(MAX_FILE_SIZE, "File size must be less than 15MB")
               .optional(),
             type: z
               .string()

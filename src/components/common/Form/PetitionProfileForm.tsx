@@ -41,9 +41,9 @@ const PetitionerProfileForm = ({
     const { showDialog } = useFaqsDialogStore();
   const form = useForm<PetitionerProfileSchemaType>({
     resolver: zodResolver(PetitionerProfileSchema),
-    defaultValues: data?.petitionerProfile
+    defaultValues: data?.petitionersProfile
       ? {
-          ...data.petitionerProfile,
+          ...data.petitionersProfile,
         }
       : undefined,
   });
@@ -53,12 +53,12 @@ const PetitionerProfileForm = ({
 
   const onSubmit = (values: PetitionerProfileSchemaType) => {
     console.log(values);
-    setData("petitionerProfile", values);
+    setData("petitionersProfile", values);
     onNextStep();
   };
     const handleBackClick = () => {
       const currentValues = form.getValues();
-      setData("petitionerProfile", currentValues as PetitionerProfileSchemaType);
+      setData("petitionersProfile", currentValues as PetitionerProfileSchemaType);
       if (onPrevStep) {
         onPrevStep();
       }

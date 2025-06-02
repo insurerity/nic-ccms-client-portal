@@ -325,6 +325,7 @@ export const DEFAULT_FAQS = [
   },
 ];
 
+export const PETITION_REASON = ["No Response", "Delay In Payment", "Low quantum", "Others"];
 export const CLAIM_TYPES = ["Life", "Non Life", "Motor Compensation"];
 
 export const NATURE_OF_CLAIMS: Record<string, string[]> = {
@@ -338,6 +339,7 @@ export const NATURE_OF_CLAIMS: Record<string, string[]> = {
     "Whole Life Policy",
     "Investment Policy",
     "Term Life Policy",
+    "Other"
   ],
   "Non Life": [
     "Performance Bond",
@@ -353,6 +355,7 @@ export const NATURE_OF_CLAIMS: Record<string, string[]> = {
     "Advance Mobilisation Bond",
     "Goods In Transit",
     "Group Life",
+    "Other"
   ],
   "Motor Compensation": [
     "Motor Injury Claim",
@@ -362,6 +365,7 @@ export const NATURE_OF_CLAIMS: Record<string, string[]> = {
     "Motor Theft/Burglary",
     "Goods -in-transit",
     "Motor Flood Claim",
+    "Other"
   ],
 };
 
@@ -432,7 +436,7 @@ export const NORMAL_PETITION_DOCUMENTS: Record<
       required: false,
     },
     {
-      id: "additionalDoc2",
+      id: "additionalDoc5",
       label: "Additional Document 5",
       required: false,
     },
