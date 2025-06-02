@@ -72,6 +72,8 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: theme('colors.gray.400') transparent; /* For Firefox: thumb color and track color */
   }
 
   button {

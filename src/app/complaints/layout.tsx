@@ -14,11 +14,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { complainantType } = useSharedStore();
   const pathName = usePathname();
   return (
-    <div className="min-h-screen md:bg-[url(/images/background_lady.png)] md:bg-cover bg-white  md:p-8 flex items-center justify-center">
-      <div className="w-full max-w-7xl md:w-full h-full md:h-[90vh] 2xl:h-fit md:rounded-3xl border-4 bg-white overflow-hidden shadow-2xl flex flex-col">
+    <div className=" bg-white h-full">
+      <div className="w-full max-w-full md:w-full h-full border-4 bg-white flex flex-col">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-white">
-          <div className="flex justify-between items-center  p-6 pb-0 md:p-8 md:pb-0">
+          <div className="flex justify-between items-center  p-6 pb-0  md:pb-0">
             {/* Logo and Title */}
             <Logo />
 
