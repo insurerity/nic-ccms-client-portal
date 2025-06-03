@@ -409,6 +409,11 @@ export type DownloadComplaint = {
   residentialAddress: Scalars['String']['input'];
 };
 
+export type ErrorOutput = {
+  __typename?: 'ErrorOutput';
+  success: Scalars['Boolean']['output'];
+};
+
 export type FileOutput = {
   __typename?: 'FileOutput';
   filePath?: Maybe<Scalars['String']['output']>;
@@ -2050,6 +2055,7 @@ export type Jsonb_Comparison_Exp = {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
+  _error_handler?: Maybe<ErrorOutput>;
   _upload?: Maybe<UploadOutput>;
   assign_ticket_to_staff?: Maybe<StageChangeOutput>;
   complaint_stage_awaiting_meeting?: Maybe<StageChangeOutput>;
@@ -2131,6 +2137,10 @@ export type Mutation_Root = {
   delete_nic_ccms_event?: Maybe<Nic_Ccms_Event_Mutation_Response>;
   /** delete single row from the table: "nic_ccms.event" */
   delete_nic_ccms_event_by_pk?: Maybe<Nic_Ccms_Event>;
+  /** delete data from the table: "nic_ccms.log" */
+  delete_nic_ccms_log?: Maybe<Nic_Ccms_Log_Mutation_Response>;
+  /** delete single row from the table: "nic_ccms.log" */
+  delete_nic_ccms_log_by_pk?: Maybe<Nic_Ccms_Log>;
   /** delete data from the table: "nic_ccms.sms" */
   delete_nic_ccms_sms?: Maybe<Nic_Ccms_Sms_Mutation_Response>;
   /** delete single row from the table: "nic_ccms.sms" */
@@ -2216,6 +2226,10 @@ export type Mutation_Root = {
   insert_nic_ccms_event?: Maybe<Nic_Ccms_Event_Mutation_Response>;
   /** insert a single row into the table: "nic_ccms.event" */
   insert_nic_ccms_event_one?: Maybe<Nic_Ccms_Event>;
+  /** insert data into the table: "nic_ccms.log" */
+  insert_nic_ccms_log?: Maybe<Nic_Ccms_Log_Mutation_Response>;
+  /** insert a single row into the table: "nic_ccms.log" */
+  insert_nic_ccms_log_one?: Maybe<Nic_Ccms_Log>;
   /** insert data into the table: "nic_ccms.sms" */
   insert_nic_ccms_sms?: Maybe<Nic_Ccms_Sms_Mutation_Response>;
   /** insert a single row into the table: "nic_ccms.sms" */
@@ -2335,12 +2349,24 @@ export type Mutation_Root = {
   update_nic_ccms_event_by_pk?: Maybe<Nic_Ccms_Event>;
   /** update multiples rows of table: "nic_ccms.event" */
   update_nic_ccms_event_many?: Maybe<Array<Maybe<Nic_Ccms_Event_Mutation_Response>>>;
+  /** update data of the table: "nic_ccms.log" */
+  update_nic_ccms_log?: Maybe<Nic_Ccms_Log_Mutation_Response>;
+  /** update single row of the table: "nic_ccms.log" */
+  update_nic_ccms_log_by_pk?: Maybe<Nic_Ccms_Log>;
+  /** update multiples rows of table: "nic_ccms.log" */
+  update_nic_ccms_log_many?: Maybe<Array<Maybe<Nic_Ccms_Log_Mutation_Response>>>;
   /** update data of the table: "nic_ccms.sms" */
   update_nic_ccms_sms?: Maybe<Nic_Ccms_Sms_Mutation_Response>;
   /** update single row of the table: "nic_ccms.sms" */
   update_nic_ccms_sms_by_pk?: Maybe<Nic_Ccms_Sms>;
   /** update multiples rows of table: "nic_ccms.sms" */
   update_nic_ccms_sms_many?: Maybe<Array<Maybe<Nic_Ccms_Sms_Mutation_Response>>>;
+};
+
+
+/** mutation root */
+export type Mutation_Root_Error_HandlerArgs = {
+  error: Scalars['jsonb']['input'];
 };
 
 
@@ -2620,6 +2646,18 @@ export type Mutation_RootDelete_Nic_Ccms_EventArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Nic_Ccms_Event_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Nic_Ccms_LogArgs = {
+  where: Nic_Ccms_Log_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Nic_Ccms_Log_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
@@ -2939,6 +2977,20 @@ export type Mutation_RootInsert_Nic_Ccms_EventArgs = {
 export type Mutation_RootInsert_Nic_Ccms_Event_OneArgs = {
   object: Nic_Ccms_Event_Insert_Input;
   on_conflict?: InputMaybe<Nic_Ccms_Event_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Nic_Ccms_LogArgs = {
+  objects: Array<Nic_Ccms_Log_Insert_Input>;
+  on_conflict?: InputMaybe<Nic_Ccms_Log_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Nic_Ccms_Log_OneArgs = {
+  object: Nic_Ccms_Log_Insert_Input;
+  on_conflict?: InputMaybe<Nic_Ccms_Log_On_Conflict>;
 };
 
 
@@ -3386,6 +3438,36 @@ export type Mutation_RootUpdate_Nic_Ccms_Event_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Nic_Ccms_Event_ManyArgs = {
   updates: Array<Nic_Ccms_Event_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Nic_Ccms_LogArgs = {
+  _append?: InputMaybe<Nic_Ccms_Log_Append_Input>;
+  _delete_at_path?: InputMaybe<Nic_Ccms_Log_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Nic_Ccms_Log_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Nic_Ccms_Log_Delete_Key_Input>;
+  _prepend?: InputMaybe<Nic_Ccms_Log_Prepend_Input>;
+  _set?: InputMaybe<Nic_Ccms_Log_Set_Input>;
+  where: Nic_Ccms_Log_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Nic_Ccms_Log_By_PkArgs = {
+  _append?: InputMaybe<Nic_Ccms_Log_Append_Input>;
+  _delete_at_path?: InputMaybe<Nic_Ccms_Log_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Nic_Ccms_Log_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Nic_Ccms_Log_Delete_Key_Input>;
+  _prepend?: InputMaybe<Nic_Ccms_Log_Prepend_Input>;
+  _set?: InputMaybe<Nic_Ccms_Log_Set_Input>;
+  pk_columns: Nic_Ccms_Log_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Nic_Ccms_Log_ManyArgs = {
+  updates: Array<Nic_Ccms_Log_Updates>;
 };
 
 
@@ -6738,6 +6820,286 @@ export type Nic_Ccms_Event_Updates = {
   where: Nic_Ccms_Event_Bool_Exp;
 };
 
+/** columns and relationships of "nic_ccms.log" */
+export type Nic_Ccms_Log = {
+  __typename?: 'nic_ccms_log';
+  actionType?: Maybe<Scalars['String']['output']>;
+  anonymousId?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['timestamptz']['output'];
+  details?: Maybe<Scalars['jsonb']['output']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
+  level?: Maybe<Scalars['String']['output']>;
+  stackTrace?: Maybe<Scalars['String']['output']>;
+  timestamp: Scalars['timestamptz']['output'];
+  updated_at: Scalars['timestamptz']['output'];
+  user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+
+/** columns and relationships of "nic_ccms.log" */
+export type Nic_Ccms_LogDetailsArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregated selection of "nic_ccms.log" */
+export type Nic_Ccms_Log_Aggregate = {
+  __typename?: 'nic_ccms_log_aggregate';
+  aggregate?: Maybe<Nic_Ccms_Log_Aggregate_Fields>;
+  nodes: Array<Nic_Ccms_Log>;
+};
+
+/** aggregate fields of "nic_ccms.log" */
+export type Nic_Ccms_Log_Aggregate_Fields = {
+  __typename?: 'nic_ccms_log_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<Nic_Ccms_Log_Max_Fields>;
+  min?: Maybe<Nic_Ccms_Log_Min_Fields>;
+};
+
+
+/** aggregate fields of "nic_ccms.log" */
+export type Nic_Ccms_Log_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Nic_Ccms_Log_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Nic_Ccms_Log_Append_Input = {
+  details?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "nic_ccms.log". All fields are combined with a logical 'AND'. */
+export type Nic_Ccms_Log_Bool_Exp = {
+  _and?: InputMaybe<Array<Nic_Ccms_Log_Bool_Exp>>;
+  _not?: InputMaybe<Nic_Ccms_Log_Bool_Exp>;
+  _or?: InputMaybe<Array<Nic_Ccms_Log_Bool_Exp>>;
+  actionType?: InputMaybe<String_Comparison_Exp>;
+  anonymousId?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  details?: InputMaybe<Jsonb_Comparison_Exp>;
+  errorMessage?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  level?: InputMaybe<String_Comparison_Exp>;
+  stackTrace?: InputMaybe<String_Comparison_Exp>;
+  timestamp?: InputMaybe<Timestamptz_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user_id?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "nic_ccms.log" */
+export enum Nic_Ccms_Log_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  LogsPkey = 'logs_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Nic_Ccms_Log_Delete_At_Path_Input = {
+  details?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Nic_Ccms_Log_Delete_Elem_Input = {
+  details?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Nic_Ccms_Log_Delete_Key_Input = {
+  details?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** input type for inserting data into table "nic_ccms.log" */
+export type Nic_Ccms_Log_Insert_Input = {
+  actionType?: InputMaybe<Scalars['String']['input']>;
+  anonymousId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['jsonb']['input']>;
+  errorMessage?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  level?: InputMaybe<Scalars['String']['input']>;
+  stackTrace?: InputMaybe<Scalars['String']['input']>;
+  timestamp?: InputMaybe<Scalars['timestamptz']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate max on columns */
+export type Nic_Ccms_Log_Max_Fields = {
+  __typename?: 'nic_ccms_log_max_fields';
+  actionType?: Maybe<Scalars['String']['output']>;
+  anonymousId?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  level?: Maybe<Scalars['String']['output']>;
+  stackTrace?: Maybe<Scalars['String']['output']>;
+  timestamp?: Maybe<Scalars['timestamptz']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** aggregate min on columns */
+export type Nic_Ccms_Log_Min_Fields = {
+  __typename?: 'nic_ccms_log_min_fields';
+  actionType?: Maybe<Scalars['String']['output']>;
+  anonymousId?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  level?: Maybe<Scalars['String']['output']>;
+  stackTrace?: Maybe<Scalars['String']['output']>;
+  timestamp?: Maybe<Scalars['timestamptz']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** response of any mutation on the table "nic_ccms.log" */
+export type Nic_Ccms_Log_Mutation_Response = {
+  __typename?: 'nic_ccms_log_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Nic_Ccms_Log>;
+};
+
+/** on_conflict condition type for table "nic_ccms.log" */
+export type Nic_Ccms_Log_On_Conflict = {
+  constraint: Nic_Ccms_Log_Constraint;
+  update_columns?: Array<Nic_Ccms_Log_Update_Column>;
+  where?: InputMaybe<Nic_Ccms_Log_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "nic_ccms.log". */
+export type Nic_Ccms_Log_Order_By = {
+  actionType?: InputMaybe<Order_By>;
+  anonymousId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  details?: InputMaybe<Order_By>;
+  errorMessage?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  level?: InputMaybe<Order_By>;
+  stackTrace?: InputMaybe<Order_By>;
+  timestamp?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: nic_ccms.log */
+export type Nic_Ccms_Log_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Nic_Ccms_Log_Prepend_Input = {
+  details?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** select columns of table "nic_ccms.log" */
+export enum Nic_Ccms_Log_Select_Column {
+  /** column name */
+  ActionType = 'actionType',
+  /** column name */
+  AnonymousId = 'anonymousId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Details = 'details',
+  /** column name */
+  ErrorMessage = 'errorMessage',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Level = 'level',
+  /** column name */
+  StackTrace = 'stackTrace',
+  /** column name */
+  Timestamp = 'timestamp',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "nic_ccms.log" */
+export type Nic_Ccms_Log_Set_Input = {
+  actionType?: InputMaybe<Scalars['String']['input']>;
+  anonymousId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['jsonb']['input']>;
+  errorMessage?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  level?: InputMaybe<Scalars['String']['input']>;
+  stackTrace?: InputMaybe<Scalars['String']['input']>;
+  timestamp?: InputMaybe<Scalars['timestamptz']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** Streaming cursor of the table "nic_ccms_log" */
+export type Nic_Ccms_Log_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Nic_Ccms_Log_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Nic_Ccms_Log_Stream_Cursor_Value_Input = {
+  actionType?: InputMaybe<Scalars['String']['input']>;
+  anonymousId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['jsonb']['input']>;
+  errorMessage?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  level?: InputMaybe<Scalars['String']['input']>;
+  stackTrace?: InputMaybe<Scalars['String']['input']>;
+  timestamp?: InputMaybe<Scalars['timestamptz']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** update columns of table "nic_ccms.log" */
+export enum Nic_Ccms_Log_Update_Column {
+  /** column name */
+  ActionType = 'actionType',
+  /** column name */
+  AnonymousId = 'anonymousId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Details = 'details',
+  /** column name */
+  ErrorMessage = 'errorMessage',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Level = 'level',
+  /** column name */
+  StackTrace = 'stackTrace',
+  /** column name */
+  Timestamp = 'timestamp',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+export type Nic_Ccms_Log_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<Nic_Ccms_Log_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<Nic_Ccms_Log_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<Nic_Ccms_Log_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<Nic_Ccms_Log_Delete_Key_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<Nic_Ccms_Log_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Nic_Ccms_Log_Set_Input>;
+  where: Nic_Ccms_Log_Bool_Exp;
+};
+
 /** columns and relationships of "nic_ccms.sms" */
 export type Nic_Ccms_Sms = {
   __typename?: 'nic_ccms_sms';
@@ -7109,6 +7471,12 @@ export type Query_Root = {
   nic_ccms_event_aggregate: Nic_Ccms_Event_Aggregate;
   /** fetch data from the table: "nic_ccms.event" using primary key columns */
   nic_ccms_event_by_pk?: Maybe<Nic_Ccms_Event>;
+  /** fetch data from the table: "nic_ccms.log" */
+  nic_ccms_log: Array<Nic_Ccms_Log>;
+  /** fetch aggregated fields from the table: "nic_ccms.log" */
+  nic_ccms_log_aggregate: Nic_Ccms_Log_Aggregate;
+  /** fetch data from the table: "nic_ccms.log" using primary key columns */
+  nic_ccms_log_by_pk?: Maybe<Nic_Ccms_Log>;
   /** fetch data from the table: "nic_ccms.sms" */
   nic_ccms_sms: Array<Nic_Ccms_Sms>;
   /** fetch aggregated fields from the table: "nic_ccms.sms" */
@@ -7532,6 +7900,29 @@ export type Query_RootNic_Ccms_Event_By_PkArgs = {
 };
 
 
+export type Query_RootNic_Ccms_LogArgs = {
+  distinct_on?: InputMaybe<Array<Nic_Ccms_Log_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Nic_Ccms_Log_Order_By>>;
+  where?: InputMaybe<Nic_Ccms_Log_Bool_Exp>;
+};
+
+
+export type Query_RootNic_Ccms_Log_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Nic_Ccms_Log_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Nic_Ccms_Log_Order_By>>;
+  where?: InputMaybe<Nic_Ccms_Log_Bool_Exp>;
+};
+
+
+export type Query_RootNic_Ccms_Log_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
 export type Query_RootNic_Ccms_SmsArgs = {
   distinct_on?: InputMaybe<Array<Nic_Ccms_Sms_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -7716,6 +8107,14 @@ export type Subscription_Root = {
   nic_ccms_event_by_pk?: Maybe<Nic_Ccms_Event>;
   /** fetch data from the table in a streaming manner : "nic_ccms.event" */
   nic_ccms_event_stream: Array<Nic_Ccms_Event>;
+  /** fetch data from the table: "nic_ccms.log" */
+  nic_ccms_log: Array<Nic_Ccms_Log>;
+  /** fetch aggregated fields from the table: "nic_ccms.log" */
+  nic_ccms_log_aggregate: Nic_Ccms_Log_Aggregate;
+  /** fetch data from the table: "nic_ccms.log" using primary key columns */
+  nic_ccms_log_by_pk?: Maybe<Nic_Ccms_Log>;
+  /** fetch data from the table in a streaming manner : "nic_ccms.log" */
+  nic_ccms_log_stream: Array<Nic_Ccms_Log>;
   /** fetch data from the table: "nic_ccms.sms" */
   nic_ccms_sms: Array<Nic_Ccms_Sms>;
   /** fetch aggregated fields from the table: "nic_ccms.sms" */
@@ -8267,6 +8666,36 @@ export type Subscription_RootNic_Ccms_Event_StreamArgs = {
 };
 
 
+export type Subscription_RootNic_Ccms_LogArgs = {
+  distinct_on?: InputMaybe<Array<Nic_Ccms_Log_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Nic_Ccms_Log_Order_By>>;
+  where?: InputMaybe<Nic_Ccms_Log_Bool_Exp>;
+};
+
+
+export type Subscription_RootNic_Ccms_Log_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Nic_Ccms_Log_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Nic_Ccms_Log_Order_By>>;
+  where?: InputMaybe<Nic_Ccms_Log_Bool_Exp>;
+};
+
+
+export type Subscription_RootNic_Ccms_Log_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootNic_Ccms_Log_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Nic_Ccms_Log_Stream_Cursor_Input>>;
+  where?: InputMaybe<Nic_Ccms_Log_Bool_Exp>;
+};
+
+
 export type Subscription_RootNic_Ccms_SmsArgs = {
   distinct_on?: InputMaybe<Array<Nic_Ccms_Sms_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8350,6 +8779,13 @@ export type FileUploadActionMutationVariables = Exact<{
 
 
 export type FileUploadActionMutation = { __typename?: 'mutation_root', _upload?: { __typename?: 'UploadOutput', id: string, name: string, url: string } | null };
+
+export type CreateLogEntryMutationVariables = Exact<{
+  objects?: InputMaybe<Array<Nic_Ccms_Log_Insert_Input> | Nic_Ccms_Log_Insert_Input>;
+}>;
+
+
+export type CreateLogEntryMutation = { __typename?: 'mutation_root', insert_nic_ccms_log?: { __typename?: 'nic_ccms_log_mutation_response', returning: Array<{ __typename?: 'nic_ccms_log', id: any, timestamp: any }> } | null };
 
 export type RegulatedEntitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8453,6 +8889,42 @@ export function useFileUploadActionMutation(baseOptions?: Apollo.MutationHookOpt
 export type FileUploadActionMutationHookResult = ReturnType<typeof useFileUploadActionMutation>;
 export type FileUploadActionMutationResult = Apollo.MutationResult<FileUploadActionMutation>;
 export type FileUploadActionMutationOptions = Apollo.BaseMutationOptions<FileUploadActionMutation, FileUploadActionMutationVariables>;
+export const CreateLogEntryDocument = gql`
+    mutation CreateLogEntry($objects: [nic_ccms_log_insert_input!] = {}) {
+  insert_nic_ccms_log(objects: $objects) {
+    returning {
+      id
+      timestamp
+    }
+  }
+}
+    `;
+export type CreateLogEntryMutationFn = Apollo.MutationFunction<CreateLogEntryMutation, CreateLogEntryMutationVariables>;
+
+/**
+ * __useCreateLogEntryMutation__
+ *
+ * To run a mutation, you first call `useCreateLogEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLogEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLogEntryMutation, { data, loading, error }] = useCreateLogEntryMutation({
+ *   variables: {
+ *      objects: // value for 'objects'
+ *   },
+ * });
+ */
+export function useCreateLogEntryMutation(baseOptions?: Apollo.MutationHookOptions<CreateLogEntryMutation, CreateLogEntryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateLogEntryMutation, CreateLogEntryMutationVariables>(CreateLogEntryDocument, options);
+      }
+export type CreateLogEntryMutationHookResult = ReturnType<typeof useCreateLogEntryMutation>;
+export type CreateLogEntryMutationResult = Apollo.MutationResult<CreateLogEntryMutation>;
+export type CreateLogEntryMutationOptions = Apollo.BaseMutationOptions<CreateLogEntryMutation, CreateLogEntryMutationVariables>;
 export const RegulatedEntitiesDocument = gql`
     query RegulatedEntities {
   RegulatedEntity {
@@ -8545,7 +9017,7 @@ export function refetchGetTicketNumberQuery(variables: GetTicketNumberQueryVaria
 export const GetStatusDocument = gql`
     query getStatus($_eq: String!) {
   currentStatusData: nic_ccms_ComplaintStatus(
-    where: {Complaint: {ticketNumber: {_eq: $_eq}}}
+    where: {Complaint: {ticketNumber: {_eq: $_eq}}, isActive: {_eq: true}}
   ) {
     isActive
     status

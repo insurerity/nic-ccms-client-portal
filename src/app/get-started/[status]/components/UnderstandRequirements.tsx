@@ -54,6 +54,7 @@ const UnderstandRequirements = ({
           }`}
           disabled={!understood}
           text={continueText}
+          actionFrom="Requirement "
          
         />
       </div>

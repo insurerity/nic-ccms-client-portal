@@ -1,14 +1,17 @@
 "use client";
 
+import { logInfo } from "@/lib/logger";
 import { useRouter } from "next/navigation";
 type ActionButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   text: string;
   goTo?: string;
+  actionFrom: string
 };
 
 const ActionButton: React.FC<ActionButtonProps> = ({
   text,
   goTo,
+  actionFrom,
   ...props
 }) => {
   const router = useRouter();
@@ -24,6 +27,9 @@ const ActionButton: React.FC<ActionButtonProps> = ({
         } else if (props.onClick) {
           props.onClick(e);
         }
+
+      logInfo('Button-Click', { buttonName: actionFrom });
+
       }}
     >
       {text}

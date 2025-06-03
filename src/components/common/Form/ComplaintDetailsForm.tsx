@@ -57,6 +57,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EntityDrawer } from "../EntityOfConcernDrawer";
 import { ComplaintFormProps } from "@/types";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { logInfo } from "@/lib/logger";
 
 const ComplaintDetailsForm = ({
   onNextStep,
@@ -68,7 +71,9 @@ const ComplaintDetailsForm = ({
   const { entities, loadingEntities } = useGetRegulatedEntities();
   const isMobile = useIsMobile();
   const { showDialog } = useFaqsDialogStore();
+  const pathName = usePathname();
 
+ 
   const form = useForm<complaintDetailFormSchemaType>({
     resolver: zodResolver(complaintDetailFormSchema),
     defaultValues: data?.complaintDetails
@@ -111,6 +116,13 @@ const ComplaintDetailsForm = ({
       onPrevStep();
     }
   };
+
+   useEffect(() => {
+    logInfo("Page View", {
+      component: "ComplaintsDetailsForm",
+      path: pathName,
+    });
+  }, [pathName]);
   return (
     <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
       <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
@@ -495,6 +507,7 @@ const ComplaintDetailsForm = ({
                 text="Next"
                 type="submit"
                 className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+                 actionFrom="Complaint Details Form"
               />
             </div>
           ) : (
@@ -503,6 +516,7 @@ const ComplaintDetailsForm = ({
                 text="Next"
                 type="submit"
                 className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+                 actionFrom="Complaint Details Form"
               />
             </div>
           )}

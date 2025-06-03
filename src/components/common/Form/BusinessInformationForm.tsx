@@ -40,6 +40,9 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { logInfo } from "@/lib/logger";
 
 interface BusinessInformationFormProps {
   onNextStep: () => void;
@@ -53,11 +56,19 @@ const BusinessInformationForm = ({
   currentStep,
 }: BusinessInformationFormProps) => {
   const { offices: regions, loading: loadingRegions } = useGetRegions();
-
   const { data, setData } = useComplaintStore();
   const isMobile = useIsMobile();
   const { showDialog } = useFaqsDialogStore();
-  
+  const pathName = usePathname();
+
+  useEffect(() => {
+    logInfo("Page View", {
+      component: "BusinessInformationForm",
+      path: pathName,
+      step: currentStep,
+    });
+  }, [pathName, currentStep]);
+
   const form = useForm<BusinessInformationSchemaType>({
     resolver: zodResolver(BusinessInformationSchema),
     defaultValues: data.businessInformation
@@ -350,6 +361,7 @@ const BusinessInformationForm = ({
                 text="Next"
                 type="submit"
                 className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+                actionFrom="Business Information Form"
               />
             </div>
           ) : (
@@ -358,6 +370,8 @@ const BusinessInformationForm = ({
                 text="Next"
                 type="submit"
                 className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+                actionFrom="Business Information Form"
+
               />
             </div>
           )}

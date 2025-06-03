@@ -39,6 +39,8 @@ import ActionButton from "../ActionButton";
 import { z } from "zod";
 import { ComplaintFormProps } from "@/types";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { usePathname } from "next/navigation";
+import { logInfo } from "@/lib/logger";
 
 // Define the schema for the case details form
 const CaseDetailsSchema = z.object({
@@ -64,20 +66,22 @@ const CaseDetailsForm = ({
   const { data, setData } = useComplaintStore();
   const isMobile = useIsMobile();
   const { showDialog } = useFaqsDialogStore();
-
-  const form = useForm<CaseDetailsSchemaType>({
-    resolver: zodResolver(CaseDetailsSchema),
-    defaultValues: data?.caseDetails
-      ? {
-          ...data.caseDetails,
-        }
-      : {
-          claimType: "",
-          vehicleNumber: "",
-          description: "",
-        },
+ const pathName = usePathname();
+  
+ 
+ const form = useForm<CaseDetailsSchemaType>({
+   resolver: zodResolver(CaseDetailsSchema),
+   defaultValues: data?.caseDetails
+   ? {
+     ...data.caseDetails,
+    }
+    : {
+      claimType: "",
+      vehicleNumber: "",
+      description: "",
+    },
   });
-
+  
   useEffect(() => {
     // If a global caseType is provided and there isn't already a
     // specific claimType set in the stored caseDetails,
@@ -96,15 +100,21 @@ const CaseDetailsForm = ({
     setData("caseDetails", values);
     onNextStep();
   };
-
+  
   const handleBackClick = () => {
-      const currentValues = form.getValues();
-      setData("caseDetails", currentValues as CaseDetailsSchemaType);
-      if (onPrevStep) {
-        onPrevStep();
-      }
-    };
-
+    const currentValues = form.getValues();
+    setData("caseDetails", currentValues as CaseDetailsSchemaType);
+    if (onPrevStep) {
+      onPrevStep();
+    }
+  };
+  
+  useEffect(() => {
+    logInfo("Page View", {
+      component: "CaseDetailsForm",
+      path: pathName,
+    });
+  }, [pathName]);
   return (
     <Suspense>
       <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
@@ -250,6 +260,8 @@ const CaseDetailsForm = ({
                   text="Next"
                   type="submit"
                   className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+                  actionFrom="Case Details Form"
+
                 />
               </div>
             ) : (
@@ -258,6 +270,7 @@ const CaseDetailsForm = ({
                   text="Next"
                   type="submit"
                   className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+                  actionFrom="Case Details Form"
                 />
               </div>
             )}

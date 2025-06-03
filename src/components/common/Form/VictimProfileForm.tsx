@@ -48,6 +48,9 @@ import {
 } from "@/components/ui/popover";
 import { ComplaintFormProps } from "@/types";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { logInfo } from "@/lib/logger";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const VictimsProfileForm = ({
   onNextStep,
@@ -58,6 +61,7 @@ const VictimsProfileForm = ({
   const { setData, data } = useComplaintStore();
   const isMobile = useIsMobile();
   const { showDialog } = useFaqsDialogStore();
+  const pathName = usePathname();
 
   const form = useForm<VictimProfileSchemaType>({
     resolver: zodResolver(VictimProfileSchema),
@@ -83,7 +87,12 @@ const VictimsProfileForm = ({
     onNextStep();
   };
 
- 
+   useEffect(() => {
+     logInfo("Page View", {
+       component: "ComplaintsDetailsForm",
+       path: pathName,
+     });
+   }, [pathName]);
 
   function generateDigitalAddress() {
     navigator.geolocation.getCurrentPosition(
@@ -431,6 +440,8 @@ const VictimsProfileForm = ({
                 text="Next"
                 type="submit"
                 className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+                actionFrom="Victim Profile Form"
+
               />
             </div>
           ) : (
@@ -439,6 +450,8 @@ const VictimsProfileForm = ({
                 text="Next"
                 type="submit"
                 className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+                actionFrom="Victim Profile Form"
+
               />
             </div>
           )}
