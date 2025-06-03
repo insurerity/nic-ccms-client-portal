@@ -11,3 +11,13 @@ mutation fileUploadAction($base64: String!, $name: String!, $mime: String!) {
     url
   }
 }
+
+
+ mutation CreateLogEntry($objects: [nic_ccms_log_insert_input!] = {}) {
+  insert_nic_ccms_log(objects: $objects) {
+    returning {
+      id
+      timestamp
+    }
+  }
+}

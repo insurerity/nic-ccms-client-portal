@@ -40,6 +40,7 @@ const GetStartedCheckStatus = ({
             text="Check Now"
             goTo="/complaints/check-status"
             className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full  cursor-pointer mt-4"
+            actionFrom="Check Complaint Status"
           />
         </div>
       </div>

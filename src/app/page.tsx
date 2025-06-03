@@ -42,6 +42,7 @@ export default function Home() {
             goTo="/get-started"
             text="Get Started"
             className="bg-[#59285F] text-white font-medium py-3 px-8 rounded-full hover:cursor-pointer w-full md:w-[200px]"
+            actionFrom="Victim Profile Form"
           />
         </div>
 

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import BigBellIcon from "@/components/icons/BigBellIcon";
 import { usePathname, useRouter } from "next/navigation";
+import { logInfo } from "@/lib/logger";
 
 export default function CautionNotice() {
   const router = useRouter();
@@ -22,6 +23,13 @@ export default function CautionNotice() {
   const handleContinueClick = () => {
     router.push(`${pathName}/petitioner`);
   };
+
+  useEffect(() => {
+    logInfo("Page View", {
+      component: "CautionNotice",
+      path: pathName,
+    });
+  }, [pathName]);
 
   return (
     <div className="flex justify-center items-center">

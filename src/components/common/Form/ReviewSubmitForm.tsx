@@ -16,6 +16,9 @@ import { useAddTicketMutation } from "@/graphql/generated";
 import { useUploadSupportingDocuments } from "@/hooks/use-upload-documents";
 import { transformComplaintData } from "@/lib/upload";
 import { showCustomToast } from "@/lib/errors";
+import { useEffect } from "react";
+import { logInfo } from "@/lib/logger";
+import { usePathname } from "next/navigation";
 
 const uploadLoaderIDS = {
   documents: "SD-LOADER",
@@ -37,9 +40,9 @@ const ReviewSubmitForm = ({
   const { reset: resetSharedStore, caseType } = useSharedStore();
   const { setId } = useNewComplaintIdStore();
   const [createComplaint, { loading, reset }] = useAddTicketMutation();
+  const pathName = usePathname();
 
-
-  console.log('vder', data)
+  console.log("vder", data);
 
   const { uploadSupportingDocuments, uploadLoading } =
     useUploadSupportingDocuments();
@@ -106,6 +109,13 @@ const ReviewSubmitForm = ({
       v.identifier !== "supporting-documents"
   );
 
+  useEffect(() => {
+    logInfo("Page View", {
+      component: "ReviewSubmitForm",
+      path: pathName,
+    });
+  }, [pathName]);
+
   return (
     <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
       <div className="bg-primaryLight text-white p-6 rounded-xl mb-6 flex items-center justify-between">
@@ -119,12 +129,13 @@ const ReviewSubmitForm = ({
           onClick={handleSubmit}
           text="Submit"
           className="bg-white text-primaryLight font-medium py-2 px-4 rounded-full hover:bg-white/90"
+          actionFrom="Review Submit Form"
         />
       </div>
 
       <div className="space-y-6">
         {filteredSteps?.map((v) => {
-          console.log('v', v)
+          console.log("v", v);
           return (
             <div key={v.identifier}>
               <h3 className="text-lg font-medium text-primaryLight">
@@ -191,6 +202,7 @@ const ReviewSubmitForm = ({
             text="Submit Complaint"
             onClick={handleSubmit}
             className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+            actionFrom="Review Submit Form"
           />
         </div>
       </div>

@@ -27,6 +27,8 @@ import {
 import ActionButton from "../ActionButton";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { usePathname } from "next/navigation";
+import { logInfo } from "@/lib/logger";
 
 // This will be dynamically generated based on the documents array
 const createFormSchema = (documents: DocumentTypeT[]) => {
@@ -87,7 +89,8 @@ const DynamicSupportingDocumentsForm = ({
   const { showDialog } = useFaqsDialogStore();
   // Create the schema based on the documents array
   const formSchema = createFormSchema(documents);
-
+  const pathName = usePathname();
+  
   // Create default values based on documents
   const defaultValues: Record<string, any> = {};
   documents.forEach((doc) => {
@@ -199,6 +202,14 @@ const DynamicSupportingDocumentsForm = ({
     setUploadedFiles(newUiFiles);
   }, [data.supportingDocuments, documents]);
 
+   useEffect(() => {
+      logInfo("Page View", {
+        component: "BusinessInformationForm",
+        path: pathName,
+      });
+    }, [pathName]);
+
+    
   return (
     <div className="bg-white lg:rounded-[28px] shadow-sm  p-6">
       <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
@@ -316,6 +327,7 @@ const DynamicSupportingDocumentsForm = ({
               text="Continue"
               type="submit"
               className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
+               actionFrom="Dynamic Support Documents Form"
             />
             {/* <Button type="submit" className="hover:bg-primaryLight/90">
               Continue

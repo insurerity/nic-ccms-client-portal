@@ -3,15 +3,17 @@
 import { Button } from "@/components/ui/button";
 import { useGetTicketNumberQuery } from "@/graphql/generated";
 import { useNewComplaintIdStore } from "@/hooks/use-complaint-store";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { logInfo } from "@/lib/logger";
 
 const SubmissionSuccess = () => {
   const router = useRouter();
   const { id } = useNewComplaintIdStore();
   const [initialLoading, setInitialLoading] = useState(true);
   const [shouldFetchData, setShouldFetchData] = useState(false);
+  const pathName = usePathname();
 
   // Only start the query after the initial delay
   const { data, loading, error } = useGetTicketNumberQuery({
@@ -31,8 +33,16 @@ const SubmissionSuccess = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    logInfo("Page View", {
+      component: "SubmissionSuccess",
+      path: pathName,
+    });
+  }, [pathName]);
+  
   const onCheckStatus = () => {
     router.replace(`/complaints/check-status`);
+    logInfo('Button Click', {buttonName: 'Check Complaint - Redirect After Submit'})
   };
 
   // Show loading state if either initialLoading is true or the query is loading
