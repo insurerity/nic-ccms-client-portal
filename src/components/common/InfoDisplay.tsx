@@ -31,7 +31,7 @@ export const InfoDisplay = ({ data }: InfoDisplayProps) => {
           <div key={key}>
             <p className="text-sm text-gray-500">{camelCaseToTitle(key)}</p>
             <p className="text-base font-medium text-black">
-              {String(val) || "—"}
+              {String(val ?? '') || "—"}
             </p>
           </div>
         );

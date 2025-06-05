@@ -93,7 +93,7 @@ const MCompBusiness = () => {
     <Suspense>
       <FormLayout
         currentStep={currentStep}
-        faqs={DEFAULT_FAQS}
+        faqs={currentFaq}
         steps={formSteps}
       >
         {renderStepContent()}

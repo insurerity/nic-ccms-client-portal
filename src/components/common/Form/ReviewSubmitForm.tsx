@@ -12,7 +12,7 @@ import {
 } from "@/hooks/use-complaint-store";
 import { camelCaseToTitle, toCamelCase } from "@/lib/utils";
 import { InfoDisplay } from "../InfoDisplay";
-import { useAddTicketMutation } from "@/graphql/generated";
+import { useAddTicketMutation, useErrorHandlerMutation } from "@/graphql/generated";
 import { useUploadSupportingDocuments } from "@/hooks/use-upload-documents";
 import { transformComplaintData } from "@/lib/upload";
 import { showCustomToast } from "@/lib/errors";
@@ -40,6 +40,7 @@ const ReviewSubmitForm = ({
   const { reset: resetSharedStore, caseType } = useSharedStore();
   const { setId } = useNewComplaintIdStore();
   const [createComplaint, { loading, reset }] = useAddTicketMutation();
+  const [errorHandler] = useErrorHandlerMutation()
   const pathName = usePathname();
 
   console.log("vder", data);
@@ -90,12 +91,21 @@ const ReviewSubmitForm = ({
           toast.dismiss(uploadLoaderIDS.complaints);
           toast.dismiss(uploadLoaderIDS.documents);
           console.log("error", error);
+          errorHandler({
+            variables: {
+              error: {
+                 error : error,
+                "APPLICATION" : "CLIENT"
+              }
+            }
+          })
           showCustomToast({
             title: "Submission Failed",
             type: "error",
             description:
               "We couldn't process your complaint. Please try again later.",
           });
+
         },
       });
     } catch (error) {

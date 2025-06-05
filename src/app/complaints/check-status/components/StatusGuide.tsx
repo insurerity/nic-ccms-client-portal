@@ -57,7 +57,7 @@ const StatusGuide: React.FC<StatusGuideProps> = ({
               {/* Status icon */}
               <div
                 className={cn(
-                  "shrink-0 rounded-full h-12 w-12 flex items-center justify-center z-10",
+                  "shrink-0 rounded-full h-12 w-12 flex items-center justify-center z-0",
                   iconStatus === "active" &&
                     activeStatus !== EComplaintStatuses.resolved &&
                     "bg-primary text-white",
