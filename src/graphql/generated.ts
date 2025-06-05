@@ -8787,6 +8787,13 @@ export type CreateLogEntryMutationVariables = Exact<{
 
 export type CreateLogEntryMutation = { __typename?: 'mutation_root', insert_nic_ccms_log?: { __typename?: 'nic_ccms_log_mutation_response', returning: Array<{ __typename?: 'nic_ccms_log', id: any, timestamp: any }> } | null };
 
+export type ErrorHandlerMutationVariables = Exact<{
+  error?: InputMaybe<Scalars['jsonb']['input']>;
+}>;
+
+
+export type ErrorHandlerMutation = { __typename?: 'mutation_root', _error_handler?: { __typename?: 'ErrorOutput', success: boolean } | null };
+
 export type RegulatedEntitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -8925,6 +8932,39 @@ export function useCreateLogEntryMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateLogEntryMutationHookResult = ReturnType<typeof useCreateLogEntryMutation>;
 export type CreateLogEntryMutationResult = Apollo.MutationResult<CreateLogEntryMutation>;
 export type CreateLogEntryMutationOptions = Apollo.BaseMutationOptions<CreateLogEntryMutation, CreateLogEntryMutationVariables>;
+export const ErrorHandlerDocument = gql`
+    mutation ErrorHandler($error: jsonb = "") {
+  _error_handler(error: $error) {
+    success
+  }
+}
+    `;
+export type ErrorHandlerMutationFn = Apollo.MutationFunction<ErrorHandlerMutation, ErrorHandlerMutationVariables>;
+
+/**
+ * __useErrorHandlerMutation__
+ *
+ * To run a mutation, you first call `useErrorHandlerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useErrorHandlerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [errorHandlerMutation, { data, loading, error }] = useErrorHandlerMutation({
+ *   variables: {
+ *      error: // value for 'error'
+ *   },
+ * });
+ */
+export function useErrorHandlerMutation(baseOptions?: Apollo.MutationHookOptions<ErrorHandlerMutation, ErrorHandlerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ErrorHandlerMutation, ErrorHandlerMutationVariables>(ErrorHandlerDocument, options);
+      }
+export type ErrorHandlerMutationHookResult = ReturnType<typeof useErrorHandlerMutation>;
+export type ErrorHandlerMutationResult = Apollo.MutationResult<ErrorHandlerMutation>;
+export type ErrorHandlerMutationOptions = Apollo.BaseMutationOptions<ErrorHandlerMutation, ErrorHandlerMutationVariables>;
 export const RegulatedEntitiesDocument = gql`
     query RegulatedEntities {
   RegulatedEntity {

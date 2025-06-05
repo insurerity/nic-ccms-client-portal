@@ -8,7 +8,7 @@ export const formatFileSize = (bytes: number): string => {
 };
 
 export const normalizePhoneNumber = (phoneNumber?: string): string | undefined  => {
-  if (!phoneNumber) return undefined;
+  if (!phoneNumber) return "";
 
   const trimmed = phoneNumber.trim();
 

@@ -21,3 +21,9 @@ mutation fileUploadAction($base64: String!, $name: String!, $mime: String!) {
     }
   }
 }
+
+mutation ErrorHandler($error: jsonb = "") {
+  _error_handler(error: $error) {
+    success
+  }
+}
