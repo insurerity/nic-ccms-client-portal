@@ -15,6 +15,7 @@ import {
 
 import { Suspense, useState } from "react";
 import { useSharedStore } from "@/hooks/use-complaint-store";
+import { FAQ_BY_FORM } from "@/lib/FAQs";
 
 const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "business-information": BusinessInformationForm,
@@ -56,6 +57,10 @@ const MCompBusiness = () => {
     ? MOTOR_COMPENSATION_FORM_STEPS["business"][toSearchParam]
     : [];
 
+    const currentFormStep = formSteps?.[currentStep - 1];
+    
+      const currentFaq = FAQ_BY_FORM[currentFormStep?.identifier];
+      
   const renderStepContent = () => {
     if (isCompleted) {
       return <SubmissionSuccess />;

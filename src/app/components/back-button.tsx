@@ -21,7 +21,11 @@ export default function GoBack({
   console.log(pathname)
   const handleGoBack = () => {
     if (closeForm) {
-      return showDialog();
+        if(pathname === '/complaints/check-status'){
+          router.back()
+        } else {
+          return showDialog();
+        }
     } else {
       return pathname !== "/get-started" ? router.back() : router.push("/") ;
     }

@@ -8,6 +8,7 @@ import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
 import SubmissionSuccess from "@/components/common/Form/SubmissionSuccess";
 import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
 import { useSharedStore } from "@/hooks/use-complaint-store";
+import { FAQ_BY_FORM } from "@/lib/FAQs";
 
 import {
   DEFAULT_FAQS,
@@ -55,7 +56,10 @@ const MotorCompIndividual = () => {
   const formSteps =
     //@ts-ignore
     MOTOR_COMPENSATION_FORM_STEPS["individual"][complainantType as any];
+  const currentFormStep = formSteps?.[currentStep - 1];
 
+  const currentFaq = FAQ_BY_FORM[currentFormStep?.identifier];
+  
   const renderStepContent = () => {
     if (isCompleted) {
       return <SubmissionSuccess />;
@@ -88,7 +92,7 @@ const MotorCompIndividual = () => {
     <Suspense>
       <FormLayout
         currentStep={currentStep}
-        faqs={DEFAULT_FAQS}
+        faqs={currentFaq}
         steps={formSteps}
       >
         {renderStepContent()}

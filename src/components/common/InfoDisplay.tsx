@@ -20,8 +20,11 @@ export const InfoDisplay = ({ data }: InfoDisplayProps) => {
         } else if (key === "entityOfConcern") {
           const selectedOffice = entities.find((office) => office.id === val);
           val = selectedOffice?.label;
-        } else if (key === "dateOfIncident") {
-          const formatted = format(new Date(value), "M/d/yyyy");
+        } else if (key === "incidentDate") {
+          const formatted = format(new Date(value), "MMMM d, yyyy");
+          val = formatted;
+        }else if (key === "dateOfIncident") {
+          const formatted = format(new Date(value), "MMMM d, yyyy");
           val = formatted;
         }
         return (

@@ -76,17 +76,22 @@ const CaseDetailsForm = ({
      ...data.caseDetails,
     }
     : {
-      claimType: "",
+      claimType: capitalize(caseType),
       vehicleNumber: "",
       description: "",
     },
   });
-  
+
+
   useEffect(() => {
     // If a global caseType is provided and there isn't already a
     // specific claimType set in the stored caseDetails,
     // then pre-fill the form's claimType with the global caseType.
-    if (caseType && !data.caseDetails?.claimType) {
+    const claimTypeInStore = data.caseDetails?.claimType;
+    console.log('Mystatus', caseType, capitalize(caseType), !claimTypeInStore, 'Stored claimType:', claimTypeInStore);
+
+    // Pre-fill if caseType is available and claimType in store is falsy (undefined, null, or "")
+    if (caseType && !claimTypeInStore) {
       console.log(
         "Pre-filling claimType from global caseType:",
         capitalize(caseType)
@@ -95,7 +100,7 @@ const CaseDetailsForm = ({
     }
     // This effect depends on the global caseType, the specific claimType
     // within the stored caseDetails, and the setValue function.
-  }, [caseType, data.caseDetails?.claimType, form.setValue]);
+  }, [caseType, data.caseDetails, form.setValue]); // Changed dependency here
   const onSubmit = (values: CaseDetailsSchemaType) => {
     setData("caseDetails", values);
     onNextStep();

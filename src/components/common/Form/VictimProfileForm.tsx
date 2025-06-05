@@ -192,7 +192,8 @@ const VictimsProfileForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Email <span className="text-red-500">*</span>
+                    Email 
+                    {/* <span className="text-red-500">*</span> */}
                   </FormLabel>
                   <FormControl>
                     <Input
