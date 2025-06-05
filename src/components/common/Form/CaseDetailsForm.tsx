@@ -61,9 +61,9 @@ const CaseDetailsForm = ({
   onPrevStep,
   currentStep,
 }: ComplaintFormProps) => {
-  const { caseType } = useSharedStore();
+  const { caseType, setCaseType } = useSharedStore();
 
-  const { data, setData } = useComplaintStore();
+  const { data, setData,  } = useComplaintStore();
   const isMobile = useIsMobile();
   const { showDialog } = useFaqsDialogStore();
  const pathName = usePathname();
@@ -103,6 +103,7 @@ const CaseDetailsForm = ({
   }, [caseType, data.caseDetails, form.setValue]); // Changed dependency here
   const onSubmit = (values: CaseDetailsSchemaType) => {
     setData("caseDetails", values);
+    setCaseType(values?.claimType?.toLowerCase())
     onNextStep();
   };
   
