@@ -191,7 +191,8 @@ const BusinessInformationForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Business Email <span className="text-red-500">*</span>
+                    Business Email 
+                    {/* <span className="text-red-500">*</span> */}
                   </FormLabel>
                   <FormControl>
                     <Input

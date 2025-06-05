@@ -12,7 +12,14 @@ export const VictimProfileSchema = z
       .min(1, { message: "Last name is required" })
       .min(3, { message: "Invalid name length" })
       .max(30, { message: "Invalid Last Name provided" }),
-    email: z.string().email({ message: "Invalid email address" }),
+    email: z
+      .string()
+      .transform((val) => (val.trim() === "" ? undefined : val))
+      .optional()
+      .refine(
+        (val) => val === undefined || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+        { message: "Please enter a valid email address" }
+      ),
     phoneNumber: z.string().regex(/^0\d{9}$/, {
       message: "Phone number must start with 0 and be exactly 10 digits",
     }),
@@ -110,7 +117,10 @@ export const complaintDetailFormSchema = z
     }),
     otherPetitionReason: z.string().optional(),
     otherNatureOfClaim: z.string().optional(),
-    vehicleNumber: z.string().optional().refine((val) => !val || (val.length >= 3 && val.length <= 15), {
+    vehicleNumber: z
+      .string()
+      .optional()
+      .refine((val) => !val || (val.length >= 3 && val.length <= 15), {
         message:
           "Vehicle Number is invalid, check the number again or leave it empty.",
       }),
@@ -122,12 +132,12 @@ export const complaintDetailFormSchema = z
           data.otherPetitionReason && data.otherPetitionReason.trim().length > 0
         );
       }
-      return true; 
+      return true;
     },
     {
       message: "Please specify your reason when 'Others' is selected.",
-      path: ["otherPetitionReason"], 
-    },
+      path: ["otherPetitionReason"],
+    }
   )
   .refine(
     (data) => {
@@ -141,7 +151,7 @@ export const complaintDetailFormSchema = z
     {
       message: "Please specify the nature of claim when 'Other' is selected.",
       path: ["otherNatureOfClaim"],
-    },
+    }
   );
 
 // Define the schema for the business information form
@@ -170,15 +180,20 @@ export const BusinessInformationSchema = z.object({
         message: "Phone number must be at least 10 digits or left empty",
       }
     ),
-  businessEmail: z.string().email({
-    message: "Please enter a valid email address",
-  }),
+  businessEmail: z
+    .string()
+    .transform((val) => (val.trim() === "" ? undefined : val))
+    .optional()
+    .refine(
+      (val) => val === undefined || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+      { message: "Please enter a valid email address" }
+    ),
   contactPersonName: z.string().min(2, {
     message: "Contact person name is required",
   }),
   contactPhoneNumber: z
     .string()
-    .optional()
+    .min(1, { message: "Phone number is required" })
     .refine(
       (val) =>
         val === null ||
@@ -186,7 +201,7 @@ export const BusinessInformationSchema = z.object({
         val.trim() === "" ||
         val.length === 10,
       {
-        message: "Phone number must be at least 10 digits or left empty",
+        message: "Phone number must be at least 10 digits",
       }
     ),
   region: z
@@ -213,10 +228,12 @@ export const PetitionerProfileSchema = z
       }),
     email: z
       .string()
-      .email({
-        message: "Please enter a valid email address",
-      })
-      .optional(),
+      .transform((val) => (val.trim() === "" ? undefined : val))
+      .optional()
+      .refine(
+        (val) => val === undefined || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+        { message: "Please enter a valid email address" }
+      ),
     phoneNumber: z.string().regex(/^0\d{9}$/, {
       message: "Phone number must start with 0 and be exactly 10 digits",
     }),

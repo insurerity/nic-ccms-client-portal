@@ -267,7 +267,7 @@ const DynamicSupportingDocumentsForm = ({
                             />
                             <UploadIcon />
                             <p className="mt-1 text-sm text-gray-600">
-                              Upload File
+                              Upload File <br /> (Max size - 15MB)
                             </p>
                           </label>
                         ) : (

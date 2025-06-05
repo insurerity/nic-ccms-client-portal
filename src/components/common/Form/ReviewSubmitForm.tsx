@@ -62,6 +62,7 @@ const ReviewSubmitForm = ({
         toast.error("Failed to upload complaint documents");
       }
       const payload = transformComplaintData(data);
+      console.log("paloas documents", payload);
 
       if (documents && documents.length > 0) {
         toast.dismiss(uploadLoaderIDS.documents);
