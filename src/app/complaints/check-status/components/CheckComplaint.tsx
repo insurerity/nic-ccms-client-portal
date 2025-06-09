@@ -1,11 +1,12 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChevronRight } from "lucide-react";
 import {
+  useErrorHandlerMutation,
   useGetComplaintStatusesByTicketNumberLazyQuery,
   useGetStatusLazyQuery,
 } from "@/graphql/generated";
@@ -17,6 +18,8 @@ import { ComplaintStatusDescriptions, EComplaintStatuses } from "@/lib/state";
 import StatusGuide from "./StatusGuide";
 import { useRouter } from "next/navigation";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { logError } from "@/lib/logger";
+import { toast } from "sonner";
 
 const ticketSchema = z.object({
   ticketNumber: z
@@ -27,8 +30,12 @@ const ticketSchema = z.object({
 export default function ComplaintStatusTracker() {
   const [getStatus, { loading: isLoading, data, error }] =
     useGetStatusLazyQuery();
+
+  const [errorHandler] = useErrorHandlerMutation();
   const router = useRouter();
   const isMobile = useIsMobile()
+
+
   const {
     register,
     handleSubmit,
@@ -48,8 +55,24 @@ export default function ComplaintStatusTracker() {
       variables: {
         _eq: ticketNumber,
       },
-    });
+     
+    },  );
   });
+
+
+  useEffect(()=>{
+
+    if(data?.currentStatusData?.length === 0){
+      toast.error("Invalid Ticket Number", {
+        style: {
+          backgroundColor: "#59285F",
+        color: "white"
+        }
+      })
+      return
+    }
+
+  }, [data?.currentStatusData])
 
   const handleCancel = () => {
     return router.push("/get-started");
@@ -58,8 +81,9 @@ export default function ComplaintStatusTracker() {
   return (
     <div className="flex flex-col lg:flex-row gap-6">
       {/* Left side - Status Guide */}
+      
      { !isMobile && <div className="w-full lg:w-2/5">
-        <StatusGuide
+        {<StatusGuide
           activeStatus={
             data ? getLatestStatus(data?.currentStatusData) : undefined
           }
@@ -67,7 +91,8 @@ export default function ComplaintStatusTracker() {
             data ? getLatestStatusCreatedAt(data?.currentStatusData) : undefined
           }
           allStatusesData={data ? data.allStatusesData : undefined}
-        />
+        />}
+       
       </div>}
 
       {/* Right side - Status Checker */}
@@ -113,8 +138,8 @@ export default function ComplaintStatusTracker() {
               {data && (
                 <div
                   className={`px-4 py-2 font-bold ${
-                    getLatestStatus(data.currentStatusData) ===
-                    EComplaintStatuses.resolved
+                    getLatestStatus(data?.currentStatusData) ===
+                    EComplaintStatuses?.resolved
                       ? "bg-green-700 text-white"
                       : "bg-customCard text-primaryLight"
                   } rounded-[12px]`}

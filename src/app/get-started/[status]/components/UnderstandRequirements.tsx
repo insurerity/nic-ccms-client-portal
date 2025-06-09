@@ -22,7 +22,7 @@ const UnderstandRequirements = ({
       : " I understand and meet all the requirements for filing a complaint or petition with the NIC";
   return (
     <div className="">
-      <div className="flex items-center justify-between mb-6">
+      {/* <div className="flex items-center justify-between mb-6">
         <label
           htmlFor="understand-requirements"
           className="font-semibold text-[#171717] text-sm lg:text-[16px]"
@@ -38,7 +38,7 @@ const UnderstandRequirements = ({
             className="text-[#59285F] focus:ring-[#59285F] focus:bg-[#59285F]"
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="flex justify-center">
         <ActionButton
@@ -48,11 +48,9 @@ const UnderstandRequirements = ({
               : `${pathName}/caution`
           }
           className={`px-8 py-3 rounded-full text-white font-medium transition-colors ${
-            understood
-              ? "bg-[#59285F] hover:bg-[#59285F]/90"
-              : "bg-gray-400 cursor-not-allowed hover:cursor-not-allowed"
+             "bg-[#59285F] hover:bg-[#59285F]/90"
+          
           }`}
-          disabled={!understood}
           text={continueText}
           actionFrom="Requirement "
          
