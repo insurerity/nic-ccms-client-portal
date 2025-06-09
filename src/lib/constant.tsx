@@ -185,19 +185,19 @@ export const GET_STARTED_STATUS_TOC_ITEMS: Record<string, TOCItem[]> = {
 export const GET_STARTED_STATUS_CONTENT: Record<any, ReactNode[]> = {
   petition: PETITION_DETAILED_DATA.map(({ id, title, content }) => (
     <section key={id} id={id} className="mb-12">
-      <h2 className="text-2xl font-bold text-purple-800 mb-4">{title}</h2>
+      <h2 className="text-2xl font-bold text-primary mb-4">{title}</h2>
       {content}
     </section>
   )),
   compensation: PETITION_DETAILED_DATA.map(({ id, title, content }) => (
     <section key={id} id={id} className="mb-12">
-      <h2 className="text-2xl font-bold text-purple-800 mb-4">{title}</h2>
+      <h2 className="text-2xl font-bold text-primary mb-4">{title}</h2>
       {content}
     </section>
   )),
   status: PETITION_DETAILED_DATA.map(({ id, title, content }) => (
     <section key={id} id={id} className="mb-12">
-      <h2 className="text-2xl font-bold text-purple-800 mb-4">{title}</h2>
+      <h2 className="text-2xl font-bold text-primary mb-4">{title}</h2>
       {content}
     </section>
   )),

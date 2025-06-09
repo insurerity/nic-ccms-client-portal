@@ -47,7 +47,8 @@ export const getLatestStatus = (statuses: any[]) => {
 };
 export const getLatestStatusCreatedAt = (statuses: any[]) => {
   if (!statuses) return "Submitted";
-  const latestStatus = statuses?.reduce((latest, status) => {
+  if(statuses.length === 0) return "Not available"
+   const latestStatus = statuses?.reduce((latest, status) => {
     return new Date(status?.created_at) > new Date(latest?.created_at)
       ? status
       : latest;
