@@ -27,7 +27,7 @@ const FORM_COMPONENTS: Record<string, React.FC<any>> = {
 
 const MCompBusiness = () => {
   const { complainantType, caseType } = useSharedStore();
-  console.log("case type", caseType);
+
   const toSearchParam = complainantType as
     | keyof (typeof MOTOR_COMPENSATION_FORM_STEPS)["individual"]
     | null;
@@ -57,10 +57,10 @@ const MCompBusiness = () => {
     ? MOTOR_COMPENSATION_FORM_STEPS["business"][toSearchParam]
     : [];
 
-    const currentFormStep = formSteps?.[currentStep - 1];
-    
-      const currentFaq = FAQ_BY_FORM[currentFormStep?.identifier];
-      
+  const currentFormStep = formSteps?.[currentStep - 1];
+
+  const currentFaq = FAQ_BY_FORM[currentFormStep?.identifier];
+
   const renderStepContent = () => {
     if (isCompleted) {
       return <SubmissionSuccess />;
@@ -91,11 +91,7 @@ const MCompBusiness = () => {
 
   return (
     <Suspense>
-      <FormLayout
-        currentStep={currentStep}
-        faqs={currentFaq}
-        steps={formSteps}
-      >
+      <FormLayout currentStep={currentStep} faqs={currentFaq} steps={formSteps}>
         {renderStepContent()}
       </FormLayout>
     </Suspense>

@@ -12,13 +12,17 @@ import {
 } from "@/hooks/use-complaint-store";
 import { camelCaseToTitle, toCamelCase } from "@/lib/utils";
 import { InfoDisplay } from "../InfoDisplay";
-import { useAddTicketMutation, useErrorHandlerMutation } from "@/graphql/generated";
+import {
+  useAddTicketMutation,
+  useErrorHandlerMutation,
+} from "@/graphql/generated";
 import { useUploadSupportingDocuments } from "@/hooks/use-upload-documents";
 import { transformComplaintData } from "@/lib/upload";
 import { showCustomToast } from "@/lib/errors";
 import { useEffect } from "react";
 import { logInfo } from "@/lib/logger";
 import { usePathname } from "next/navigation";
+import { transformToFileMap } from "@/lib/file";
 
 const uploadLoaderIDS = {
   documents: "SD-LOADER",
@@ -40,10 +44,9 @@ const ReviewSubmitForm = ({
   const { reset: resetSharedStore, caseType } = useSharedStore();
   const { setId } = useNewComplaintIdStore();
   const [createComplaint, { loading, reset }] = useAddTicketMutation();
-  const [errorHandler] = useErrorHandlerMutation()
+  const [errorHandler] = useErrorHandlerMutation();
   const pathName = usePathname();
-
-  console.log("vder", data);
+  const isMFUND = pathName.includes("compensation");
 
   const { uploadSupportingDocuments, uploadLoading } =
     useUploadSupportingDocuments();
@@ -54,16 +57,16 @@ const ReviewSubmitForm = ({
         id: uploadLoaderIDS.documents,
       });
       const documents = await uploadSupportingDocuments(
-        data.supportingDocuments
+        isMFUND
+          ? transformToFileMap(data.supportingDocuments)
+          : data.supportingDocuments
       );
-      console.log("uploaded documents", documents);
 
       if (documents.length === 0) {
         toast.dismiss(uploadLoaderIDS.documents);
         toast.error("Failed to upload complaint documents");
       }
       const payload = transformComplaintData(data);
-      console.log("paloas documents", payload);
 
       if (documents && documents.length > 0) {
         toast.dismiss(uploadLoaderIDS.documents);
@@ -90,22 +93,21 @@ const ReviewSubmitForm = ({
         onError(error) {
           toast.dismiss(uploadLoaderIDS.complaints);
           toast.dismiss(uploadLoaderIDS.documents);
-          console.log("error", error);
+
           errorHandler({
             variables: {
               error: {
-                 error : error,
-                "APPLICATION" : "CLIENT"
-              }
-            }
-          })
+                error: error,
+                APPLICATION: "CLIENT",
+              },
+            },
+          });
           showCustomToast({
             title: "Submission Failed",
             type: "error",
             description:
               "We couldn't process your complaint. Please try again later.",
           });
-
         },
       });
     } catch (error) {
@@ -171,6 +173,42 @@ const ReviewSubmitForm = ({
           >
             {Object.entries(data.supportingDocuments)?.map(([key, value]) => {
               if (!value) return;
+
+              if (key === "deathDoc2" || key === "injuryDoc2") {
+                return (
+                  <div key={key} className="space-y-1">
+                    <p className="text-sm text-gray-500">
+                      {camelCaseToTitle(key)}
+                    </p>
+                    {(value as File[])?.map((v, idx) => {
+                      return (
+                        <p
+                          key={idx}
+                          className="text-xs bg-customCard p-4 rounded-[5px] font-medium text-primaryLight flex gap-x-2 items-center"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="size-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+                            />
+                          </svg>
+                          {/* @ts-ignore */}
+                          {v?.name}
+                        </p>
+                      );
+                    })}
+                  </div>
+                );
+              }
+
               return (
                 <div key={key} className="space-y-1">
                   <p className="text-sm text-gray-500">

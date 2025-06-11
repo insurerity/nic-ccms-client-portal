@@ -1,7 +1,7 @@
 import { useFileUploadActionMutation } from "@/graphql/generated";
 import { convertFileToBase64 } from "@/lib/file";
 
-type FileMap = Record<
+export type FileMap = Record<
   string,
   {
     name: string;

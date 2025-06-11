@@ -21,16 +21,12 @@ export const GET_STARTED_STATUS_PAGE_DATA: Record<any, any> = {
   },
 };
 
-const REQUIRED_DOCS_MOTOR = [
-  "Original Police Accident report",
-  "Original Medical report",
-  "The claimant's National ID card, preferably Ghana card",
-  "Two (2) passport sized pictures endorsed by the Medical Doctor",
-];
+const REQUIRED_DOCS_MOTOR = ["Original Police Accident report"];
 
 export const MOTOR_COMP_REQUIRED_DOCUMENTS: Record<any, string[]> = {
   injury: [
     "Original Police Accident report",
+    "Other Documents",
     "Original Medical report",
     "The claimant's National ID card, preferably Ghana card",
     "Two (2) passport sized pictures endorsed by the Medical Doctor",
@@ -42,6 +38,7 @@ export const MOTOR_COMP_REQUIRED_DOCUMENTS: Record<any, string[]> = {
   ],
   death: [
     "Original Police Accident report",
+    "Other Documents",
     "Original Death Certificate or Burial permit",
     "Original Letters of Administration (adult)",
     "Original Statutory Declaration (minor)",
@@ -325,7 +322,12 @@ export const DEFAULT_FAQS = [
   },
 ];
 
-export const PETITION_REASON = ["No Response", "Delay In Payment", "Low quantum", "Others"];
+export const PETITION_REASON = [
+  "No Response",
+  "Delay In Payment",
+  "Low quantum",
+  "Others",
+];
 export const CLAIM_TYPES = ["Life", "Non Life", "Motor Compensation"];
 
 export const NATURE_OF_CLAIMS: Record<string, string[]> = {
@@ -339,7 +341,7 @@ export const NATURE_OF_CLAIMS: Record<string, string[]> = {
     "Whole Life Policy",
     "Investment Policy",
     "Term Life Policy",
-    "Other"
+    "Other",
   ],
   "Non Life": [
     "Performance Bond",
@@ -355,7 +357,7 @@ export const NATURE_OF_CLAIMS: Record<string, string[]> = {
     "Advance Mobilisation Bond",
     "Goods In Transit",
     "Group Life",
-    "Other"
+    "Other",
   ],
   "Motor Compensation": [
     "Motor Injury Claim",
@@ -365,7 +367,7 @@ export const NATURE_OF_CLAIMS: Record<string, string[]> = {
     "Motor Theft/Burglary",
     "Goods -in-transit",
     "Motor Flood Claim",
-    "Other"
+    "Other",
   ],
 };
 

@@ -30,42 +30,59 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { usePathname } from "next/navigation";
 import { logInfo } from "@/lib/logger";
 
-// This will be dynamically generated based on the documents array
 const createFormSchema = (documents: DocumentTypeT[]) => {
   const schemaFields: Record<string, any> = {};
 
   documents.forEach((doc) => {
-    schemaFields[doc.id] = doc.required
-      ? z.object({
-          name: z.string().min(1, "This document is required"),
-          size: z
-            .number()
-            .max(MAX_FILE_SIZE, "File size must be less than 15MB"),
-          type: z
-            .string()
-            .refine(
-              (type) => ACCEPTED_FILE_TYPES.includes(type),
-              "File type not accepted. Upload JPG, PNG, PDF, DOC, or DOCX files"
-            ),
-          file: z.any(),
-        })
-      : z
-          .object({
-            name: z.string().optional(),
+    if (doc.id === "injuryDoc2" || doc.id === "deathDoc2") {
+      schemaFields[doc.id] = z
+        .array(
+          z.object({
+            name: z.string(),
+            size: z.number().max(MAX_FILE_SIZE),
+            type: z
+              .string()
+              .refine(
+                (type) => ACCEPTED_FILE_TYPES.includes(type),
+                "File type not accepted."
+              ),
+            file: z.any(),
+          })
+        )
+        .optional();
+    } else {
+      schemaFields[doc.id] = doc.required
+        ? z.object({
+            name: z.string().min(1, "This document is required"),
             size: z
               .number()
-              .max(MAX_FILE_SIZE, "File size must be less than 15MB")
-              .optional(),
+              .max(MAX_FILE_SIZE, "File size must be less than 15MB"),
             type: z
               .string()
               .refine(
                 (type) => ACCEPTED_FILE_TYPES.includes(type),
                 "File type not accepted. Upload JPG, PNG, PDF, DOC, or DOCX files"
-              )
-              .optional(),
-            file: z.any().optional(),
+              ),
+            file: z.any(),
           })
-          .optional();
+        : z
+            .object({
+              name: z.string().optional(),
+              size: z
+                .number()
+                .max(MAX_FILE_SIZE, "File size must be less than 15MB")
+                .optional(),
+              type: z
+                .string()
+                .refine(
+                  (type) => ACCEPTED_FILE_TYPES.includes(type),
+                  "File type not accepted. Upload JPG, PNG, PDF, DOC, or DOCX files"
+                )
+                .optional(),
+              file: z.any().optional(),
+            })
+            .optional();
+    }
   });
 
   return z.object({
@@ -80,20 +97,16 @@ const DynamicSupportingDocumentsForm = ({
 }: SupportingDocumentsFormProps) => {
   const { caseType } = useSharedStore();
   const { data, setData } = useComplaintStore();
-  // Track uploaded files for each document type
   const [uploadedFiles, setUploadedFiles] = useState<
     Record<string, File | null>
   >({});
-
   const isMobile = useIsMobile();
   const { showDialog } = useFaqsDialogStore();
-  // Create the schema based on the documents array
-  const formSchema = createFormSchema(documents);
   const pathName = usePathname();
-
   const isMFUND = pathName.includes("compensation");
 
-  // Create default values based on documents
+  const formSchema = createFormSchema(documents);
+
   const defaultValues: Record<string, any> = {};
   documents.forEach((doc) => {
     defaultValues[doc.id] = undefined;
@@ -101,11 +114,7 @@ const DynamicSupportingDocumentsForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: data?.supportingDocuments
-      ? {
-          ...data.supportingDocuments, // Initialize form with store data
-        }
-      : defaultValues,
+    defaultValues: data?.supportingDocuments ?? defaultValues,
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
@@ -114,82 +123,99 @@ const DynamicSupportingDocumentsForm = ({
   };
 
   const handleBackClick = () => {
-    const currentValues = form.getValues().documents || [];
     const currentFormValues = form.getValues();
     setData("supportingDocuments", currentFormValues);
-    if (onPrevStep) {
-      onPrevStep();
-    }
+    if (onPrevStep) onPrevStep();
   };
 
   const handleFileChange = (
     docId: string,
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
+    if (!e.target.files?.length) return;
+    const file = e.target.files[0];
 
-      // validate file type - fallback if initial validator falls through
-
-      if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
-        return toast.error(
-          "File type not accepted. Upload JPG, PNG, PDF, DOC, or DOCX files"
-        );
-      }
-
-      // Check if this file already exists in any doc
-      const isDuplicate = Object.values(uploadedFiles).some(
-        (uploadedFile) =>
-          uploadedFile?.name === file.name && uploadedFile?.size === file.size
-      );
-
-      if (isDuplicate) {
-        toast.error(
-          "This file has already been uploaded for another document."
-        );
-        return;
-      }
-
-      // if MFUND check that required document is uploaded before optional documents
-      if (isMFUND) {
-        const reqDocId = documents[0]?.id;
-        if (!uploadedFiles[reqDocId] && docId !== reqDocId) {
-          return toast.error("Please upload the required document first");
-        }
-      }
-
-      // Update the state
-      setUploadedFiles((prev) => ({
-        ...prev,
-        [docId]: file,
-      }));
-
-      // Update the form
-      form.setValue(
-        docId,
-        {
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          file: file,
-        },
-        { shouldValidate: true }
+    if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+      return toast.error(
+        "File type not accepted. Upload JPG, PNG, PDF, DOC, or DOCX files"
       );
     }
+
+    const isDuplicate = Object.values(uploadedFiles).some(
+      (uploadedFile) =>
+        uploadedFile?.name === file.name && uploadedFile?.size === file.size
+    );
+    if (isDuplicate)
+      return toast.error(
+        "This file has already been uploaded for another document."
+      );
+
+    if (isMFUND) {
+      const reqDocId = documents[0]?.id;
+      if (!uploadedFiles[reqDocId] && docId !== reqDocId) {
+        return toast.error("Please upload the required document first");
+      }
+    }
+
+    setUploadedFiles((prev) => ({ ...prev, [docId]: file }));
+    form.setValue(
+      docId,
+      {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        file,
+      },
+      { shouldValidate: true }
+    );
+  };
+
+  const handleOtherDocumentsChange = (
+    docId: string,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!e.target.files?.length) return;
+    const files = Array.from(e.target.files);
+
+    const existing = form.getValues()[docId] ?? [];
+    const uniqueFiles = files.filter(
+      (f) =>
+        !existing.some((ex: any) => ex.name === f.name && ex.size === f.size)
+    );
+
+    if (uniqueFiles.length < files.length) {
+      toast.warning(
+        "Some files were skipped because they were already uploaded."
+      );
+    }
+    if (uniqueFiles.length === 0) {
+      toast.error("All selected files have already been uploaded.");
+      return;
+    }
+
+    const newEntries = uniqueFiles.map((file) => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      file,
+    }));
+
+    const updated = [...existing, ...newEntries];
+    form.setValue(docId, updated, { shouldValidate: true });
+  };
+
+  const removeOtherDoc = (docId: string, index: number) => {
+    const current = form.getValues()[docId] || [];
+    const updated = current.filter((_: any, i: number) => i !== index);
+    form.setValue(docId, updated, { shouldValidate: true });
   };
 
   const removeFile = (docId: string) => {
-    // Update the state
-    setUploadedFiles((prev) => ({
-      ...prev,
-      [docId]: null,
-    }));
-
-    // Update the form
+    setUploadedFiles((prev) => ({ ...prev, [docId]: null }));
     form.setValue(docId, undefined, { shouldValidate: true });
   };
 
-  // Effect to reset the form when store data changes
+  // reset the form when store data changes
   useEffect(() => {
     if (
       data.supportingDocuments &&
@@ -205,23 +231,20 @@ const DynamicSupportingDocumentsForm = ({
       form.reset(initialDefaultValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.supportingDocuments, documents]); // form.reset is not added to prevent potential loops
-
-  // Effect to synchronize the local uploadedFiles state (for UI) with the store
-  useEffect(() => {
-    const newUiFiles: Record<string, File | null> = {};
-    if (data.supportingDocuments) {
-      documents.forEach((doc) => {
-        const docId = doc.id;
-        const storeFileEntry = data.supportingDocuments[docId];
-        newUiFiles[docId] =
-          storeFileEntry && storeFileEntry.file instanceof File
-            ? storeFileEntry.file
-            : null;
-      });
-    }
-    setUploadedFiles(newUiFiles);
   }, [data.supportingDocuments, documents]);
+
+  useEffect(() => {
+    if (data.supportingDocuments) {
+      form.reset(data.supportingDocuments);
+      const newUiFiles: Record<string, File | null> = {};
+      documents.forEach((doc) => {
+        const value = data.supportingDocuments[doc.id];
+        if (Array.isArray(value)) return;
+        newUiFiles[doc.id] = value?.file instanceof File ? value.file : null;
+      });
+      setUploadedFiles(newUiFiles);
+    }
+  }, [data.supportingDocuments, documents, form]);
 
   useEffect(() => {
     logInfo("Page View", {
@@ -231,7 +254,7 @@ const DynamicSupportingDocumentsForm = ({
   }, [pathName]);
 
   return (
-    <div className="bg-white lg:rounded-[28px] shadow-sm  p-6">
+    <div className="bg-white lg:rounded-[28px] shadow-sm p-6">
       <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
         <div>
           <h2 className="text-sm lg:text-xl font-bold">Supporting Documents</h2>
@@ -241,9 +264,9 @@ const DynamicSupportingDocumentsForm = ({
         </div>
         {isMobile && (
           <Button
-            variant={"default"}
+            variant="default"
             className="border rounded-2xl"
-            onClick={() => showDialog()}
+            onClick={showDialog}
           >
             Learn More
           </Button>
@@ -257,74 +280,103 @@ const DynamicSupportingDocumentsForm = ({
               caseType ? "md:grid-cols-1" : "md:grid-cols-2"
             } gap-6`}
           >
-            {documents?.map((doc) => (
+            {documents.map((doc) => (
               <FormField
-                key={doc?.id}
+                key={doc.id}
                 control={form.control}
-                name={doc?.id}
-                render={({ field }) => (
+                name={doc.id}
+                render={() => (
                   <FormItem>
                     <FormLabel className="text-sm">
-                      {doc?.label}{" "}
-                      {doc?.required && <span className="text-red-500">*</span>}
+                      {doc.label}{" "}
+                      {doc.required && <span className="text-red-500">*</span>}
                     </FormLabel>
                     <FormControl>
-                      <div
-                        className={cn(
-                          "border-2 border-dashed rounded-lg p-6 text-center transition-colors h-[100px] flex flex-col items-center justify-center bg-customCard",
-                          uploadedFiles[doc?.id]
-                            ? "border-purple-300 bg-purple-50"
-                            : "border-primaryLight hover:bg-gray-50"
-                        )}
-                      >
-                        {!uploadedFiles[doc?.id] ? (
-                          <label className="cursor-pointer w-full flex items-center justify-center">
-                            <input
-                              type="file"
-                              className="hidden"
-                              accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
-                              onChange={(e) => handleFileChange(doc?.id, e)}
-                            />
-                            <UploadIcon />
-                            <p className="mt-1 text-sm text-gray-600">
-                              Upload File <br /> (Max size - 15MB)
-                            </p>
-                          </label>
-                        ) : (
-                          <div className="w-full">
-                            <div className="flex items-center justify-between mb-2">
-                              <FileText
-                                className={cn(
-                                  "h-8 w-8",
-                                  uploadedFiles[doc.id]?.type.includes("image")
-                                    ? "text-blue-500"
-                                    : uploadedFiles[doc.id]?.type.includes(
-                                        "pdf"
-                                      )
-                                    ? "text-red-500"
-                                    : "text-gray-500"
-                                )}
-                              />
+                      <div className="border-2 border-dashed rounded-lg p-4 bg-customCard">
+                        <label className="cursor-pointer flex flex-col items-center justify-center">
+                          <input
+                            type="file"
+                            className="hidden"
+                            multiple={
+                              doc.id === "injuryDoc2" || doc.id === "deathDoc2"
+                            }
+                            accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
+                            onChange={(e) =>
+                              doc.id === "injuryDoc2" || doc.id === "deathDoc2"
+                                ? handleOtherDocumentsChange(doc.id, e)
+                                : handleFileChange(doc.id, e)
+                            }
+                          />
+                          <UploadIcon />
+                          <p className="mt-1 text-sm text-gray-600">
+                            Upload{" "}
+                            {doc.id === "injuryDoc2" || doc.id === "deathDoc2"
+                              ? "Files"
+                              : "File"}{" "}
+                            <br />
+                            (Max size - 15MB)
+                          </p>
+                        </label>
+                        {doc.id === "injuryDoc2" || doc.id === "deathDoc2" ? (
+                          <div className="mt-4 space-y-2 text-left">
+                            {(form.watch(doc.id) || []).map(
+                              (file: any, index: number) => (
+                                <div
+                                  key={index}
+                                  className="flex justify-between items-center p-2 bg-white rounded border"
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <FileText className="text-gray-500 h-5 w-5" />
+                                    <div>
+                                      <p className="text-sm font-medium">
+                                        {file.name}
+                                      </p>
+                                      <p className="text-xs text-gray-500">
+                                        {formatFileSize(file.size)}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() =>
+                                      removeOtherDoc(doc.id, index)
+                                    }
+                                  >
+                                    <X className="h-4 w-4 text-red-500" />
+                                  </Button>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        ) : uploadedFiles[doc.id] ? (
+                          <div className="mt-4 text-left">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <FileText className="text-gray-500 h-5 w-5" />
+                                <div>
+                                  <p className="text-sm font-medium">
+                                    {uploadedFiles[doc.id]?.name}
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    {formatFileSize(
+                                      uploadedFiles[doc.id]!.size
+                                    )}
+                                  </p>
+                                </div>
+                              </div>
                               <Button
                                 type="button"
                                 variant="ghost"
-                                size="sm"
+                                size="icon"
                                 onClick={() => removeFile(doc.id)}
                               >
-                                <X className="h-4 w-4" />
+                                <X className="h-4 w-4 text-red-500" />
                               </Button>
                             </div>
-                            <div className="text-left">
-                              <p className="text-sm font-medium line-clamp-1 w-fit">
-                                {uploadedFiles[doc.id]?.name}
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                {uploadedFiles[doc.id] &&
-                                  formatFileSize(uploadedFiles[doc.id]!.size)}
-                              </p>
-                            </div>
                           </div>
-                        )}
+                        ) : null}
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -349,9 +401,6 @@ const DynamicSupportingDocumentsForm = ({
               className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
               actionFrom="Dynamic Support Documents Form"
             />
-            {/* <Button type="submit" className="hover:bg-primaryLight/90">
-              Continue
-            </Button> */}
           </div>
         </form>
       </Form>
