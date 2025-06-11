@@ -28,7 +28,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
         <ActionButton
           goTo={goto}
           className="bg-[#59285F] text-white font-medium py-2 text-sm lg:text-base lg:py-3 lg:px-8 px-3 rounded-full mt-auto cursor-pointer"
-          text="Learn More"
+          text="Proceed"
           actionFrom={title}
         />
       </div>

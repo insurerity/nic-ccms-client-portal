@@ -79,22 +79,22 @@ export function RequiredDocuments({
     uniqueRequirements.reduce((acc, item) => ({ ...acc, [item.id]: false }), {})
   );
 
-  const handleCheckboxChange = (id: string) => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
+  // const handleCheckboxChange = (id: string) => {
+  //   setCheckedItems((prev) => ({
+  //     ...prev,
+  //     [id]: !prev[id],
+  //   }));
+  // };
 
-  const handleCheckAll = () => {
-    const newValue = !allChecked;
-    const updated = Object.keys(checkedItems).reduce((acc, key) => {
-      acc[key] = newValue;
-      return acc;
-    }, {} as Record<string, boolean>);
+  // const handleCheckAll = () => {
+  //   const newValue = !allChecked;
+  //   const updated = Object.keys(checkedItems).reduce((acc, key) => {
+  //     acc[key] = newValue;
+  //     return acc;
+  //   }, {} as Record<string, boolean>);
 
-    setCheckedItems(updated);
-  };
+  //   setCheckedItems(updated);
+  // };
   console.log("checked items", checkedItems);
 
   const allChecked = Object.values(checkedItems).every(
@@ -104,7 +104,7 @@ export function RequiredDocuments({
   console.log("all checked", allChecked);
 
   const handleContinue = () => {
-    if (allChecked && onComplete) {
+    if (onComplete) {
       onComplete();
     }
   };
@@ -121,24 +121,29 @@ export function RequiredDocuments({
               caseType
             )} Case Application. Confirm and select the availability of all these documents to continue.`}
         </p>
-        <p className="text-gray-600 mt-1 text-sm lg:text-base">All documents are required</p>
+        <p className="text-gray-600 mt-1 text-sm lg:text-base">
+          All documents are required
+        </p>
       </div>
 
       <div className="space-y-4 mt-8">
-        <div className="flex text-sm lg:text-base flex-row items-center gap-2 justify-between">
+        {/* <div className="flex text-sm lg:text-base flex-row items-center gap-2 justify-between">
           <p>Select All</p>{" "}
           <Input
             type="checkbox"
             checked={allChecked}
             onChange={() => handleCheckAll()}
             className="h-5 w-5 rounded border-gray-300 text-[#5D2D79] focus:ring-[#5D2D79]"
-          />
-        </div>
+          /> 
+        </div> */}
         {requirements.map((requirement) => (
-          <div key={requirement.id} className="flex items-start gap-4 text-sm lg:text-base">
+          <div
+            key={requirement.id}
+            className="flex items-start gap-4 text-sm lg:text-base"
+          >
             <div className="mt-1">{requirement.icon}</div>
             <div className="flex-1">{requirement.text}</div>
-            <div className="flex items-center justify-center">
+            {/* <div className="flex items-center justify-center">
               <Input
                 type="checkbox"
                 id={requirement.id}
@@ -146,7 +151,7 @@ export function RequiredDocuments({
                 onChange={() => handleCheckboxChange(requirement.id)}
                 className="h-5 w-5 rounded border-gray-300 text-[#5D2D79] focus:ring-[#5D2D79]"
               />
-            </div>
+            </div> */}
           </div>
         ))}
       </div>
@@ -163,12 +168,8 @@ export function RequiredDocuments({
       <div className="mt-6 flex justify-center">
         <button
           onClick={handleContinue}
-          disabled={!allChecked}
-          className={`px-8 py-3 rounded-full text-white font-medium ${
-            allChecked
-              ? "bg-[#5D2D79] hover:bg-[#4A2461]"
-              : "bg-gray-300 cursor-not-allowed"
-          }`}
+          // disabled={!allChecked}
+          className={`px-8 py-3 rounded-full text-white font-medium bg-[#5D2D79] hover:bg-[#4A2461]`}
         >
           Continue
         </button>

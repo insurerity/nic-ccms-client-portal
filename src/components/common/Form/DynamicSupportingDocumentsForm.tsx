@@ -90,7 +90,9 @@ const DynamicSupportingDocumentsForm = ({
   // Create the schema based on the documents array
   const formSchema = createFormSchema(documents);
   const pathName = usePathname();
-  
+
+  const isMFUND = pathName.includes("compensation");
+
   // Create default values based on documents
   const defaultValues: Record<string, any> = {};
   documents.forEach((doc) => {
@@ -127,6 +129,14 @@ const DynamicSupportingDocumentsForm = ({
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
 
+      // validate file type - fallback if initial validator falls through
+
+      if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+        return toast.error(
+          "File type not accepted. Upload JPG, PNG, PDF, DOC, or DOCX files"
+        );
+      }
+
       // Check if this file already exists in any doc
       const isDuplicate = Object.values(uploadedFiles).some(
         (uploadedFile) =>
@@ -140,13 +150,19 @@ const DynamicSupportingDocumentsForm = ({
         return;
       }
 
+      // if MFUND check that required document is uploaded before optional documents
+      if (isMFUND) {
+        const reqDocId = documents[0]?.id;
+        if (!uploadedFiles[reqDocId]) {
+          return toast.error("Upload required documents first");
+        }
+      }
+
       // Update the state
       setUploadedFiles((prev) => ({
         ...prev,
         [docId]: file,
       }));
-
-      console.log("form", uploadedFiles);
 
       // Update the form
       form.setValue(
@@ -159,7 +175,6 @@ const DynamicSupportingDocumentsForm = ({
         },
         { shouldValidate: true }
       );
-      console.log("form", form);
     }
   };
 
@@ -176,7 +191,10 @@ const DynamicSupportingDocumentsForm = ({
 
   // Effect to reset the form when store data changes
   useEffect(() => {
-    if (data.supportingDocuments && Object.keys(data.supportingDocuments).length > 0) {
+    if (
+      data.supportingDocuments &&
+      Object.keys(data.supportingDocuments).length > 0
+    ) {
       form.reset(data.supportingDocuments);
     } else {
       // If store is empty, reset form to initial default values
@@ -186,30 +204,32 @@ const DynamicSupportingDocumentsForm = ({
       });
       form.reset(initialDefaultValues);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.supportingDocuments, documents]); // form.reset is not added to prevent potential loops
 
   // Effect to synchronize the local uploadedFiles state (for UI) with the store
   useEffect(() => {
     const newUiFiles: Record<string, File | null> = {};
     if (data.supportingDocuments) {
-      documents.forEach(doc => {
+      documents.forEach((doc) => {
         const docId = doc.id;
         const storeFileEntry = data.supportingDocuments[docId];
-        newUiFiles[docId] = (storeFileEntry && storeFileEntry.file instanceof File) ? storeFileEntry.file : null;
+        newUiFiles[docId] =
+          storeFileEntry && storeFileEntry.file instanceof File
+            ? storeFileEntry.file
+            : null;
       });
     }
     setUploadedFiles(newUiFiles);
   }, [data.supportingDocuments, documents]);
 
-   useEffect(() => {
-      logInfo("Page View", {
-        component: "BusinessInformationForm",
-        path: pathName,
-      });
-    }, [pathName]);
+  useEffect(() => {
+    logInfo("Page View", {
+      component: "BusinessInformationForm",
+      path: pathName,
+    });
+  }, [pathName]);
 
-    
   return (
     <div className="bg-white lg:rounded-[28px] shadow-sm  p-6">
       <div className="bg-primaryLight text-white p-4 lg:p-6 rounded-xl mb-6 flex">
@@ -327,7 +347,7 @@ const DynamicSupportingDocumentsForm = ({
               text="Continue"
               type="submit"
               className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
-               actionFrom="Dynamic Support Documents Form"
+              actionFrom="Dynamic Support Documents Form"
             />
             {/* <Button type="submit" className="hover:bg-primaryLight/90">
               Continue
