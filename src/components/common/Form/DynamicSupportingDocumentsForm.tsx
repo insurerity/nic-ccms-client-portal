@@ -153,8 +153,8 @@ const DynamicSupportingDocumentsForm = ({
       // if MFUND check that required document is uploaded before optional documents
       if (isMFUND) {
         const reqDocId = documents[0]?.id;
-        if (!uploadedFiles[reqDocId]) {
-          return toast.error("Upload required documents first");
+        if (!uploadedFiles[reqDocId] && docId !== reqDocId) {
+          return toast.error("Please upload the required document first");
         }
       }
 
