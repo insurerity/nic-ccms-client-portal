@@ -140,12 +140,18 @@ export const PETITION_DETAILED_DATA = [
           </a>{" "}
           or call{" "}
           <a
-            href="tel:+233302238300"
+            href="tel:+233302960696"
             className="text-[#59285F] font-semibold underline"
           >
-            030 223 8300
+            0302960696
+          </a>{" "}
+          /{" "}
+          <a
+            href="tel:+233302238301"
+            className="text-[#59285F] font-semibold underline"
+          >
+            0302238301
           </a>
-          .
         </p>
       </div>
     ),
