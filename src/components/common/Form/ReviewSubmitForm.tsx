@@ -178,7 +178,7 @@ const ReviewSubmitForm = ({
                 return (
                   <div key={key} className="space-y-1">
                     <p className="text-sm text-gray-500">
-                      {camelCaseToTitle(key)}
+                      Additional Documents
                     </p>
                     {(value as File[])?.map((v, idx) => {
                       return (
