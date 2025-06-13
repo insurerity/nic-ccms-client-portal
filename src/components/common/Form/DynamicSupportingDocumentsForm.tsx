@@ -34,7 +34,7 @@ const createFormSchema = (documents: DocumentTypeT[]) => {
   const schemaFields: Record<string, any> = {};
 
   documents.forEach((doc) => {
-    if (doc.id === "injuryDoc2" || doc.id === "deathDoc2") {
+    if (doc.id === "Other Documents") {
       schemaFields[doc.id] = z
         .array(
           z.object({
@@ -297,12 +297,10 @@ const DynamicSupportingDocumentsForm = ({
                           <input
                             type="file"
                             className="hidden"
-                            multiple={
-                              doc.id === "injuryDoc2" || doc.id === "deathDoc2"
-                            }
+                            multiple={doc.id === "Other Documents"}
                             accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
                             onChange={(e) =>
-                              doc.id === "injuryDoc2" || doc.id === "deathDoc2"
+                              doc.id === "Other Documents"
                                 ? handleOtherDocumentsChange(doc.id, e)
                                 : handleFileChange(doc.id, e)
                             }
@@ -310,14 +308,12 @@ const DynamicSupportingDocumentsForm = ({
                           <UploadIcon />
                           <p className="mt-1 text-sm text-gray-600">
                             Upload{" "}
-                            {doc.id === "injuryDoc2" || doc.id === "deathDoc2"
-                              ? "Files"
-                              : "File"}{" "}
+                            {doc.id === "Other Documents" ? "Files" : "File"}{" "}
                             <br />
                             (Max size - 15MB)
                           </p>
                         </label>
-                        {doc.id === "injuryDoc2" || doc.id === "deathDoc2" ? (
+                        {doc.id === "Other Documents" ? (
                           <div className="mt-4 space-y-2 text-left">
                             {(form.watch(doc.id) || []).map(
                               (file: any, index: number) => (

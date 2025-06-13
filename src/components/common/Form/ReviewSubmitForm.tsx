@@ -172,9 +172,11 @@ const ReviewSubmitForm = ({
             } gap-4`}
           >
             {Object.entries(data.supportingDocuments)?.map(([key, value]) => {
-              if (!value) return;
+              // @ts-ignore
+              if (!value || value?.length <= 0) return;
 
-              if (key === "deathDoc2" || key === "injuryDoc2") {
+              // @ts-ignore
+              if (key === "Other Documents" && value?.length > 0) {
                 return (
                   <div key={key} className="space-y-1">
                     <p className="text-sm text-gray-500">

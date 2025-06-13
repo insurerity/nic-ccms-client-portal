@@ -23,32 +23,109 @@ export const GET_STARTED_STATUS_PAGE_DATA: Record<any, any> = {
 
 const REQUIRED_DOCS_MOTOR = ["Original Police Accident report"];
 
-export const MOTOR_COMP_REQUIRED_DOCUMENTS: Record<any, string[]> = {
+export const MOTOR_COMP_REQUIRED_DOCUMENTS: Record<
+  "injury" | "death",
+  { id: string; label: string }[]
+> = {
   injury: [
-    "Original Police Accident report",
-    "Other Documents",
-    "Original Medical report",
-    "The claimant's National ID card, preferably Ghana card",
-    "Two (2) passport sized pictures endorsed by the Medical Doctor",
-    "Pictures of the injury with the victim's face fully showing",
-    "An affidavit of instruction/ authorization if a solicitor is involved",
-    "An affidavit of correction of name if the name on the Medical report and Police Accident report differs from that on the National Identity card. Reference should be made to the mistakes",
-    "Original Medical receipts and prescriptions (if any)",
-    "Repudiation letter if there is an insurance company mentioned on the Police Accident report",
+    {
+      id: "Police Report",
+      label: "Original Police Accident report",
+    },
+    {
+      id: "Other Documents",
+      label: "Other Documents",
+    },
+    {
+      id: "Medical Report",
+      label: "Original Medical report",
+    },
+    {
+      id: "National ID",
+      label: "The claimant's National ID card, preferably Ghana card",
+    },
+    {
+      id: "Passport Pictures",
+      label: "Two (2) passport sized pictures endorsed by the Medical Doctor",
+    },
+    {
+      id: "Injury Photos",
+      label: "Pictures of the injury with the victim's face fully showing",
+    },
+    {
+      id: "Solicitor Affidavit",
+      label:
+        "An affidavit of instruction/ authorization if a solicitor is involved",
+    },
+    {
+      id: "Name Correction Affidavit",
+      label:
+        "An affidavit of correction of name if the name on the Medical report and Police Accident report differs from that on the National Identity card. Reference should be made to the mistakes",
+    },
+    {
+      id: "Medical Receipts",
+      label: "Original Medical receipts and prescriptions (if any)",
+    },
+    {
+      id: "Repudiation Letter",
+      label:
+        "Repudiation letter if there is an insurance company mentioned on the Police Accident report",
+    },
   ],
   death: [
-    "Original Police Accident report",
-    "Other Documents",
-    "Original Death Certificate or Burial permit",
-    "Original Letters of Administration (adult)",
-    "Original Statutory Declaration (minor)",
-    "Original Affidavit stating the name of the spouse and children as well as their ages",
-    "The Administrator(s) National ID card, preferably Ghana card",
-    "Two (2) passport sized pictures of the Administrator(s)",
-    "An affidavit of correction of name if the name on the Letters of Administration and Statutory Declaration differs from that on the National Identity card. Reference should be made to the mistakes",
-    "An affidavit to correct the deceased's name should there be a mistake on any of the documents provided. Reference should be made to the mistakes",
-    "An affidavit of instruction/ authorization if a solicitor is involved",
-    "Repudiation letter if there is an insurance company mentioned on the Police Accident report",
+    {
+      id: "Police Report",
+      label: "Original Police Accident report",
+    },
+    {
+      id: "Other Documents",
+      label: "Other Documents",
+    },
+    {
+      id: "Death Certificate",
+      label: "Original Death Certificate or Burial permit",
+    },
+    {
+      id: "Letters Of Administration",
+      label: "Original Letters of Administration (adult)",
+    },
+    {
+      id: "Statutory Declaration",
+      label: "Original Statutory Declaration (minor)",
+    },
+    {
+      id: "Spouse Children Affidavit",
+      label:
+        "Original Affidavit stating the name of the spouse and children as well as their ages",
+    },
+    {
+      id: "Admin National ID",
+      label: "The Administrator(s) National ID card, preferably Ghana card",
+    },
+    {
+      id: "Admin Passport Pictures",
+      label: "Two (2) passport sized pictures of the Administrator(s)",
+    },
+    {
+      id: "Admin Name Correction Affidavit",
+      label:
+        "An affidavit of correction of name if the name on the Letters of Administration and Statutory Declaration differs from that on the National Identity card. Reference should be made to the mistakes",
+    },
+    {
+      id: "Deceased Name Correction Affidavit",
+      label:
+        "An affidavit to correct the deceased's name should there be a mistake on any of the documents provided. Reference should be made to the mistakes",
+    },
+    {
+      id: "Solicitor Affidavit",
+      label:
+        "An affidavit of instruction/ authorization if a solicitor is involved",
+    },
+    {
+      id: "Repudiation Letter",
+      label:
+        "Repudiation letter if there is an insurance company mentioned on the Police Accident report",
+    },
   ],
 };
 
@@ -57,14 +134,14 @@ export const MOTOR_COMP_REQUIRED_DOCUMENTS_DETAILED: Record<
   DocumentTypeT[]
 > = {
   injury: MOTOR_COMP_REQUIRED_DOCUMENTS.injury.map((doc, index) => ({
-    id: `injuryDoc${index + 1}`,
-    label: doc,
-    required: REQUIRED_DOCS_MOTOR.includes(doc),
+    id: doc?.id,
+    label: doc?.label,
+    required: REQUIRED_DOCS_MOTOR.includes(doc?.label),
   })),
   death: MOTOR_COMP_REQUIRED_DOCUMENTS.death.map((doc, index) => ({
-    id: `deathDoc${index + 1}`,
-    label: doc,
-    required: REQUIRED_DOCS_MOTOR.includes(doc),
+    id: doc?.id,
+    label: doc?.label,
+    required: REQUIRED_DOCS_MOTOR.includes(doc?.label),
   })),
 };
 

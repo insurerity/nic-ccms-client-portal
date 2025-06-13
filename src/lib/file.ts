@@ -26,7 +26,7 @@ export function transformToFileMap(input: Record<string, any>): FileMap {
   Object.entries(input).forEach(([key, value]) => {
     if (!value) return;
 
-    if ((key === "deathDoc2" || key === "injuryDoc2") && Array.isArray(value)) {
+    if (key === "Other Documents" && Array.isArray(value)) {
       value.forEach((item, index) => {
         fileMap[`${key}_${index}`] = {
           name: item.name,

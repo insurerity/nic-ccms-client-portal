@@ -43,9 +43,9 @@ export function RequiredDocuments({
 
       return deathItems?.map((v) => {
         return {
-          id: v,
-          text: v,
-          icon: pictureItems.includes(v) ? (
+          id: v?.id,
+          text: v?.label,
+          icon: pictureItems.includes(v?.label) ? (
             <ImageIcon className="w-5 h-5 text-[#5D2D79]" />
           ) : (
             <FileText className="w-5 h-5 text-[#5D2D79]" />
@@ -57,9 +57,9 @@ export function RequiredDocuments({
     const injuryItems = MOTOR_COMP_REQUIRED_DOCUMENTS["injury"];
     return injuryItems?.map((v) => {
       return {
-        id: v,
-        text: v,
-        icon: pictureItems.includes(v) ? (
+        id: v?.id,
+        text: v?.label,
+        icon: pictureItems.includes(v?.label) ? (
           <ImageIcon className="w-5 h-5 text-[#5D2D79]" />
         ) : (
           <FileText className="w-5 h-5 text-[#5D2D79]" />
