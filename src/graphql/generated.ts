@@ -36,6 +36,10 @@ export type Admin = {
   Privileges: Array<Privilege>;
   /** An aggregate relationship */
   Privileges_aggregate: Privilege_Aggregate;
+  /** An array relationship */
+  TicketNotifications: Array<TicketNotification>;
+  /** An aggregate relationship */
+  TicketNotifications_aggregate: TicketNotification_Aggregate;
   accountType?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['timestamptz']['output'];
   email: Scalars['String']['output'];
@@ -68,6 +72,26 @@ export type AdminPrivileges_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Privilege_Order_By>>;
   where?: InputMaybe<Privilege_Bool_Exp>;
+};
+
+
+/** Keeps information of both standard administrators and super administrators */
+export type AdminTicketNotificationsArgs = {
+  distinct_on?: InputMaybe<Array<TicketNotification_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<TicketNotification_Order_By>>;
+  where?: InputMaybe<TicketNotification_Bool_Exp>;
+};
+
+
+/** Keeps information of both standard administrators and super administrators */
+export type AdminTicketNotifications_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<TicketNotification_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<TicketNotification_Order_By>>;
+  where?: InputMaybe<TicketNotification_Bool_Exp>;
 };
 
 /** aggregated selection of "nic_ccms.Admin" */
@@ -111,6 +135,7 @@ export type Admin_Bool_Exp = {
   Entity?: InputMaybe<RegulatedEntity_Bool_Exp>;
   Office?: InputMaybe<Office_Bool_Exp>;
   Privileges?: InputMaybe<Privilege_Bool_Exp>;
+  TicketNotifications?: InputMaybe<TicketNotification_Bool_Exp>;
   _and?: InputMaybe<Array<Admin_Bool_Exp>>;
   _not?: InputMaybe<Admin_Bool_Exp>;
   _or?: InputMaybe<Array<Admin_Bool_Exp>>;
@@ -139,6 +164,7 @@ export type Admin_Insert_Input = {
   Entity?: InputMaybe<RegulatedEntity_Obj_Rel_Insert_Input>;
   Office?: InputMaybe<Office_Obj_Rel_Insert_Input>;
   Privileges?: InputMaybe<Privilege_Arr_Rel_Insert_Input>;
+  TicketNotifications?: InputMaybe<TicketNotification_Arr_Rel_Insert_Input>;
   accountType?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
@@ -239,6 +265,7 @@ export type Admin_Order_By = {
   Entity?: InputMaybe<RegulatedEntity_Order_By>;
   Office?: InputMaybe<Office_Order_By>;
   Privileges_aggregate?: InputMaybe<Privilege_Aggregate_Order_By>;
+  TicketNotifications_aggregate?: InputMaybe<TicketNotification_Aggregate_Order_By>;
   accountType?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
@@ -1791,6 +1818,20 @@ export type TicketNotification_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** order by aggregate values of table "nic_ccms.TicketNotification" */
+export type TicketNotification_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<TicketNotification_Max_Order_By>;
+  min?: InputMaybe<TicketNotification_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "nic_ccms.TicketNotification" */
+export type TicketNotification_Arr_Rel_Insert_Input = {
+  data: Array<TicketNotification_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<TicketNotification_On_Conflict>;
+};
+
 /** Boolean expression to filter rows from the table "nic_ccms.TicketNotification". All fields are combined with a logical 'AND'. */
 export type TicketNotification_Bool_Exp = {
   Admin?: InputMaybe<Admin_Bool_Exp>;
@@ -1840,6 +1881,17 @@ export type TicketNotification_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
+/** order by max() on columns of table "nic_ccms.TicketNotification" */
+export type TicketNotification_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  message?: InputMaybe<Order_By>;
+  receipient?: InputMaybe<Order_By>;
+  recipient_id?: InputMaybe<Order_By>;
+  ticketNumber?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type TicketNotification_Min_Fields = {
   __typename?: 'TicketNotification_min_fields';
@@ -1850,6 +1902,17 @@ export type TicketNotification_Min_Fields = {
   recipient_id?: Maybe<Scalars['uuid']['output']>;
   ticketNumber?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by min() on columns of table "nic_ccms.TicketNotification" */
+export type TicketNotification_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  message?: InputMaybe<Order_By>;
+  receipient?: InputMaybe<Order_By>;
+  recipient_id?: InputMaybe<Order_By>;
+  ticketNumber?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "nic_ccms.TicketNotification" */
@@ -8769,7 +8832,7 @@ export type AddTicketMutationVariables = Exact<{
 }>;
 
 
-export type AddTicketMutation = { __typename?: 'mutation_root', insert_nic_ccms_Complaint_one?: { __typename?: 'nic_ccms_Complaint', id: any } | null };
+export type AddTicketMutation = { __typename?: 'mutation_root', insert_nic_ccms_Complaint_one?: { __typename?: 'nic_ccms_Complaint', id: any, ticketNumber?: string | null } | null };
 
 export type FileUploadActionMutationVariables = Exact<{
   base64: Scalars['String']['input'];
@@ -8830,6 +8893,7 @@ export const AddTicketDocument = gql`
     mutation addTicket($object: nic_ccms_Complaint_insert_input!) {
   insert_nic_ccms_Complaint_one(object: $object) {
     id
+    ticketNumber
   }
 }
     `;

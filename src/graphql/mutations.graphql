@@ -1,6 +1,7 @@
 mutation addTicket($object: nic_ccms_Complaint_insert_input!) {
   insert_nic_ccms_Complaint_one(object: $object) {
     id
+    ticketNumber
   }
 }
 
@@ -12,8 +13,7 @@ mutation fileUploadAction($base64: String!, $name: String!, $mime: String!) {
   }
 }
 
-
- mutation CreateLogEntry($objects: [nic_ccms_log_insert_input!] = {}) {
+mutation CreateLogEntry($objects: [nic_ccms_log_insert_input!] = {}) {
   insert_nic_ccms_log(objects: $objects) {
     returning {
       id

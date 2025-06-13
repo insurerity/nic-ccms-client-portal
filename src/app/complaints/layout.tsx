@@ -32,12 +32,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <h2 className="text-2xl font-semibold">
                     {complainantType === "self"
                       ? "Complaint/Petition Form"
-                      : complainantType === "behalf" ? "Petitioner / Solicitor Form" : ""}
+                      : complainantType === "behalf"
+                      ? "Petitioner / Solicitor Form"
+                      : ""}
                   </h2>
                   <p className="text-base">
                     {complainantType === "self"
-                      ? `Complete this form to submit ${pathName.includes("compensation") ? "a compensation fund" : "a" } complaint/petition to the NIC`
-                      :  complainantType === "behalf" ? `Complete this form to submit ${pathName.includes("compensation") ? "a compensation fund" : "a" } on behalf of someone to the NIC` : ""}
+                      ? `Complete this form to submit ${
+                          pathName.includes("compensation")
+                            ? "a compensation fund"
+                            : "a"
+                        } complaint/petition to the NIC`
+                      : complainantType === "behalf"
+                      ? `Complete this form to submit ${
+                          pathName.includes("compensation")
+                            ? "a compensation fund"
+                            : "a"
+                        } on behalf of someone to the NIC`
+                      : ""}
                   </p>
                 </div>
               ))}
@@ -46,7 +58,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-3">
               <GoBack closeForm>
                 Close Form
-                <X  size={isMobile ? 15 : 20}/>
+                <X size={isMobile ? 15 : 20} />
               </GoBack>
               <div className="relative">
                 <NotificationButton />
@@ -66,12 +78,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <h2 className="text-2xl font-semibold">
                 {complainantType === "self"
                   ? "Complaint/Petition Form"
-                  : complainantType === "behalf" ? "Petitioner / Solicitor Form" : ""}
+                  : complainantType === "behalf"
+                  ? "Petitioner / Solicitor Form"
+                  : ""}
               </h2>
               <p className="text-sm">
                 {complainantType === "self"
-                  ? `Complete this form to submit ${pathName.includes("compensation") ? "a compensation fund" : "a" } complaint/petition to the NIC`
-                      :  complainantType === "behalf" ? `Complete this form to submit ${pathName.includes("compensation") ? "a compensation fund" : "a" } on behalf of someone to the NIC` : ""}
+                  ? `Complete this form to submit ${
+                      pathName.includes("compensation")
+                        ? "a compensation fund"
+                        : "a"
+                    } complaint/petition to the NIC`
+                  : complainantType === "behalf"
+                  ? `Complete this form to submit ${
+                      pathName.includes("compensation")
+                        ? "a compensation fund"
+                        : "a"
+                    } on behalf of someone to the NIC`
+                  : ""}
               </p>
             </div>
           ))}

@@ -39,10 +39,14 @@ const SubmissionSuccess = () => {
       path: pathName,
     });
   }, [pathName]);
-  
+
   const onCheckStatus = () => {
-    router.replace(`/complaints/check-status`);
-    logInfo('Button Click', {buttonName: 'Check Complaint - Redirect After Submit'})
+    router.replace(
+      `/complaints/check-status?ticketNumber=${data?.nic_ccms_Complaint_by_pk?.ticketNumber}`
+    );
+    logInfo("Button Click", {
+      buttonName: "Check Complaint - Redirect After Submit",
+    });
   };
 
   // Show loading state if either initialLoading is true or the query is loading

@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { ChevronRight } from "lucide-react";
 import {
   useErrorHandlerMutation,
-  useGetComplaintStatusesByTicketNumberLazyQuery,
   useGetStatusLazyQuery,
 } from "@/graphql/generated";
 import { z } from "zod";
@@ -16,9 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { getLatestStatus, getLatestStatusCreatedAt } from "@/lib/utils";
 import { ComplaintStatusDescriptions, EComplaintStatuses } from "@/lib/state";
 import StatusGuide from "./StatusGuide";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { logError } from "@/lib/logger";
 import { toast } from "sonner";
 
 const ticketSchema = z.object({
@@ -31,14 +29,17 @@ export default function ComplaintStatusTracker() {
   const [getStatus, { loading: isLoading, data, error }] =
     useGetStatusLazyQuery();
 
+  const searchParams = useSearchParams();
+  const ticketNumberParam = searchParams?.get("ticketNumber");
+
   const [errorHandler] = useErrorHandlerMutation();
   const router = useRouter();
-  const isMobile = useIsMobile()
-
+  const isMobile = useIsMobile();
 
   const {
     register,
     handleSubmit,
+    setValue,
     getValues,
     formState: { errors },
   } = useForm({
@@ -55,24 +56,26 @@ export default function ComplaintStatusTracker() {
       variables: {
         _eq: ticketNumber,
       },
-     
-    },  );
+    });
   });
 
-
-  useEffect(()=>{
-
-    if(data?.currentStatusData?.length === 0){
+  useEffect(() => {
+    if (data?.currentStatusData?.length === 0) {
       toast.error("Invalid Ticket Number", {
         style: {
           backgroundColor: "#59285F",
-        color: "white"
-        }
-      })
-      return
+          color: "white",
+        },
+      });
+      return;
     }
+  }, [data?.currentStatusData]);
 
-  }, [data?.currentStatusData])
+  useEffect(() => {
+    if (ticketNumberParam) {
+      setValue("ticketNumber", ticketNumberParam);
+    }
+  }, [ticketNumberParam]);
 
   const handleCancel = () => {
     return router.push("/get-started");
@@ -81,19 +84,24 @@ export default function ComplaintStatusTracker() {
   return (
     <div className="flex flex-col lg:flex-row gap-6">
       {/* Left side - Status Guide */}
-      
-     { !isMobile && <div className="w-full lg:w-2/5">
-        {<StatusGuide
-          activeStatus={
-            data ? getLatestStatus(data?.currentStatusData) : undefined
+
+      {!isMobile && (
+        <div className="w-full lg:w-2/5">
+          {
+            <StatusGuide
+              activeStatus={
+                data ? getLatestStatus(data?.currentStatusData) : undefined
+              }
+              created_at={
+                data
+                  ? getLatestStatusCreatedAt(data?.currentStatusData)
+                  : undefined
+              }
+              allStatusesData={data ? data.allStatusesData : undefined}
+            />
           }
-          created_at={
-            data ? getLatestStatusCreatedAt(data?.currentStatusData) : undefined
-          }
-          allStatusesData={data ? data.allStatusesData : undefined}
-        />}
-       
-      </div>}
+        </div>
+      )}
 
       {/* Right side - Status Checker */}
       <div className="w-full lg:w-3/5 ">

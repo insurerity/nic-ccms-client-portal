@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  useNoticeDialog,
-} from "@/hooks/use-complaint-store";
+import { useNoticeDialog } from "@/hooks/use-complaint-store";
 import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
@@ -14,20 +12,19 @@ export default function GoBack({
   children: ReactNode;
   closeForm?: boolean;
 }) {
-
   const { showDialog } = useNoticeDialog();
   const router = useRouter();
   const pathname = usePathname();
-  console.log(pathname)
+  console.log(pathname);
   const handleGoBack = () => {
     if (closeForm) {
-        if(pathname === '/complaints/check-status'){
-          router.back()
-        } else {
-          return showDialog();
-        }
+      if (pathname === "/complaints/check-status") {
+        router.push("/get-started");
+      } else {
+        return showDialog();
+      }
     } else {
-      return pathname !== "/get-started" ? router.back() : router.push("/") ;
+      return pathname !== "/get-started" ? router.back() : router.push("/");
     }
   };
 
