@@ -1,8 +1,10 @@
 import DriversLicenseInfo from "@/components/common/FAQItems/DriverLicenseInfo";
+import EntityNotFoundNote from "@/components/common/FAQItems/EntityNotFoundNote";
 import GhanaCardNumberInfo from "@/components/common/FAQItems/GhanaCardNumberInfo";
 import GhanaPostAddressGuide from "@/components/common/FAQItems/GhanaPostGuide";
 import NHISNumberInfo from "@/components/common/FAQItems/NHISNumberInfo";
 import PassportNumberInfo from "@/components/common/FAQItems/PassportNumberInfo";
+import PolicyNumberInfo from "@/components/common/FAQItems/PolicyNumberInfo";
 import VoterIDInfo from "@/components/common/FAQItems/VoterIDInfo";
 import { Faq } from "@/types";
 
@@ -49,29 +51,31 @@ export const caseDetails: Faq[] = [
   {
     id: 1,
     question: "How do I find my Policy Number?",
-    answer: "",
+    answer: <PolicyNumberInfo />,
   },
   {
     id: 2,
     question: "What is a Claim Type?",
-    answer: "",
+    answer:
+      "A claim type is the category of loss or event you’re asking your insurer to cover such as life, non‑life, and  motor compensation  so they know how to process and pay your claim",
   },
   {
     id: 3,
     question: "What is an Entity of Concern?",
-    answer: "",
+    answer:
+      "An Entity of Concern (EOC) refers to any individual, organization, group,  flagged for heightened scrutiny due to potential risks or threats they pose. ",
   },
   {
     id: 4,
     question:
       "Why can't I find my Insurance Provider in the list of Entities of Concern?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nClick here to view the various Insurance Providers who have special conditions or updates attached to them.",
+    answer: <EntityNotFoundNote />,
   },
   {
     id: 5,
     question: "What is a Nature of Claim?",
-    answer: "",
+    answer:
+      "A Nature of Claim is the broad line‑of‑business category Life, Non‑Life, or Motor Compensation used to group and route insurance claims with the appropriate forms, specialists, and legal rules",
   },
 ];
 
@@ -117,29 +121,31 @@ const complaintDetailsFaq = [
   {
     id: 1,
     question: "How do I find my Policy Number?",
-    answer: "",
+    answer: <PolicyNumberInfo />,
   },
   {
     id: 2,
     question: "What is a Claim Type?",
-    answer: "",
+    answer:
+      "A claim type is the category of loss or event you’re asking your insurer to cover such as life, non‑life, and  motor compensation  so they know how to process and pay your claim",
   },
   {
     id: 3,
     question: "What is an Entity of Concern?",
-    answer: "",
+    answer:
+      "An Entity of Concern (EOC) refers to any individual, organization, group,  flagged for heightened scrutiny due to potential risks or threats they pose. ",
   },
   {
     id: 4,
     question:
       "Why can't I find my Insurance Provider in the list of Entities of Concern?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nClick here to view the various Insurance Providers who have special conditions or updates attached to them.",
+    answer: <EntityNotFoundNote />,
   },
   {
     id: 5,
     question: "What is a Nature of Claim?",
-    answer: "",
+    answer:
+      "A Nature of Claim is the broad line‑of‑business category Life, Non‑Life, or Motor Compensation used to group and route insurance claims with the appropriate forms, specialists, and legal rules",
   },
 ];
 
