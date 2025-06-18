@@ -6,7 +6,7 @@ import {
   NORMAL_PETITION_DOCUMENTS,
   NORMAL_PETITION_FORM_STEPS,
 } from "@/lib/state";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 
 import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
 import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupportingDocumentsForm";

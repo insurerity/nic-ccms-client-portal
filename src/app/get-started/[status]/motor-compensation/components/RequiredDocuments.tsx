@@ -6,7 +6,6 @@ import { useState } from "react";
 import { FileText, AlertCircle, ImageIcon } from "lucide-react";
 import { MOTOR_COMP_REQUIRED_DOCUMENTS } from "@/lib/state";
 import { capitalize } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
 
 type CaseType = "death" | "injury" | string;
 

@@ -1,7 +1,9 @@
+import { type ReactNode } from "react";
+
 export type FAQItem = {
   id: number;
   question: string;
-  answer: string;
+  answer: ReactNode;
 };
 
 export type FormStep = {
@@ -42,5 +44,5 @@ export type StatusIconProps = {
 export type Faq = {
   id: number;
   question: string;
-  answer: string;
+  answer: ReactNode;
 };

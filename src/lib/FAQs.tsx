@@ -1,40 +1,47 @@
+import DriversLicenseInfo from "@/components/common/FAQItems/DriverLicenseInfo";
+import GhanaCardNumberInfo from "@/components/common/FAQItems/GhanaCardNumberInfo";
+import GhanaPostAddressGuide from "@/components/common/FAQItems/GhanaPostGuide";
+import NHISNumberInfo from "@/components/common/FAQItems/NHISNumberInfo";
+import PassportNumberInfo from "@/components/common/FAQItems/PassportNumberInfo";
+import VoterIDInfo from "@/components/common/FAQItems/VoterIDInfo";
 import { Faq } from "@/types";
 
 const victimProfileFaq = [
   {
     id: 1,
     question: "What is a digital address?",
-    answer: "",
+    answer:
+      "A digital address is your unique GhanaPost GPS code a simple set of letters and numbers that pinpoints your exact  location",
   },
   {
     id: 2,
     question: "Where can I find my digital address?",
-    answer: "",
+    answer: <GhanaPostAddressGuide />,
   },
   {
     id: 3,
     question: "Where can I find my Ghana Card Number?",
-    answer: "",
+    answer: <GhanaCardNumberInfo />,
   },
   {
     id: 4,
     question: "Where can I find my Voter ID Number?",
-    answer: "",
+    answer: <VoterIDInfo />,
   },
   {
     id: 5,
     question: "Where can I find my Health Insurance Number?",
-    answer: "",
+    answer: <NHISNumberInfo />,
   },
   {
     id: 6,
     question: "Where can I find my Driver’s License Number?",
-    answer: "",
+    answer: <DriversLicenseInfo />,
   },
   {
     id: 7,
     question: "Where can I find my Passport Number?",
-    answer: "",
+    answer: <PassportNumberInfo />,
   },
 ];
 
