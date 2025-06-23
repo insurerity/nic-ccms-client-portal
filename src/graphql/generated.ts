@@ -15,7 +15,6 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  _text: { input: any; output: any; }
   date: { input: any; output: any; }
   json: { input: any; output: any; }
   jsonb: { input: any; output: any; }
@@ -101,6 +100,33 @@ export type Admin_Aggregate = {
   nodes: Array<Admin>;
 };
 
+export type Admin_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Admin_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Admin_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Admin_Aggregate_Bool_Exp_Count>;
+};
+
+export type Admin_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Admin_Select_Column_Admin_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Admin_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Admin_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Admin_Select_Column_Admin_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Admin_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Admin_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Admin_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Admin_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "nic_ccms.Admin" */
 export type Admin_Aggregate_Fields = {
   __typename?: 'Admin_aggregate_fields';
@@ -135,7 +161,9 @@ export type Admin_Bool_Exp = {
   Entity?: InputMaybe<RegulatedEntity_Bool_Exp>;
   Office?: InputMaybe<Office_Bool_Exp>;
   Privileges?: InputMaybe<Privilege_Bool_Exp>;
+  Privileges_aggregate?: InputMaybe<Privilege_Aggregate_Bool_Exp>;
   TicketNotifications?: InputMaybe<TicketNotification_Bool_Exp>;
+  TicketNotifications_aggregate?: InputMaybe<TicketNotification_Aggregate_Bool_Exp>;
   _and?: InputMaybe<Array<Admin_Bool_Exp>>;
   _not?: InputMaybe<Admin_Bool_Exp>;
   _or?: InputMaybe<Array<Admin_Bool_Exp>>;
@@ -313,6 +341,22 @@ export enum Admin_Select_Column {
   UpdatedAt = 'updated_at'
 }
 
+/** select "Admin_aggregate_bool_exp_bool_and_arguments_columns" columns of table "nic_ccms.Admin" */
+export enum Admin_Select_Column_Admin_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsDisabled = 'isDisabled',
+  /** column name */
+  IsSub = 'is_sub'
+}
+
+/** select "Admin_aggregate_bool_exp_bool_or_arguments_columns" columns of table "nic_ccms.Admin" */
+export enum Admin_Select_Column_Admin_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsDisabled = 'isDisabled',
+  /** column name */
+  IsSub = 'is_sub'
+}
+
 /** input type for updating data in table "nic_ccms.Admin" */
 export type Admin_Set_Input = {
   accountType?: InputMaybe<Scalars['String']['input']>;
@@ -384,6 +428,7 @@ export enum Admin_Update_Column {
 export type Admin_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Admin_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Admin_Bool_Exp;
 };
 
@@ -478,6 +523,17 @@ export type Meeting_Aggregate = {
   __typename?: 'Meeting_aggregate';
   aggregate?: Maybe<Meeting_Aggregate_Fields>;
   nodes: Array<Meeting>;
+};
+
+export type Meeting_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Meeting_Aggregate_Bool_Exp_Count>;
+};
+
+export type Meeting_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Meeting_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Meeting_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "nic_ccms.Meeting" */
@@ -690,6 +746,7 @@ export enum Meeting_Update_Column {
 export type Meeting_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Meeting_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Meeting_Bool_Exp;
 };
 
@@ -775,7 +832,9 @@ export type Office_Aggregate_FieldsCountArgs = {
 /** Boolean expression to filter rows from the table "nic_ccms.Office". All fields are combined with a logical 'AND'. */
 export type Office_Bool_Exp = {
   Admins?: InputMaybe<Admin_Bool_Exp>;
+  Admins_aggregate?: InputMaybe<Admin_Aggregate_Bool_Exp>;
   Complaints?: InputMaybe<Nic_Ccms_Complaint_Bool_Exp>;
+  Complaints_aggregate?: InputMaybe<Nic_Ccms_Complaint_Aggregate_Bool_Exp>;
   _and?: InputMaybe<Array<Office_Bool_Exp>>;
   _not?: InputMaybe<Office_Bool_Exp>;
   _or?: InputMaybe<Array<Office_Bool_Exp>>;
@@ -908,6 +967,7 @@ export enum Office_Update_Column {
 export type Office_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Office_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Office_Bool_Exp;
 };
 
@@ -936,6 +996,17 @@ export type Privilege_Aggregate = {
   __typename?: 'Privilege_aggregate';
   aggregate?: Maybe<Privilege_Aggregate_Fields>;
   nodes: Array<Privilege>;
+};
+
+export type Privilege_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Privilege_Aggregate_Bool_Exp_Count>;
+};
+
+export type Privilege_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Privilege_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Privilege_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "nic_ccms.Privilege" */
@@ -1119,6 +1190,7 @@ export enum Privilege_Update_Column {
 export type Privilege_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Privilege_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Privilege_Bool_Exp;
 };
 
@@ -1214,7 +1286,9 @@ export type RegulatedEntity_Aggregate_FieldsCountArgs = {
 /** Boolean expression to filter rows from the table "nic_ccms.RegulatedEntity". All fields are combined with a logical 'AND'. */
 export type RegulatedEntity_Bool_Exp = {
   Admins?: InputMaybe<Admin_Bool_Exp>;
+  Admins_aggregate?: InputMaybe<Admin_Aggregate_Bool_Exp>;
   Complaints?: InputMaybe<Nic_Ccms_Complaint_Bool_Exp>;
+  Complaints_aggregate?: InputMaybe<Nic_Ccms_Complaint_Aggregate_Bool_Exp>;
   PhysicalAddress?: InputMaybe<String_Comparison_Exp>;
   _and?: InputMaybe<Array<RegulatedEntity_Bool_Exp>>;
   _not?: InputMaybe<RegulatedEntity_Bool_Exp>;
@@ -1455,6 +1529,7 @@ export enum RegulatedEntity_Update_Column {
 export type RegulatedEntity_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<RegulatedEntity_Set_Input>;
+  /** filter the rows which have to be updated */
   where: RegulatedEntity_Bool_Exp;
 };
 
@@ -1490,6 +1565,23 @@ export type ShareComplaintInput = {
 export type StageChangeOutput = {
   __typename?: 'StageChangeOutput';
   message?: Maybe<Scalars['String']['output']>;
+};
+
+/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
+export type String_Array_Comparison_Exp = {
+  /** is the array contained in the given array value */
+  _contained_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** does the array contain the given value */
+  _contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  _eq?: InputMaybe<Array<Scalars['String']['input']>>;
+  _gt?: InputMaybe<Array<Scalars['String']['input']>>;
+  _gte?: InputMaybe<Array<Scalars['String']['input']>>;
+  _in?: InputMaybe<Array<Array<Scalars['String']['input']>>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Array<Scalars['String']['input']>>;
+  _lte?: InputMaybe<Array<Scalars['String']['input']>>;
+  _neq?: InputMaybe<Array<Scalars['String']['input']>>;
+  _nin?: InputMaybe<Array<Array<Scalars['String']['input']>>>;
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
@@ -1549,6 +1641,33 @@ export type TicketAssignee_Aggregate = {
   __typename?: 'TicketAssignee_aggregate';
   aggregate?: Maybe<TicketAssignee_Aggregate_Fields>;
   nodes: Array<TicketAssignee>;
+};
+
+export type TicketAssignee_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<TicketAssignee_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<TicketAssignee_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<TicketAssignee_Aggregate_Bool_Exp_Count>;
+};
+
+export type TicketAssignee_Aggregate_Bool_Exp_Bool_And = {
+  arguments: TicketAssignee_Select_Column_TicketAssignee_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<TicketAssignee_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type TicketAssignee_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: TicketAssignee_Select_Column_TicketAssignee_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<TicketAssignee_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type TicketAssignee_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<TicketAssignee_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<TicketAssignee_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "nic_ccms.TicketAssignee" */
@@ -1721,6 +1840,18 @@ export enum TicketAssignee_Select_Column {
   UpdatedAt = 'updated_at'
 }
 
+/** select "TicketAssignee_aggregate_bool_exp_bool_and_arguments_columns" columns of table "nic_ccms.TicketAssignee" */
+export enum TicketAssignee_Select_Column_TicketAssignee_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsActive = 'isActive'
+}
+
+/** select "TicketAssignee_aggregate_bool_exp_bool_or_arguments_columns" columns of table "nic_ccms.TicketAssignee" */
+export enum TicketAssignee_Select_Column_TicketAssignee_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsActive = 'isActive'
+}
+
 /** input type for updating data in table "nic_ccms.TicketAssignee" */
 export type TicketAssignee_Set_Input = {
   assignedBy?: InputMaybe<Scalars['String']['input']>;
@@ -1776,6 +1907,7 @@ export enum TicketAssignee_Update_Column {
 export type TicketAssignee_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<TicketAssignee_Set_Input>;
+  /** filter the rows which have to be updated */
   where: TicketAssignee_Bool_Exp;
 };
 
@@ -1801,6 +1933,33 @@ export type TicketNotification_Aggregate = {
   __typename?: 'TicketNotification_aggregate';
   aggregate?: Maybe<TicketNotification_Aggregate_Fields>;
   nodes: Array<TicketNotification>;
+};
+
+export type TicketNotification_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<TicketNotification_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<TicketNotification_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<TicketNotification_Aggregate_Bool_Exp_Count>;
+};
+
+export type TicketNotification_Aggregate_Bool_Exp_Bool_And = {
+  arguments: TicketNotification_Select_Column_TicketNotification_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<TicketNotification_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type TicketNotification_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: TicketNotification_Select_Column_TicketNotification_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<TicketNotification_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type TicketNotification_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<TicketNotification_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<TicketNotification_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "nic_ccms.TicketNotification" */
@@ -1970,6 +2129,18 @@ export enum TicketNotification_Select_Column {
   UpdatedAt = 'updated_at'
 }
 
+/** select "TicketNotification_aggregate_bool_exp_bool_and_arguments_columns" columns of table "nic_ccms.TicketNotification" */
+export enum TicketNotification_Select_Column_TicketNotification_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsRead = 'isRead'
+}
+
+/** select "TicketNotification_aggregate_bool_exp_bool_or_arguments_columns" columns of table "nic_ccms.TicketNotification" */
+export enum TicketNotification_Select_Column_TicketNotification_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsRead = 'isRead'
+}
+
 /** input type for updating data in table "nic_ccms.TicketNotification" */
 export type TicketNotification_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -2025,6 +2196,7 @@ export enum TicketNotification_Update_Column {
 export type TicketNotification_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<TicketNotification_Set_Input>;
+  /** filter the rows which have to be updated */
   where: TicketNotification_Bool_Exp;
 };
 
@@ -2033,19 +2205,6 @@ export type UploadOutput = {
   id: Scalars['String']['output'];
   name: Scalars['String']['output'];
   url: Scalars['String']['output'];
-};
-
-/** Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'. */
-export type _Text_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['_text']['input']>;
-  _gt?: InputMaybe<Scalars['_text']['input']>;
-  _gte?: InputMaybe<Scalars['_text']['input']>;
-  _in?: InputMaybe<Array<Scalars['_text']['input']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _lt?: InputMaybe<Scalars['_text']['input']>;
-  _lte?: InputMaybe<Scalars['_text']['input']>;
-  _neq?: InputMaybe<Scalars['_text']['input']>;
-  _nin?: InputMaybe<Array<Scalars['_text']['input']>>;
 };
 
 /** ordering argument of a cursor */
@@ -3571,7 +3730,7 @@ export type Nic_Ccms_ClaimType = {
   name: Scalars['String']['output'];
   petitionType: Scalars['String']['output'];
   updated_at: Scalars['timestamptz']['output'];
-  values: Scalars['_text']['output'];
+  values: Array<Scalars['String']['output']>;
 };
 
 /** aggregated selection of "nic_ccms.ClaimType" */
@@ -3606,7 +3765,7 @@ export type Nic_Ccms_ClaimType_Bool_Exp = {
   name?: InputMaybe<String_Comparison_Exp>;
   petitionType?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  values?: InputMaybe<_Text_Comparison_Exp>;
+  values?: InputMaybe<String_Array_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "nic_ccms.ClaimType" */
@@ -3622,7 +3781,7 @@ export type Nic_Ccms_ClaimType_Insert_Input = {
   name?: InputMaybe<Scalars['String']['input']>;
   petitionType?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  values?: InputMaybe<Scalars['_text']['input']>;
+  values?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 /** aggregate max on columns */
@@ -3633,6 +3792,7 @@ export type Nic_Ccms_ClaimType_Max_Fields = {
   name?: Maybe<Scalars['String']['output']>;
   petitionType?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  values?: Maybe<Array<Scalars['String']['output']>>;
 };
 
 /** aggregate min on columns */
@@ -3643,6 +3803,7 @@ export type Nic_Ccms_ClaimType_Min_Fields = {
   name?: Maybe<Scalars['String']['output']>;
   petitionType?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  values?: Maybe<Array<Scalars['String']['output']>>;
 };
 
 /** response of any mutation on the table "nic_ccms.ClaimType" */
@@ -3699,7 +3860,7 @@ export type Nic_Ccms_ClaimType_Set_Input = {
   name?: InputMaybe<Scalars['String']['input']>;
   petitionType?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  values?: InputMaybe<Scalars['_text']['input']>;
+  values?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 /** Streaming cursor of the table "nic_ccms_ClaimType" */
@@ -3717,7 +3878,7 @@ export type Nic_Ccms_ClaimType_Stream_Cursor_Value_Input = {
   name?: InputMaybe<Scalars['String']['input']>;
   petitionType?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  values?: InputMaybe<Scalars['_text']['input']>;
+  values?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 /** update columns of table "nic_ccms.ClaimType" */
@@ -3739,6 +3900,7 @@ export enum Nic_Ccms_ClaimType_Update_Column {
 export type Nic_Ccms_ClaimType_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_ClaimType_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_ClaimType_Bool_Exp;
 };
 
@@ -3941,6 +4103,33 @@ export type Nic_Ccms_ComplaintDocuments_Aggregate = {
   nodes: Array<Nic_Ccms_ComplaintDocuments>;
 };
 
+export type Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp_Count>;
+};
+
+export type Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Nic_Ccms_ComplaintDocuments_Select_Column_Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Nic_Ccms_ComplaintDocuments_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Nic_Ccms_ComplaintDocuments_Select_Column_Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Nic_Ccms_ComplaintDocuments_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Nic_Ccms_ComplaintDocuments_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Nic_Ccms_ComplaintDocuments_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "nic_ccms.ComplaintDocuments" */
 export type Nic_Ccms_ComplaintDocuments_Aggregate_Fields = {
   __typename?: 'nic_ccms_ComplaintDocuments_aggregate_fields';
@@ -4095,6 +4284,22 @@ export enum Nic_Ccms_ComplaintDocuments_Select_Column {
   UpdatedAt = 'updated_at'
 }
 
+/** select "nic_ccms_ComplaintDocuments_aggregate_bool_exp_bool_and_arguments_columns" columns of table "nic_ccms.ComplaintDocuments" */
+export enum Nic_Ccms_ComplaintDocuments_Select_Column_Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsDecisionMade = 'IsDecisionMade',
+  /** column name */
+  IsForEntity = 'IsForEntity'
+}
+
+/** select "nic_ccms_ComplaintDocuments_aggregate_bool_exp_bool_or_arguments_columns" columns of table "nic_ccms.ComplaintDocuments" */
+export enum Nic_Ccms_ComplaintDocuments_Select_Column_Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsDecisionMade = 'IsDecisionMade',
+  /** column name */
+  IsForEntity = 'IsForEntity'
+}
+
 /** input type for updating data in table "nic_ccms.ComplaintDocuments" */
 export type Nic_Ccms_ComplaintDocuments_Set_Input = {
   IsDecisionMade?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4146,6 +4351,7 @@ export enum Nic_Ccms_ComplaintDocuments_Update_Column {
 export type Nic_Ccms_ComplaintDocuments_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_ComplaintDocuments_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_ComplaintDocuments_Bool_Exp;
 };
 
@@ -4167,6 +4373,33 @@ export type Nic_Ccms_ComplaintStatus_Aggregate = {
   __typename?: 'nic_ccms_ComplaintStatus_aggregate';
   aggregate?: Maybe<Nic_Ccms_ComplaintStatus_Aggregate_Fields>;
   nodes: Array<Nic_Ccms_ComplaintStatus>;
+};
+
+export type Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp_Count>;
+};
+
+export type Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Nic_Ccms_ComplaintStatus_Select_Column_Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Nic_Ccms_ComplaintStatus_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Nic_Ccms_ComplaintStatus_Select_Column_Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Nic_Ccms_ComplaintStatus_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Nic_Ccms_ComplaintStatus_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Nic_Ccms_ComplaintStatus_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "nic_ccms.ComplaintStatus" */
@@ -4315,6 +4548,18 @@ export enum Nic_Ccms_ComplaintStatus_Select_Column {
   UpdatedAt = 'updated_at'
 }
 
+/** select "nic_ccms_ComplaintStatus_aggregate_bool_exp_bool_and_arguments_columns" columns of table "nic_ccms.ComplaintStatus" */
+export enum Nic_Ccms_ComplaintStatus_Select_Column_Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsActive = 'isActive'
+}
+
+/** select "nic_ccms_ComplaintStatus_aggregate_bool_exp_bool_or_arguments_columns" columns of table "nic_ccms.ComplaintStatus" */
+export enum Nic_Ccms_ComplaintStatus_Select_Column_Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsActive = 'isActive'
+}
+
 /** input type for updating data in table "nic_ccms.ComplaintStatus" */
 export type Nic_Ccms_ComplaintStatus_Set_Input = {
   complaintId?: InputMaybe<Scalars['uuid']['input']>;
@@ -4362,6 +4607,7 @@ export enum Nic_Ccms_ComplaintStatus_Update_Column {
 export type Nic_Ccms_ComplaintStatus_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_ComplaintStatus_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_ComplaintStatus_Bool_Exp;
 };
 
@@ -4370,6 +4616,17 @@ export type Nic_Ccms_Complaint_Aggregate = {
   __typename?: 'nic_ccms_Complaint_aggregate';
   aggregate?: Maybe<Nic_Ccms_Complaint_Aggregate_Fields>;
   nodes: Array<Nic_Ccms_Complaint>;
+};
+
+export type Nic_Ccms_Complaint_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Nic_Ccms_Complaint_Aggregate_Bool_Exp_Count>;
+};
+
+export type Nic_Ccms_Complaint_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Nic_Ccms_Complaint_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Nic_Ccms_Complaint_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "nic_ccms.Complaint" */
@@ -4435,9 +4692,13 @@ export type Nic_Ccms_Complaint_Avg_Order_By = {
 /** Boolean expression to filter rows from the table "nic_ccms.Complaint". All fields are combined with a logical 'AND'. */
 export type Nic_Ccms_Complaint_Bool_Exp = {
   ComplaintAssignees?: InputMaybe<TicketAssignee_Bool_Exp>;
+  ComplaintAssignees_aggregate?: InputMaybe<TicketAssignee_Aggregate_Bool_Exp>;
   ComplaintDocuments?: InputMaybe<Nic_Ccms_ComplaintDocuments_Bool_Exp>;
+  ComplaintDocuments_aggregate?: InputMaybe<Nic_Ccms_ComplaintDocuments_Aggregate_Bool_Exp>;
   ComplaintMeetings?: InputMaybe<Meeting_Bool_Exp>;
+  ComplaintMeetings_aggregate?: InputMaybe<Meeting_Aggregate_Bool_Exp>;
   ComplaintStatuses?: InputMaybe<Nic_Ccms_ComplaintStatus_Bool_Exp>;
+  ComplaintStatuses_aggregate?: InputMaybe<Nic_Ccms_ComplaintStatus_Aggregate_Bool_Exp>;
   EntityNote?: InputMaybe<String_Comparison_Exp>;
   IdType?: InputMaybe<String_Comparison_Exp>;
   NationalId?: InputMaybe<String_Comparison_Exp>;
@@ -4469,6 +4730,7 @@ export type Nic_Ccms_Complaint_Bool_Exp = {
   id?: InputMaybe<Uuid_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   notes?: InputMaybe<Nic_Ccms_Complaint_Note_Bool_Exp>;
+  notes_aggregate?: InputMaybe<Nic_Ccms_Complaint_Note_Aggregate_Bool_Exp>;
   officeId?: InputMaybe<Uuid_Comparison_Exp>;
   pertitioner_name?: InputMaybe<String_Comparison_Exp>;
   petition_reason?: InputMaybe<String_Comparison_Exp>;
@@ -4596,8 +4858,12 @@ export type Nic_Ccms_Complaint_Max_Fields = {
   regulatedEntityId?: Maybe<Scalars['uuid']['output']>;
   residentialAddress?: Maybe<Scalars['String']['output']>;
   sourceChannel?: Maybe<Scalars['String']['output']>;
+  /** A computed field, executes function "complaint_status" */
+  status?: Maybe<Scalars['String']['output']>;
   ticketNumber?: Maybe<Scalars['String']['output']>;
   ticketType?: Maybe<Scalars['String']['output']>;
+  /** A computed field, executes function "nic_ccms.complaint_number" */
+  ticket_number?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   vehicle_number?: Maybe<Scalars['String']['output']>;
 };
@@ -4687,8 +4953,12 @@ export type Nic_Ccms_Complaint_Min_Fields = {
   regulatedEntityId?: Maybe<Scalars['uuid']['output']>;
   residentialAddress?: Maybe<Scalars['String']['output']>;
   sourceChannel?: Maybe<Scalars['String']['output']>;
+  /** A computed field, executes function "complaint_status" */
+  status?: Maybe<Scalars['String']['output']>;
   ticketNumber?: Maybe<Scalars['String']['output']>;
   ticketType?: Maybe<Scalars['String']['output']>;
+  /** A computed field, executes function "nic_ccms.complaint_number" */
+  ticket_number?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   vehicle_number?: Maybe<Scalars['String']['output']>;
 };
@@ -5156,6 +5426,7 @@ export type Nic_Ccms_Complaint_Updates = {
   _inc?: InputMaybe<Nic_Ccms_Complaint_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_Complaint_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_Complaint_Bool_Exp;
 };
 
@@ -5264,6 +5535,7 @@ export type Nic_Ccms_Document_Aggregate_FieldsCountArgs = {
 /** Boolean expression to filter rows from the table "nic_ccms.Document". All fields are combined with a logical 'AND'. */
 export type Nic_Ccms_Document_Bool_Exp = {
   TicketDocuments?: InputMaybe<Nic_Ccms_TicketDocument_Bool_Exp>;
+  TicketDocuments_aggregate?: InputMaybe<Nic_Ccms_TicketDocument_Aggregate_Bool_Exp>;
   _and?: InputMaybe<Array<Nic_Ccms_Document_Bool_Exp>>;
   _not?: InputMaybe<Nic_Ccms_Document_Bool_Exp>;
   _or?: InputMaybe<Array<Nic_Ccms_Document_Bool_Exp>>;
@@ -5416,6 +5688,7 @@ export enum Nic_Ccms_Document_Update_Column {
 export type Nic_Ccms_Document_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_Document_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_Document_Bool_Exp;
 };
 
@@ -5457,6 +5730,17 @@ export type Nic_Ccms_TicketDocument_Aggregate = {
   __typename?: 'nic_ccms_TicketDocument_aggregate';
   aggregate?: Maybe<Nic_Ccms_TicketDocument_Aggregate_Fields>;
   nodes: Array<Nic_Ccms_TicketDocument>;
+};
+
+export type Nic_Ccms_TicketDocument_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Nic_Ccms_TicketDocument_Aggregate_Bool_Exp_Count>;
+};
+
+export type Nic_Ccms_TicketDocument_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Nic_Ccms_TicketDocument_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Nic_Ccms_TicketDocument_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "nic_ccms.TicketDocument" */
@@ -5646,6 +5930,7 @@ export enum Nic_Ccms_TicketDocument_Update_Column {
 export type Nic_Ccms_TicketDocument_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_TicketDocument_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_TicketDocument_Bool_Exp;
 };
 
@@ -5904,6 +6189,7 @@ export enum Nic_Ccms_Ticket_Update_Column {
 export type Nic_Ccms_Ticket_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_Ticket_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_Ticket_Bool_Exp;
 };
 
@@ -5926,6 +6212,17 @@ export type Nic_Ccms_Complaint_Note_Aggregate = {
   __typename?: 'nic_ccms_complaint_note_aggregate';
   aggregate?: Maybe<Nic_Ccms_Complaint_Note_Aggregate_Fields>;
   nodes: Array<Nic_Ccms_Complaint_Note>;
+};
+
+export type Nic_Ccms_Complaint_Note_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Nic_Ccms_Complaint_Note_Aggregate_Bool_Exp_Count>;
+};
+
+export type Nic_Ccms_Complaint_Note_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Nic_Ccms_Complaint_Note_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Nic_Ccms_Complaint_Note_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "nic_ccms.complaint_note" */
@@ -6138,6 +6435,7 @@ export enum Nic_Ccms_Complaint_Note_Update_Column {
 export type Nic_Ccms_Complaint_Note_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_Complaint_Note_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_Complaint_Note_Bool_Exp;
 };
 
@@ -6324,6 +6622,7 @@ export enum Nic_Ccms_Complaint_Transfer_Update_Column {
 export type Nic_Ccms_Complaint_Transfer_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_Complaint_Transfer_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_Complaint_Transfer_Bool_Exp;
 };
 
@@ -6648,6 +6947,7 @@ export type Nic_Ccms_Email_Updates = {
   _prepend?: InputMaybe<Nic_Ccms_Email_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_Email_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_Email_Bool_Exp;
 };
 
@@ -6880,6 +7180,7 @@ export type Nic_Ccms_Event_Updates = {
   _prepend?: InputMaybe<Nic_Ccms_Event_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_Event_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_Event_Bool_Exp;
 };
 
@@ -7160,6 +7461,7 @@ export type Nic_Ccms_Log_Updates = {
   _prepend?: InputMaybe<Nic_Ccms_Log_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_Log_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_Log_Bool_Exp;
 };
 
@@ -7392,6 +7694,7 @@ export type Nic_Ccms_Sms_Updates = {
   _prepend?: InputMaybe<Nic_Ccms_Sms_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Nic_Ccms_Sms_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Nic_Ccms_Sms_Bool_Exp;
 };
 
@@ -8032,7 +8335,7 @@ export type Subscription_Root = {
   Admin_aggregate: Admin_Aggregate;
   /** fetch data from the table: "nic_ccms.Admin" using primary key columns */
   Admin_by_pk?: Maybe<Admin>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.Admin" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.Admin" */
   Admin_stream: Array<Admin>;
   /** fetch data from the table: "nic_ccms.Meeting" */
   Meeting: Array<Meeting>;
@@ -8040,7 +8343,7 @@ export type Subscription_Root = {
   Meeting_aggregate: Meeting_Aggregate;
   /** fetch data from the table: "nic_ccms.Meeting" using primary key columns */
   Meeting_by_pk?: Maybe<Meeting>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.Meeting" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.Meeting" */
   Meeting_stream: Array<Meeting>;
   /** fetch data from the table: "nic_ccms.Office" */
   Office: Array<Office>;
@@ -8048,7 +8351,7 @@ export type Subscription_Root = {
   Office_aggregate: Office_Aggregate;
   /** fetch data from the table: "nic_ccms.Office" using primary key columns */
   Office_by_pk?: Maybe<Office>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.Office" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.Office" */
   Office_stream: Array<Office>;
   /** fetch data from the table: "nic_ccms.Privilege" */
   Privilege: Array<Privilege>;
@@ -8056,7 +8359,7 @@ export type Subscription_Root = {
   Privilege_aggregate: Privilege_Aggregate;
   /** fetch data from the table: "nic_ccms.Privilege" using primary key columns */
   Privilege_by_pk?: Maybe<Privilege>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.Privilege" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.Privilege" */
   Privilege_stream: Array<Privilege>;
   /** fetch data from the table: "nic_ccms.RegulatedEntity" */
   RegulatedEntity: Array<RegulatedEntity>;
@@ -8064,7 +8367,7 @@ export type Subscription_Root = {
   RegulatedEntity_aggregate: RegulatedEntity_Aggregate;
   /** fetch data from the table: "nic_ccms.RegulatedEntity" using primary key columns */
   RegulatedEntity_by_pk?: Maybe<RegulatedEntity>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.RegulatedEntity" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.RegulatedEntity" */
   RegulatedEntity_stream: Array<RegulatedEntity>;
   /** fetch data from the table: "nic_ccms.TicketAssignee" */
   TicketAssignee: Array<TicketAssignee>;
@@ -8072,7 +8375,7 @@ export type Subscription_Root = {
   TicketAssignee_aggregate: TicketAssignee_Aggregate;
   /** fetch data from the table: "nic_ccms.TicketAssignee" using primary key columns */
   TicketAssignee_by_pk?: Maybe<TicketAssignee>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.TicketAssignee" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.TicketAssignee" */
   TicketAssignee_stream: Array<TicketAssignee>;
   /** fetch data from the table: "nic_ccms.TicketNotification" */
   TicketNotification: Array<TicketNotification>;
@@ -8080,7 +8383,7 @@ export type Subscription_Root = {
   TicketNotification_aggregate: TicketNotification_Aggregate;
   /** fetch data from the table: "nic_ccms.TicketNotification" using primary key columns */
   TicketNotification_by_pk?: Maybe<TicketNotification>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.TicketNotification" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.TicketNotification" */
   TicketNotification_stream: Array<TicketNotification>;
   /** fetch data from the table: "nic_ccms.ClaimType" */
   nic_ccms_ClaimType: Array<Nic_Ccms_ClaimType>;
@@ -8088,7 +8391,7 @@ export type Subscription_Root = {
   nic_ccms_ClaimType_aggregate: Nic_Ccms_ClaimType_Aggregate;
   /** fetch data from the table: "nic_ccms.ClaimType" using primary key columns */
   nic_ccms_ClaimType_by_pk?: Maybe<Nic_Ccms_ClaimType>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.ClaimType" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.ClaimType" */
   nic_ccms_ClaimType_stream: Array<Nic_Ccms_ClaimType>;
   /** fetch data from the table: "nic_ccms.Complaint" */
   nic_ccms_Complaint: Array<Nic_Ccms_Complaint>;
@@ -8098,7 +8401,7 @@ export type Subscription_Root = {
   nic_ccms_ComplaintDocuments_aggregate: Nic_Ccms_ComplaintDocuments_Aggregate;
   /** fetch data from the table: "nic_ccms.ComplaintDocuments" using primary key columns */
   nic_ccms_ComplaintDocuments_by_pk?: Maybe<Nic_Ccms_ComplaintDocuments>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.ComplaintDocuments" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.ComplaintDocuments" */
   nic_ccms_ComplaintDocuments_stream: Array<Nic_Ccms_ComplaintDocuments>;
   /** fetch data from the table: "nic_ccms.ComplaintStatus" */
   nic_ccms_ComplaintStatus: Array<Nic_Ccms_ComplaintStatus>;
@@ -8106,13 +8409,13 @@ export type Subscription_Root = {
   nic_ccms_ComplaintStatus_aggregate: Nic_Ccms_ComplaintStatus_Aggregate;
   /** fetch data from the table: "nic_ccms.ComplaintStatus" using primary key columns */
   nic_ccms_ComplaintStatus_by_pk?: Maybe<Nic_Ccms_ComplaintStatus>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.ComplaintStatus" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.ComplaintStatus" */
   nic_ccms_ComplaintStatus_stream: Array<Nic_Ccms_ComplaintStatus>;
   /** fetch aggregated fields from the table: "nic_ccms.Complaint" */
   nic_ccms_Complaint_aggregate: Nic_Ccms_Complaint_Aggregate;
   /** fetch data from the table: "nic_ccms.Complaint" using primary key columns */
   nic_ccms_Complaint_by_pk?: Maybe<Nic_Ccms_Complaint>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.Complaint" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.Complaint" */
   nic_ccms_Complaint_stream: Array<Nic_Ccms_Complaint>;
   /** fetch data from the table: "nic_ccms.Document" */
   nic_ccms_Document: Array<Nic_Ccms_Document>;
@@ -8120,7 +8423,7 @@ export type Subscription_Root = {
   nic_ccms_Document_aggregate: Nic_Ccms_Document_Aggregate;
   /** fetch data from the table: "nic_ccms.Document" using primary key columns */
   nic_ccms_Document_by_pk?: Maybe<Nic_Ccms_Document>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.Document" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.Document" */
   nic_ccms_Document_stream: Array<Nic_Ccms_Document>;
   /** fetch data from the table: "nic_ccms.Ticket" */
   nic_ccms_Ticket: Array<Nic_Ccms_Ticket>;
@@ -8130,13 +8433,13 @@ export type Subscription_Root = {
   nic_ccms_TicketDocument_aggregate: Nic_Ccms_TicketDocument_Aggregate;
   /** fetch data from the table: "nic_ccms.TicketDocument" using primary key columns */
   nic_ccms_TicketDocument_by_pk?: Maybe<Nic_Ccms_TicketDocument>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.TicketDocument" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.TicketDocument" */
   nic_ccms_TicketDocument_stream: Array<Nic_Ccms_TicketDocument>;
   /** fetch aggregated fields from the table: "nic_ccms.Ticket" */
   nic_ccms_Ticket_aggregate: Nic_Ccms_Ticket_Aggregate;
   /** fetch data from the table: "nic_ccms.Ticket" using primary key columns */
   nic_ccms_Ticket_by_pk?: Maybe<Nic_Ccms_Ticket>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.Ticket" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.Ticket" */
   nic_ccms_Ticket_stream: Array<Nic_Ccms_Ticket>;
   /** fetch data from the table: "nic_ccms.complaint_note" */
   nic_ccms_complaint_note: Array<Nic_Ccms_Complaint_Note>;
@@ -8144,7 +8447,7 @@ export type Subscription_Root = {
   nic_ccms_complaint_note_aggregate: Nic_Ccms_Complaint_Note_Aggregate;
   /** fetch data from the table: "nic_ccms.complaint_note" using primary key columns */
   nic_ccms_complaint_note_by_pk?: Maybe<Nic_Ccms_Complaint_Note>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.complaint_note" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.complaint_note" */
   nic_ccms_complaint_note_stream: Array<Nic_Ccms_Complaint_Note>;
   /** fetch data from the table: "nic_ccms.complaint_transfer" */
   nic_ccms_complaint_transfer: Array<Nic_Ccms_Complaint_Transfer>;
@@ -8152,7 +8455,7 @@ export type Subscription_Root = {
   nic_ccms_complaint_transfer_aggregate: Nic_Ccms_Complaint_Transfer_Aggregate;
   /** fetch data from the table: "nic_ccms.complaint_transfer" using primary key columns */
   nic_ccms_complaint_transfer_by_pk?: Maybe<Nic_Ccms_Complaint_Transfer>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.complaint_transfer" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.complaint_transfer" */
   nic_ccms_complaint_transfer_stream: Array<Nic_Ccms_Complaint_Transfer>;
   /** fetch data from the table: "nic_ccms.email" */
   nic_ccms_email: Array<Nic_Ccms_Email>;
@@ -8160,7 +8463,7 @@ export type Subscription_Root = {
   nic_ccms_email_aggregate: Nic_Ccms_Email_Aggregate;
   /** fetch data from the table: "nic_ccms.email" using primary key columns */
   nic_ccms_email_by_pk?: Maybe<Nic_Ccms_Email>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.email" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.email" */
   nic_ccms_email_stream: Array<Nic_Ccms_Email>;
   /** fetch data from the table: "nic_ccms.event" */
   nic_ccms_event: Array<Nic_Ccms_Event>;
@@ -8168,7 +8471,7 @@ export type Subscription_Root = {
   nic_ccms_event_aggregate: Nic_Ccms_Event_Aggregate;
   /** fetch data from the table: "nic_ccms.event" using primary key columns */
   nic_ccms_event_by_pk?: Maybe<Nic_Ccms_Event>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.event" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.event" */
   nic_ccms_event_stream: Array<Nic_Ccms_Event>;
   /** fetch data from the table: "nic_ccms.log" */
   nic_ccms_log: Array<Nic_Ccms_Log>;
@@ -8176,7 +8479,7 @@ export type Subscription_Root = {
   nic_ccms_log_aggregate: Nic_Ccms_Log_Aggregate;
   /** fetch data from the table: "nic_ccms.log" using primary key columns */
   nic_ccms_log_by_pk?: Maybe<Nic_Ccms_Log>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.log" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.log" */
   nic_ccms_log_stream: Array<Nic_Ccms_Log>;
   /** fetch data from the table: "nic_ccms.sms" */
   nic_ccms_sms: Array<Nic_Ccms_Sms>;
@@ -8184,7 +8487,7 @@ export type Subscription_Root = {
   nic_ccms_sms_aggregate: Nic_Ccms_Sms_Aggregate;
   /** fetch data from the table: "nic_ccms.sms" using primary key columns */
   nic_ccms_sms_by_pk?: Maybe<Nic_Ccms_Sms>;
-  /** fetch data from the table in a streaming manner : "nic_ccms.sms" */
+  /** fetch data from the table in a streaming manner: "nic_ccms.sms" */
   nic_ccms_sms_stream: Array<Nic_Ccms_Sms>;
 };
 
@@ -9031,7 +9334,7 @@ export type ErrorHandlerMutationResult = Apollo.MutationResult<ErrorHandlerMutat
 export type ErrorHandlerMutationOptions = Apollo.BaseMutationOptions<ErrorHandlerMutation, ErrorHandlerMutationVariables>;
 export const RegulatedEntitiesDocument = gql`
     query RegulatedEntities {
-  RegulatedEntity {
+  RegulatedEntity(where: {isDisabled: {_eq: false}, _and: {name: {_neq: "NIC"}}}) {
     id
     name
     entityType

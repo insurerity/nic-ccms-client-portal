@@ -1,5 +1,5 @@
 query RegulatedEntities {
-  RegulatedEntity {
+  RegulatedEntity(where: {isDisabled: {_eq: false}, _and: {name: {_neq: "NIC"}}}) {
     id
     name
     entityType
