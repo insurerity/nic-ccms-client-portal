@@ -11,7 +11,7 @@ export const useGetRegulatedEntities = () => {
         label: capitalize(v.name),
       }))
     : [];
-
+console.log('entites', entities)
   return {
     loadingEntities: loading,
     entities,

@@ -5,11 +5,13 @@ import React from "react";
 type GetStartedCheckStatusProps = {
   title: string;
   subText: string;
+  action: ()=> void
 };
 
 const GetStartedCheckStatus = ({
   subText,
   title,
+  action
 }: GetStartedCheckStatusProps) => {
   return (
     <div className="lg:p-4 p-6">
@@ -18,7 +20,7 @@ const GetStartedCheckStatus = ({
           {title}
         </h1>
         <p className="text-center text-gray-600 text-sm lg:text-base px-6">{subText}</p>
-        <div className="relative w-full my-4 rounded-xl overflow-hidden">
+        <div className="relative w-full my-4 rounded-xl overflow-hidden" onClick={action}>
           <div className="bg-gradient-to-r from-[#59285F]/80 to-[#59285F]/60 relative h-[220px] lg:h-[318px] rounded-xl overflow-hidden">
             <img
               src="/images/video-bg.png"

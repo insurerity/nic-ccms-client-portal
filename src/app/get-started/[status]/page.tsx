@@ -11,6 +11,7 @@ import GetStartedCheckStatus from "./components/GetStartedCheckStatus";
 import GetStartedGetCompensation from "./components/GetStartedGetCompensation";
 import { useParams } from "next/navigation";
 import { Suspense } from "react";
+import { toast } from "sonner";
 
 export default function GetStartedStatus() {
   const params = useParams();
@@ -24,6 +25,14 @@ export default function GetStartedStatus() {
       <GetStartedCheckStatus
         subText={pageData?.subText}
         title={pageData?.title}
+        action={() =>
+          toast.message(
+            "Coming Soon – In the meantime, click on check now to check the status of your complaint",
+            {
+              position: "top-center",
+            }
+          )
+        }
       />
     );
   }
@@ -34,6 +43,14 @@ export default function GetStartedStatus() {
         subText={pageData?.subText}
         title={pageData?.title}
         tocItems={tocItems}
+        action={() =>
+          toast.message(
+            "Coming Soon – In the meantime, learn more about our process below / Click on Apply Now to proceed ",
+            {
+              position: "top-center",
+            }
+          )
+        }
       />
     );
   }
@@ -45,8 +62,20 @@ export default function GetStartedStatus() {
           <h1 className="text-center text-xl md:text-3xl font-bold text-[#333] mb-2">
             {pageData?.title}
           </h1>
-          <p className="text-center text-gray-600 text-sm lg:text-base px-6">{pageData?.subText}</p>
-          <div className="relative w-full my-4 rounded-xl overflow-hidden">
+          <p className="text-center text-gray-600 text-sm lg:text-base px-6">
+            {pageData?.subText}
+          </p>
+          <div
+            className="relative w-full my-4 rounded-xl overflow-hidden"
+            onClick={() =>
+              toast.message(
+                "Coming Soon – In the meantime, learn more about our process below / Click on Continue to proceed",
+                {
+                  position: "top-center",
+                }
+              )
+            }
+          >
             <div className="bg-gradient-to-r from-[#59285F]/80 to-[#59285F]/60 relative h-[220px] lg:h-[318px] rounded-xl overflow-hidden">
               <img
                 src="/images/video-bg.png"
@@ -63,7 +92,10 @@ export default function GetStartedStatus() {
               </div>
             </div>
           </div>
-          <UnderstandRequirements continueText={pageData?.continueText} type="petition"/>
+          <UnderstandRequirements
+            continueText={pageData?.continueText}
+            type="petition"
+          />
         </div>
         <div>
           <ContentLayout tocItems={tocItems}>
