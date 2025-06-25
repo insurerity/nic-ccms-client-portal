@@ -36,8 +36,6 @@ const MotorCompIndividual = () => {
     ? MOTOR_COMP_REQUIRED_DOCUMENTS_DETAILED[caseType?.toLowerCase()]
     : [];
 
-  console.log("required documents", REQUIRED_DOCUMENTS);
-
   const handleNextStep = () => {
     setCurrentStep((prev) => prev + 1);
     window.scrollTo(0, 0);
@@ -59,7 +57,7 @@ const MotorCompIndividual = () => {
   const currentFormStep = formSteps?.[currentStep - 1];
 
   const currentFaq = FAQ_BY_FORM[currentFormStep?.identifier];
-  
+
   const renderStepContent = () => {
     if (isCompleted) {
       return <SubmissionSuccess />;
@@ -90,11 +88,7 @@ const MotorCompIndividual = () => {
 
   return (
     <Suspense>
-      <FormLayout
-        currentStep={currentStep}
-        faqs={currentFaq}
-        steps={formSteps}
-      >
+      <FormLayout currentStep={currentStep} faqs={currentFaq} steps={formSteps}>
         {renderStepContent()}
       </FormLayout>
     </Suspense>

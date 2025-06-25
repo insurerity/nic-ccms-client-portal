@@ -7,10 +7,8 @@ import BusinessInformationForm from "@/components/common/Form/BusinessInformatio
 import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupportingDocumentsForm";
 import SubmissionSuccess from "@/components/common/Form/SubmissionSuccess";
 import {
-  DEFAULT_FAQS,
   MOTOR_COMP_REQUIRED_DOCUMENTS_DETAILED,
   MOTOR_COMPENSATION_FORM_STEPS,
-  NORMAL_PETITION_DOCUMENTS,
 } from "@/lib/state";
 
 import { Suspense, useState } from "react";

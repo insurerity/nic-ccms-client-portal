@@ -82,38 +82,49 @@ export const caseDetails: Faq[] = [
 export const businessInformation: Faq[] = [
   {
     id: 1,
-    question: "What is a digital address?",
-    answer: "",
+    question: "Who is a contact person?",
+    answer: "A contact person is someone we can get in touch with.",
   },
   {
     id: 2,
-    question: "Where can I find my digital address?",
-    answer: "",
+    question: "What is a contact person number?",
+    answer: "This is the main phone number for reaching the contact person",
   },
   {
     id: 3,
-    question: "Where can I find my Ghana Card Number?",
-    answer: "",
+    question: "What is a digital address?",
+    answer:
+      "A digital address is your unique GhanaPost GPS code a simple set of letters and numbers that pinpoints your exact  location",
   },
   {
     id: 4,
-    question: "Where can I find my Voter ID Number?",
-    answer: "",
+    question: "Where can I find my digital address?",
+    answer: <GhanaPostAddressGuide />,
   },
   {
     id: 5,
-    question: "Where can I find my Health Insurance Number?",
-    answer: "",
+    question: "Where can I find my Ghana Card Number?",
+    answer: <GhanaCardNumberInfo />,
   },
   {
     id: 6,
-    question: "Where can I find my Driver’s License Number?",
-    answer: "",
+    question: "Where can I find my Voter ID Number?",
+    answer: <VoterIDInfo />,
   },
   {
     id: 7,
+    question: "Where can I find my Health Insurance Number?",
+    answer: <NHISNumberInfo />,
+  },
+  {
+    id: 8,
+    question: "Where can I find my Driver’s License Number?",
+    answer: <DriversLicenseInfo />,
+  },
+  {
+    id: 9,
     question: "Where can I find my Passport Number?",
-    answer: "",
+    answer: <PassportNumberInfo />,
   },
 ];
 
@@ -152,38 +163,39 @@ const complaintDetailsFaq = [
 const petitionerProfileFaq: Faq[] = [
   {
     id: 1,
-    question: "What is a digital address?",
-    answer: "",
+    question: "Who is a petitioner?",
+    answer:
+      "A  petitioner is the individual or organization filing the official complaint or request",
   },
   {
     id: 2,
-    question: "Where can I find my digital address?",
-    answer: "",
+    question: "Where can I find my Ghana Card Number?",
+    answer: <GhanaCardNumberInfo />,
   },
   {
     id: 3,
-    question: "Where can I find my Ghana Card Number?",
-    answer: "",
+    question: "Where can I find my Voter ID Number?",
+    answer: <VoterIDInfo />,
   },
   {
     id: 4,
-    question: "Where can I find my Voter ID Number?",
-    answer: "",
+    question: "Where can I find my Health Insurance Number?",
+    answer: <NHISNumberInfo />,
   },
   {
     id: 5,
-    question: "Where can I find my Health Insurance Number?",
-    answer: "",
+    question: "Where can I find my Driver’s License Number?",
+    answer: <DriversLicenseInfo />,
   },
   {
     id: 6,
-    question: "Where can I find my Driver’s License Number?",
-    answer: "",
+    question: "Where can I find my Passport Number?",
+    answer: <PassportNumberInfo />,
   },
   {
     id: 7,
-    question: "Where can I find my Passport Number?",
-    answer: "",
+    question: "How do I find my Policy Number?",
+    answer: <PolicyNumberInfo />,
   },
 ];
 
@@ -213,19 +225,69 @@ const reviewSubmit: Faq[] = [
 const supportingDocumentsFAQ: Faq[] = [
   {
     id: 1,
-    question: "What is a signed letter of petition?",
-    answer: "It is a letter showing that you have been authorized to petition",
+    question: "What is an original Police Accident report document?",
+    answer:
+      "An original police report document refers to the official, first-generation record created by law enforcement at the scene of an incident or after investigation.",
   },
   {
     id: 2,
-    question: "Which National Identification Card should I use?",
+    question: "What is an Original death certificate?",
     answer:
-      "Use the one which is readily available to you. You may be required to provide it later",
+      "It is an official, government-issued legal record confirming a person’s death, including cause, time, location, and personal details.",
   },
   {
     id: 3,
+    question: "What is a Burial Permit?",
+    answer:
+      "It is a short-term authorization issued by a medical examiner, coroner, or vital records office, allowing burial, cremation, or transport of remains.",
+  },
+  {
+    id: 4,
+    question: "What is an Original Letters Of Administration (adult)?",
+    answer:
+      "A court-issued legal document granting an appointed administrator the authority to manage and distribute the estate of a deceased adult who died without a valid will (intestate).",
+  },
+  {
+    id: 5,
+    question: "What is an Original Statutory Declaration (minor)?",
+    answer:
+      "A legally binding document, signed and witnessed before an authorized officer (e.g., notary), in which a declarant makes factual statements under oath regarding matters involving a minor (e.g., guardianship, inheritance, or identity), with the original being the first-executed version bearing live signatures and seals.",
+  },
+  {
+    id: 6,
     question:
-      "What additional documents can I upload to support my claim or petition?",
+      "What is an Original Affidavit stating the name of the spouse and children as well as their ages?",
+    answer:
+      "A sworn, written statement signed in the presence of an authorized officer (e.g., notary), declaring the names and ages of a person’s surviving spouse and children, with the original being the first-executed version bearing live signatures, seals, and attestations.",
+  },
+  {
+    id: 7,
+    question:
+      "What is The Administrator(s) National ID card, preferably Ghana card?",
+    answer:
+      "The original, government-issued national identification document (ideally Ghana's biometric Ghana Card) of the court-appointed administrator(s) handling an estate, used to verify their identity and legal authority in probate or administrative proceedings.",
+  },
+  {
+    id: 8,
+    question: "What is an affidavit Of correction Of name?",
+    answer:
+      "An Affidavit of Correction of Name is a sworn legal document used to resolve discrepancies between the name on a National Identity Card and those on other legal documents like Letters of Administration or Statutory Declarations.",
+  },
+  {
+    id: 9,
+    question: "What is an affidavit of instruction/ authorization?",
+    answer:
+      "An Affidavit of Instruction/Authorization is a sworn statement by a client that formally records and authorizes a solicitor’s engagement and the scope of their instructions.",
+  },
+  {
+    id: 10,
+    question: "What is a Repudiation letter?",
+    answer:
+      "A Repudiation Letter is a formal written notice by one party asserting that a contract (or other legal relationship) can no longer continue either because the other side has fundamentally breached it or is about to do so.",
+  },
+  {
+    id: 11,
+    question: "What is an “Other document”?",
     answer:
       "Any other documents which will aid in your complaint being successful. You want to provide as much helpful context as possible.",
   },

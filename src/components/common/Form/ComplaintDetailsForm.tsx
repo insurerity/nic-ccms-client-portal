@@ -73,7 +73,6 @@ const ComplaintDetailsForm = ({
   const { showDialog } = useFaqsDialogStore();
   const pathName = usePathname();
 
- 
   const form = useForm<complaintDetailFormSchemaType>({
     resolver: zodResolver(complaintDetailFormSchema),
     defaultValues: data?.complaintDetails
@@ -87,10 +86,10 @@ const ComplaintDetailsForm = ({
           entityOfConcern: "",
           natureOfClaim: "",
           description: "",
-          petitionReason : "",
+          petitionReason: "",
           otherPetitionReason: "",
-          otherNatureOfClaim : "",
-          vehicleNumber : "",
+          otherNatureOfClaim: "",
+          vehicleNumber: "",
         },
   });
 
@@ -98,8 +97,7 @@ const ComplaintDetailsForm = ({
   const petitionReason = form.watch("petitionReason");
   const natureOfClaim = form.watch("natureOfClaim");
 
-
-  console.log('selected cliant', selectedClaimType)
+  console.log("selected cliant", selectedClaimType);
 
   const natureOfClaims = selectedClaimType
     ? NATURE_OF_CLAIMS[selectedClaimType]
@@ -117,7 +115,7 @@ const ComplaintDetailsForm = ({
     }
   };
 
-   useEffect(() => {
+  useEffect(() => {
     logInfo("Page View", {
       component: "ComplaintsDetailsForm",
       path: pathName,
@@ -156,7 +154,9 @@ const ComplaintDetailsForm = ({
               name="dateOfIncident"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Date of Incident</FormLabel>
+                  <FormLabel>
+                    Date of Incident <span className="text-red-500">*</span>{" "}
+                  </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -241,9 +241,6 @@ const ComplaintDetailsForm = ({
             />
           )}
 
-
-         
-        
           <div className="grid md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -291,63 +288,62 @@ const ComplaintDetailsForm = ({
               )}
             />
           </div>
-              <div className="grid md:grid-cols-2 gap-4">
-
-            
-          <FormField
-            control={form.control}
-            name="natureOfClaim"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Nature of Claim <span className="text-red-500">*</span>
-                </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select nature of claim" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="w-full">
-                    {natureOfClaims.map((nature) => (
-                      <SelectItem key={nature} value={nature}>
-                        {nature}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {natureOfClaim === "Other" && (
+          <div className="grid md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name="otherNatureOfClaim"
+              name="natureOfClaim"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Specify Other Nature of Claim{" "}
-                    <span className="text-red-500">*</span>
+                    Nature of Claim <span className="text-red-500">*</span>
                   </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter your specific nature of claim "
-                      {...field}
-                      // maxLength={200} // Optional: if you want a visual cue, but Zod handles validation
-                    />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select nature of claim" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="w-full">
+                      {natureOfClaims.map((nature) => (
+                        <SelectItem key={nature} value={nature}>
+                          {nature}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          )}
-            </div>
+            {natureOfClaim === "Other" && (
+              <FormField
+                control={form.control}
+                name="otherNatureOfClaim"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Specify Other Nature of Claim{" "}
+                      <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your specific nature of claim "
+                        {...field}
+                        // maxLength={200} // Optional: if you want a visual cue, but Zod handles validation
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+          </div>
 
-          {selectedClaimType === "Motor Compensation" && <FormField
+          {selectedClaimType === "Motor Compensation" && (
+            <FormField
               control={form.control}
               name="vehicleNumber"
               render={({ field }) => (
@@ -366,7 +362,8 @@ const ComplaintDetailsForm = ({
                   <FormMessage />
                 </FormItem>
               )}
-            />}
+            />
+          )}
 
           <FormField
             control={form.control}
@@ -507,7 +504,7 @@ const ComplaintDetailsForm = ({
                 text="Next"
                 type="submit"
                 className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
-                 actionFrom="Complaint Details Form"
+                actionFrom="Complaint Details Form"
               />
             </div>
           ) : (
@@ -516,7 +513,7 @@ const ComplaintDetailsForm = ({
                 text="Next"
                 type="submit"
                 className="bg-[#59285F] text-white font-medium py-2 px-4 rounded-full"
-                 actionFrom="Complaint Details Form"
+                actionFrom="Complaint Details Form"
               />
             </div>
           )}

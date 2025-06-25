@@ -8,8 +8,8 @@ import PetitionerProfileForm from "@/components/common/Form/PetitionProfileForm"
 import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
 import SubmissionSuccess from "@/components/common/Form/SubmissionSuccess";
 import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
-import Loader from "@/components/common/Loader";
 import { useSharedStore } from "@/hooks/use-complaint-store";
+import { FAQ_BY_FORM } from "@/lib/FAQs";
 import {
   DEFAULT_FAQS,
   NORMAL_PETITION_DOCUMENTS,
@@ -23,7 +23,7 @@ const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "complaint-details": ComplaintDetailsForm,
   "supporting-documents": DynamicSupportingDocumentsForm,
   "review-submit": ReviewSubmitForm,
-  "petitioners-profile": PetitionerProfileForm, 
+  "petitioners-profile": PetitionerProfileForm,
   "business-information": BusinessInformationForm,
 };
 
@@ -52,7 +52,9 @@ const NormalPetitionBusiness = () => {
     //  @ts-ignore
     NORMAL_PETITION_FORM_STEPS["business"][complainantType as any];
 
-  console.log('stpeps', formSteps)
+  const currentFormStep = formSteps?.[currentStep - 1];
+
+  const currentFaq = FAQ_BY_FORM[currentFormStep?.identifier];
 
   const renderStepContent = () => {
     if (isCompleted) {
@@ -84,11 +86,7 @@ const NormalPetitionBusiness = () => {
 
   return (
     <Suspense>
-      <FormLayout
-        currentStep={currentStep}
-        faqs={DEFAULT_FAQS}
-        steps={formSteps}
-      >
+      <FormLayout currentStep={currentStep} faqs={currentFaq} steps={formSteps}>
         {renderStepContent()}
       </FormLayout>
     </Suspense>
@@ -96,7 +94,7 @@ const NormalPetitionBusiness = () => {
 };
 
 export default NormalPetitionBusiness;
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
+// export const dynamic = "force-dynamic";
+// export const fetchCache = "force-no-store";
 // Alternatively, you can use next/dynamic for client-only components, but for pages,
 // using "use client" and the above exports is the recommended approach in Next.js 13+.
