@@ -3,7 +3,7 @@ import React from "react";
 export default function GhanaCardNumberInfo() {
   return (
     <div className="pace-y-4">
-      <h2 className="text-2xl font-bold text-gray-900">
+      <h2 className="text-base font-bold text-gray-900">
         Your Ghana Card Number
       </h2>
 

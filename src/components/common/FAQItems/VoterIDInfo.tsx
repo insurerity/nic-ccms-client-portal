@@ -3,7 +3,7 @@ import React from "react";
 export default function VoterIDInfo() {
   return (
     <div className=" space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900 ">
+      <h2 className="text-base font-bold text-gray-900 ">
         How to Find Your Voter ID Number
       </h2>
 

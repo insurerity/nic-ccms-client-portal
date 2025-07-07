@@ -3,7 +3,7 @@ import React from "react";
 export default function GhanaPostAddressGuide() {
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">
+      <h1 className="text-base font-bold text-gray-900">
         How to Locate Your Ghana Digital Address (GhanaPost GPS Code)
       </h1>
 
