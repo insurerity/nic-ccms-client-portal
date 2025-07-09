@@ -13,7 +13,7 @@ import {
 
 import { Suspense, useState } from "react";
 import { useSharedStore } from "@/hooks/use-complaint-store";
-import { FAQ_BY_FORM } from "@/lib/FAQs";
+import { FAQ_BY_FORM, supportingFAQsMpet } from "@/lib/FAQs";
 
 const FORM_COMPONENTS: Record<string, React.FC<any>> = {
   "business-information": BusinessInformationForm,
@@ -57,7 +57,10 @@ const MCompBusiness = () => {
 
   const currentFormStep = formSteps?.[currentStep - 1];
 
-  const currentFaq = FAQ_BY_FORM[currentFormStep?.identifier];
+  const currentFaq =
+    currentFormStep?.identifier === "supporting-documents"
+      ? supportingFAQsMpet[caseType?.toLowerCase()!]
+      : FAQ_BY_FORM[currentFormStep?.identifier];
 
   const renderStepContent = () => {
     if (isCompleted) {

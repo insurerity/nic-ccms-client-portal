@@ -12,7 +12,7 @@ import ReviewSubmitForm from "@/components/common/Form/ReviewSubmitForm";
 import DynamicSupportingDocumentsForm from "@/components/common/Form/DynamicSupportingDocumentsForm";
 import ComplaintDetailsForm from "@/components/common/Form/ComplaintDetailsForm";
 import VictimsProfileForm from "@/components/common/Form/VictimProfileForm";
-import { FAQ_BY_FORM } from "@/lib/FAQs";
+import { FAQ_BY_FORM, supportingDocumentsFAQS } from "@/lib/FAQs";
 import { useSharedStore } from "@/hooks/use-complaint-store";
 import PetitionerProfileForm from "@/components/common/Form/PetitionProfileForm";
 
@@ -52,7 +52,10 @@ const NormalPetition = () => {
 
   const currentFormStep = formSteps?.[currentStep - 1];
 
-  const currentFaq = FAQ_BY_FORM[currentFormStep?.identifier];
+  const currentFaq =
+    currentFormStep?.identifier === "supporting-documents"
+      ? supportingDocumentsFAQS["complaints"]
+      : FAQ_BY_FORM[currentFormStep?.identifier];
 
   const renderStepContent = () => {
     if (isCompleted) {
