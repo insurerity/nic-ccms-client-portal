@@ -63,12 +63,12 @@ export const caseDetails: Faq[] = [
     id: 3,
     question: "What is an Entity of Concern?",
     answer:
-      "When submitting a complaint, the Entity of Concern (EOC) refers to the insurance agency you're reporting or raising the issue against. This is the organization involved in the complaint you are filing. ",
+      "When submitting a complaint, the Entity of Concern (EOC) refers to the insurance company you're reporting or raising the issue against. This is the organization involved in the complaint you are filing. ",
   },
   {
     id: 4,
     question:
-      "Why can't I find my Insurance Provider in the list of Entities of Concern?",
+      "Why can't I find my Insurance Company in the list of Entities of Concern?",
     answer: <EntityNotFoundNote />,
   },
   {
@@ -108,7 +108,7 @@ const complaintDetailsFaq = [
     id: 3,
     question: "What is an Entity of Concern?",
     answer:
-      "When submitting a complaint, the Entity of Concern (EOC) refers to the insurance agency you're reporting or raising the issue against. This is the organization involved in the complaint you are filing.",
+      "When submitting a complaint, the Entity of Concern (EOC) refers to the insurance company you're reporting or raising the issue against. This is the organization involved in the complaint you are filing.",
   },
   {
     id: 4,
