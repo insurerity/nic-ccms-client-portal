@@ -113,7 +113,7 @@ const complaintDetailsFaq = [
   {
     id: 4,
     question:
-      "Why can't I find my Insurance Provider in the list of Entities of Concern?",
+      "Why can't I find my Insurance Company in the list of Entities of Concern?",
     answer: <EntityNotFoundNote />,
   },
   {
