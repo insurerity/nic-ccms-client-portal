@@ -38,6 +38,7 @@ export default function VideoSection({ videoUrl }: { videoUrl: string }) {
             </button>
 
             <iframe
+              className="rounded-md"
               width="100%"
               height={isMobile ? "400" : "500"}
               src={videoUrl}
