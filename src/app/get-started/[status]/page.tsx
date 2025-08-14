@@ -11,7 +11,7 @@ import GetStartedCheckStatus from "./components/GetStartedCheckStatus";
 import GetStartedGetCompensation from "./components/GetStartedGetCompensation";
 import { useParams } from "next/navigation";
 import { Suspense } from "react";
-import { toast } from "sonner";
+import VideoSection from "@/components/common/VideoSectiont";
 
 export default function GetStartedStatus() {
   const params = useParams();
@@ -25,14 +25,6 @@ export default function GetStartedStatus() {
       <GetStartedCheckStatus
         subText={pageData?.subText}
         title={pageData?.title}
-        action={() =>
-          toast.message(
-            "Coming Soon – In the meantime, click on check now to check the status of your complaint",
-            {
-              position: "top-center",
-            }
-          )
-        }
       />
     );
   }
@@ -43,14 +35,6 @@ export default function GetStartedStatus() {
         subText={pageData?.subText}
         title={pageData?.title}
         tocItems={tocItems}
-        action={() =>
-          toast.message(
-            "Coming Soon – In the meantime, learn more about our process below / Click on Apply Now to proceed ",
-            {
-              position: "top-center",
-            }
-          )
-        }
       />
     );
   }
@@ -65,32 +49,8 @@ export default function GetStartedStatus() {
           <p className="text-center text-gray-600 text-sm lg:text-base px-6">
             {pageData?.subText}
           </p>
-          <div
-            className="relative w-full my-4 rounded-xl overflow-hidden"
-            onClick={() =>
-              toast.message(
-                "Coming Soon – In the meantime, learn more about our process below / Click on Continue to proceed",
-                {
-                  position: "top-center",
-                }
-              )
-            }
-          >
-            <div className="bg-gradient-to-r from-[#59285F]/80 to-[#59285F]/60 relative h-[220px] lg:h-[318px] rounded-xl overflow-hidden">
-              <img
-                src="/images/video-bg.png"
-                alt="Filing a complaint"
-                className="w-full h-full object-cover absolute mix-blend-overlay rounded-[24px]"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <button
-                  className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
-                  aria-label="Play video"
-                >
-                  <Play className="w-8 h-8 text-[#59285F]" fill="#59285F" />
-                </button>
-              </div>
-            </div>
+          <div className="relative w-full my-4 rounded-xl overflow-hidden">
+            <VideoSection videoUrl="https://www.youtube.com/embed/dtu77hYGR9U?si=wPHmezn3BPHvDI2-" />
           </div>
           <UnderstandRequirements
             continueText={pageData?.continueText}
