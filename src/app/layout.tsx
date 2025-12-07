@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import ApolloClientProvider from "@/lib/apollo-client-provider";
 import { Toaster } from "sonner";
+import { MaintenanceUIAdvanced } from "@/components/maintenance";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -35,8 +36,9 @@ export default function RootLayout({
       <body
         className={`${raleway.className} antialiased`}
       >
-        <ApolloClientProvider>{children}</ApolloClientProvider>
-        <Toaster />
+        <MaintenanceUIAdvanced />
+        {/* <ApolloClientProvider>{children}</ApolloClientProvider>
+        <Toaster /> */}
       </body>
     </html>
   );
