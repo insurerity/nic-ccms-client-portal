@@ -1,14 +1,10 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChevronRight } from "lucide-react";
-import {
-  useErrorHandlerMutation,
-  useGetStatusLazyQuery,
-} from "@/graphql/generated";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +14,14 @@ import StatusGuide from "./StatusGuide";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
+import { useTicketStatus } from "@/hooks/useApi";
+import ReCAPTCHA from "react-google-recaptcha";
+
+
+interface TicketResponse {
+  statuses: {status:string, created_at:string}[]
+  ticketNumber: string
+}
 
 const ticketSchema = z.object({
   ticketNumber: z
@@ -26,13 +30,15 @@ const ticketSchema = z.object({
 });
 
 export default function ComplaintStatusTracker() {
-  const [getStatus, { loading: isLoading, data, error }] =
-    useGetStatusLazyQuery();
+  const { submitTicketStatus: getStatus, error, loading: isLoading } = useTicketStatus();
+  const [data, setData] = useState<TicketResponse | null>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const searchParams = useSearchParams();
   const ticketNumberParam = searchParams?.get("ticketNumber");
 
-  const [errorHandler] = useErrorHandlerMutation();
+
   const router = useRouter();
   const isMobile = useIsMobile();
 
@@ -49,19 +55,23 @@ export default function ComplaintStatusTracker() {
     },
   });
 
-  const handleCheckStatus = handleSubmit(async (data) => {
-    const ticketNumber = data.ticketNumber;
+  const handleRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token);
+  };
 
-    return getStatus({
-      variables: {
-        _eq: ticketNumber,
-      },
-    });
-  });
+  const handleCheckStatus = async () => {
+    if(!recaptchaToken) {
+     return toast.error('Please complete the caPTCHA', {
+        style: {
+          backgroundColor: "#59285F",
+          color: "white",
+        },
+      })
+    }
+    const ticketNumber = getValues("ticketNumber");
 
-  useEffect(() => {
-    if (data?.currentStatusData?.length === 0) {
-      toast.error("Invalid Ticket Number", {
+    if (!ticketNumber) {
+      toast.error("Please enter a ticket number", {
         style: {
           backgroundColor: "#59285F",
           color: "white",
@@ -69,13 +79,58 @@ export default function ComplaintStatusTracker() {
       });
       return;
     }
-  }, [data?.currentStatusData]);
+
+    if (!recaptchaToken) {
+      toast.error("Please complete the reCAPTCHA", {
+        style: {
+          backgroundColor: "#59285F",
+          color: "white",
+        },
+      });
+      return;
+    }
+
+    try {
+      const result: TicketResponse = await getStatus(ticketNumber, recaptchaToken);
+      console.log('result for checking status', result)
+      setData(result);
+
+      if (result?.statuses?.length === 0) {
+        toast.error("Invalid Ticket Number", {
+          style: {
+            backgroundColor: "#59285F",
+            color: "white",
+          },
+        });
+        recaptchaRef.current?.reset();
+        setRecaptchaToken(null);
+        return;
+      }
+
+      toast.success("Status retrieved successfully", {
+        style: {
+          backgroundColor: "#059669",
+          color: "white",
+        },
+      });
+    } catch (err) {
+      toast.error("Failed to retrieve status", {
+        style: {
+          backgroundColor: "#DC2626",
+          color: "white",
+        },
+      });
+    } finally {
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
+    }
+  };
 
   useEffect(() => {
     if (ticketNumberParam) {
       setValue("ticketNumber", ticketNumberParam);
     }
-  }, [ticketNumberParam]);
+  }, [ticketNumberParam, setValue]);
 
   const handleCancel = () => {
     return router.push("/get-started");
@@ -84,20 +139,18 @@ export default function ComplaintStatusTracker() {
   return (
     <div className="flex flex-col lg:flex-row gap-6">
       {/* Left side - Status Guide */}
-
       {!isMobile && (
         <div className="w-full lg:w-2/5">
           {
             <StatusGuide
               activeStatus={
-                data ? getLatestStatus(data?.currentStatusData) : undefined
+                data ? getLatestStatus(data?.statuses) : undefined
               }
               created_at={
                 data
-                  ? getLatestStatusCreatedAt(data?.currentStatusData)
+                  ? getLatestStatusCreatedAt(data?.statuses)
                   : undefined
               }
-              allStatusesData={data ? data.allStatusesData : undefined}
             />
           }
         </div>
@@ -113,7 +166,7 @@ export default function ComplaintStatusTracker() {
             </p>
           </div>
 
-          <form onSubmit={handleCheckStatus} className="lg:p-6 p-2">
+          <div className="lg:p-6 p-2">
             <div className="mb-6">
               <label
                 htmlFor="ticketNumber"
@@ -127,13 +180,18 @@ export default function ComplaintStatusTracker() {
                 className="w-full"
                 placeholder="Ticket Number: NIC/XXX/YYYYYY/ZZZZ"
               />
+              {errors.ticketNumber && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.ticketNumber.message}
+                </p>
+              )}
             </div>
 
             {data && (
               <p className="mb-4 text-[#171717]  text-sm">
                 {
                   ComplaintStatusDescriptions[
-                    getLatestStatus(data?.currentStatusData!)
+                    getLatestStatus(data?.statuses!)
                   ]
                 }
               </p>
@@ -146,13 +204,13 @@ export default function ComplaintStatusTracker() {
               {data && (
                 <div
                   className={`px-4 py-2 font-bold ${
-                    getLatestStatus(data?.currentStatusData) ===
+                    getLatestStatus(data?.statuses) ===
                     EComplaintStatuses?.resolved
                       ? "bg-green-700 text-white"
                       : "bg-customCard text-primaryLight"
                   } rounded-[12px]`}
                 >
-                  {getLatestStatus(data?.currentStatusData!) || ""}
+                  {getLatestStatus(data?.statuses!) || ""}
                 </div>
               )}
             </div>
@@ -164,7 +222,16 @@ export default function ComplaintStatusTracker() {
               </div>
             </div>
 
-            <div className="border-t border-gray-200 mt-8 pt-6 flex justify-between">
+            {/* reCAPTCHA */}
+            <div className="mb-6 flex justify-center">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                onChange={handleRecaptchaChange}
+              />
+            </div>
+
+            <div className="border-t border-gray-200 mt-8 pt-6 flex justify-between gap-4">
               <Button
                 type="button"
                 variant="outline"
@@ -174,10 +241,12 @@ export default function ComplaintStatusTracker() {
               >
                 Cancel
               </Button>
+
               <button
-                type="submit"
-                className="bg-primaryLight text-white font-medium rounded-full px-4 py-2 flex items-center gap-2"
+                type="button"
+                onClick={handleCheckStatus}
                 disabled={isLoading}
+                className="bg-primaryLight text-white font-medium rounded-full px-4 py-2 flex items-center gap-2 hover:bg-primaryLight disabled:opacity-50"
               >
                 {isLoading ? "Checking..." : "Check Status"}
                 {!isLoading && (
@@ -185,7 +254,7 @@ export default function ComplaintStatusTracker() {
                 )}
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

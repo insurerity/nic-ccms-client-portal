@@ -42,7 +42,7 @@ export default function HeroSlider() {
       height: 800,
     },
   ];
-  console.log("is mobile", isMobile);
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);

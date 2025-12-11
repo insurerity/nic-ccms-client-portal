@@ -1,4 +1,4 @@
-import { useFileUploadActionMutation } from "@/graphql/generated";
+
 import { convertFileToBase64 } from "@/lib/file";
 
 export type FileMap = Record<
@@ -14,12 +14,13 @@ export type FileMap = Record<
 type UploadResult = { documentId: string };
 
 export function useUploadSupportingDocuments() {
-  const [uploadFiles, { loading: uploadLoading, error, data }] =
-    useFileUploadActionMutation();
+ 
 
-  const uploadSupportingDocuments = async (
+ 
+
+  const convertFilesToBase64 = async (
     documents: FileMap
-  ): Promise<UploadResult[]> => {
+  ): Promise<any[]> => {
     const filesToUpload: { base64: string; name: string; mime: string }[] = [];
 
     const validDocuments = Object.values(documents).filter((f) => !!f);
@@ -37,30 +38,15 @@ export function useUploadSupportingDocuments() {
         console.error("uploading file failed", e);
       }
     }
-
     console.log("converted files", filesToUpload);
 
-    const uploadedFiles = await Promise.all(
-      filesToUpload.map(({ base64, name, mime }) =>
-        uploadFiles({
-          variables: { base64, name, mime },
-          onError(error, clientOptions) {
-            console.log("error uploading file", error);
-          },
-        })
-      )
-    );
+    return filesToUpload
 
-    console.log("uploaded files", uploadFiles);
 
-    const filesToBeSentToDB: UploadResult[] = uploadedFiles
-      .filter((v) => !!v)
-      .map(({ data }) => ({
-        documentId: data?._upload?.id!,
-      }));
+  
 
-    return filesToBeSentToDB;
+   
   };
 
-  return { uploadSupportingDocuments, uploadLoading };
+  return {  convertFilesToBase64 };
 }

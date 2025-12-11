@@ -1,4 +1,4 @@
-import { useGetComplaintStatusesByTicketNumberLazyQuery } from "@/graphql/generated";
+
 import { COMPLAINT_STATUSES, getStatusIcon } from "@/lib/constant";
 import { ComplaintStatusSubtext, EComplaintStatuses } from "@/lib/state";
 import { cn } from "@/lib/utils";
@@ -6,13 +6,12 @@ import { cn } from "@/lib/utils";
 type StatusGuideProps = {
   activeStatus?: string | EComplaintStatuses;
   created_at?: any;
-  allStatusesData?: any[];
 };
 
 const StatusGuide: React.FC<StatusGuideProps> = ({
   activeStatus,
   created_at,
-  allStatusesData,
+  
 }) => {
   const activeIndex = activeStatus
     ? COMPLAINT_STATUSES.indexOf(activeStatus as EComplaintStatuses)

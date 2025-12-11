@@ -1,5 +1,5 @@
 import { ComplaintStoreData } from "./complaint-store";
-import { Nic_Ccms_Complaint_Insert_Input } from "@/graphql/generated";
+
 
 export const formatFileSize = (bytes: number): string => {
   if (bytes < 1024) return bytes + " bytes";
@@ -29,7 +29,7 @@ export function transformComplaintData(data: ComplaintStoreData) {
     victimProfile,
   } = data;
 
-  const mutObj: Nic_Ccms_Complaint_Insert_Input = {
+  const mutObj: any = {
     sourceChannel: "CLIENT",
   };
   if (petitionersProfile && petitionersProfile !== null) {

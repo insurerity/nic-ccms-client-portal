@@ -1,19 +1,18 @@
-import { useRegulatedEntitiesQuery } from "@/graphql/generated";
+
 import { capitalize } from "@/lib/utils";
+import { useEntities } from "./useApi";
 
 export const useGetRegulatedEntities = () => {
-  const { data, loading } = useRegulatedEntitiesQuery();
-
-  const entities = data
-    ? data?.RegulatedEntity?.map((v) => ({
-        id: v.id,
-        type: v.entityType,
-        label: capitalize(v.name),
-      }))
-    : [];
-console.log('entites', entities)
+ 
+ 
+     const {data: entities, loading} = useEntities()
+ 
+     const transformedEntities = entities?.map((v) => ({
+       ...v,
+       label: capitalize(v.name)
+     }))
   return {
     loadingEntities: loading,
-    entities,
+    entities: transformedEntities ?? [],
   };
 };

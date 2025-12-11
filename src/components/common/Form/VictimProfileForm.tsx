@@ -6,7 +6,6 @@ import { Check, ChevronDown, ChevronsUpDown } from "lucide-react";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -93,36 +92,6 @@ const VictimsProfileForm = ({
        path: pathName,
      });
    }, [pathName]);
-
-  function generateDigitalAddress() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-
-        fetch("/api/gps", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ latitude, longitude }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              console.log("Digital Address:", data.digitalAddress);
-            } else {
-              console.error("Error:", data.message);
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching digital address:", error);
-          });
-      },
-      (error) => {
-        console.error("Error obtaining location:", error);
-      }
-    );
-  }
 
   return (
     <div className="bg-white lg:rounded-[28px] shadow-sm p-6">

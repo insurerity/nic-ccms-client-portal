@@ -1,16 +1,20 @@
-import { useOfficesQuery } from "@/graphql/generated";
+
+import { useOffices } from "./useApi";
+import { capitalize } from "@/lib/utils";
 
 export const useGetRegions = () => {
-  const { data, loading } = useOfficesQuery();
-
-  const offices = data
-    ? data?.Office?.filter(
-        (v) => v.name.toLocaleUpperCase() !== "Head Office".toLocaleUpperCase()
-      )?.map((v) => ({ id: v.id, label: v.name }))
-    : [];
+   const {data: offices, loading} = useOffices()
+  
+      const transformedOffices = offices?.map((v) => ({
+        ...v,
+        label: capitalize(v.name)
+      }))
+  
+  
+      
 
   return {
-    offices,
+    offices: transformedOffices ?? [],
     loading,
   };
 };

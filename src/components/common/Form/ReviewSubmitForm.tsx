@@ -12,17 +12,23 @@ import {
 } from "@/hooks/use-complaint-store";
 import { camelCaseToTitle, toCamelCase } from "@/lib/utils";
 import { InfoDisplay } from "../InfoDisplay";
-import {
-  useAddTicketMutation,
-  useErrorHandlerMutation,
-} from "@/graphql/generated";
+
 import { useUploadSupportingDocuments } from "@/hooks/use-upload-documents";
 import { transformComplaintData } from "@/lib/upload";
 import { showCustomToast } from "@/lib/errors";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { logInfo } from "@/lib/logger";
 import { usePathname } from "next/navigation";
 import { transformToFileMap } from "@/lib/file";
+import ReCAPTCHA from "react-google-recaptcha";
+
+function cleanPayload(obj) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(
+      ([_, value]) => value !== "" && value !== null && value !== undefined
+    )
+  );
+}
 
 const uploadLoaderIDS = {
   documents: "SD-LOADER",
@@ -40,79 +46,124 @@ const ReviewSubmitForm = ({
   onComplete,
   formSteps,
 }: ReviewSubmitFormProps) => {
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const { data, setData, reset: resetComplaintData } = useComplaintStore();
   const { reset: resetSharedStore, caseType } = useSharedStore();
   const { setId } = useNewComplaintIdStore();
-  const [createComplaint, { loading, reset }] = useAddTicketMutation();
-  const [errorHandler] = useErrorHandlerMutation();
+  // const [createComplaint, { loading, reset }] = useAddTicketMutation();
+
   const pathName = usePathname();
   const isMFUND = pathName.includes("compensation");
 
-  const { uploadSupportingDocuments, uploadLoading } =
-    useUploadSupportingDocuments();
+  const handleRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token);
+  };
+
+  const { convertFilesToBase64 } = useUploadSupportingDocuments();
 
   const handleSubmit = async () => {
-    try {
-      toast.loading("Uploading supporting documents, please wait...", {
-        id: uploadLoaderIDS.documents,
+    if (!recaptchaToken) {
+      return toast.error("Please complete the caPTCHA", {
+        style: {
+          backgroundColor: "#59285F",
+          color: "white",
+        },
       });
-      const documents = await uploadSupportingDocuments(
+    }
+    try {
+      const documents = await convertFilesToBase64(
         isMFUND
           ? transformToFileMap(data.supportingDocuments)
           : data.supportingDocuments
       );
 
       if (documents.length === 0) {
-        toast.dismiss(uploadLoaderIDS.documents);
         toast.error("Failed to upload complaint documents");
       }
       const payload = transformComplaintData(data);
 
-      if (documents && documents.length > 0) {
-        toast.dismiss(uploadLoaderIDS.documents);
-        payload["ComplaintDocuments"] = {
-          data: documents,
-        };
-      }
+      const cleanedPayload = cleanPayload(payload);
+
+      // if (documents && documents.length > 0) {
+      //   payload["ComplaintDocuments"] = {
+      //     data: documents,
+      //   };
+      // }
       toast.loading("Submitting your complaint, please wait...", {
         id: uploadLoaderIDS.complaints,
       });
 
-      createComplaint({
-        variables: {
-          object: payload,
-        },
-        onCompleted(data) {
-          resetComplaintData();
-          resetSharedStore();
-          toast.dismiss(uploadLoaderIDS.complaints);
-          toast.dismiss(uploadLoaderIDS.documents);
-          setId(data.insert_nic_ccms_Complaint_one?.id as string);
-          onComplete();
-        },
-        onError(error) {
-          toast.dismiss(uploadLoaderIDS.complaints);
-          toast.dismiss(uploadLoaderIDS.documents);
+      const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-          errorHandler({
-            variables: {
-              error: {
-                error: error,
-                APPLICATION: "CLIENT",
-              },
-            },
-          });
-          showCustomToast({
-            title: "Submission Failed",
-            type: "error",
-            description:
-              "We couldn't process your complaint. Please try again later.",
-          });
+      const response = await fetch(`${BASE_URL}/complaint`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          complaint: cleanedPayload,
+          documents,
+          recaptchaToken,
+        }),
       });
-    } catch (error) {
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      console.log("new complaint result", result);
+
+      resetComplaintData();
+      resetSharedStore();
       toast.dismiss(uploadLoaderIDS.complaints);
       toast.dismiss(uploadLoaderIDS.documents);
+      setId(result?.ticket_number);
+      onComplete();
+
+      // createComplaint({
+      //   variables: {
+      //     object: payload,
+      //   },
+      //   onCompleted(data) {
+      //     resetComplaintData();
+      //     resetSharedStore();
+      //     toast.dismiss(uploadLoaderIDS.complaints);
+      //     toast.dismiss(uploadLoaderIDS.documents);
+      //     setId(data.insert_nic_ccms_Complaint_one?.id as string);
+      //     onComplete();
+      //   },
+      //   onError(error) {
+      //     toast.dismiss(uploadLoaderIDS.complaints);
+      //     toast.dismiss(uploadLoaderIDS.documents);
+
+      //     errorHandler({
+      //       variables: {
+      //         error: {
+      //           error: error,
+      //           APPLICATION: "CLIENT",
+      //         },
+      //       },
+      //     });
+      //     showCustomToast({
+      //       title: "Submission Failed",
+      //       type: "error",
+      //       description:
+      //         "We couldn't process your complaint. Please try again later.",
+      //     });
+      //   },
+      // });
+    } catch (error) {
+      showCustomToast({
+        title: "Submission Failed",
+        type: "error",
+        description:
+          "We couldn't process your complaint. Please try again later.",
+      });
+      console.log("failed to submit complaint details here", error);
+      toast.dismiss(uploadLoaderIDS.complaints);
     }
   };
 
@@ -238,6 +289,14 @@ const ReviewSubmitForm = ({
               );
             })}
           </div>
+        </div>
+
+        <div className="mb-6 flex justify-center">
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+            onChange={handleRecaptchaChange}
+          />
         </div>
 
         <div className="flex justify-between pt-4">
