@@ -19,6 +19,7 @@ export function useOffices() {
     setError(null);
     try {
       const response = await fetch(`${BASE_URL}/offices`);
+
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
