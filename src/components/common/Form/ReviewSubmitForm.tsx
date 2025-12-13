@@ -51,7 +51,7 @@ const ReviewSubmitForm = ({
   const { data, setData, reset: resetComplaintData } = useComplaintStore();
   const { reset: resetSharedStore, caseType } = useSharedStore();
   const { setId } = useNewComplaintIdStore();
-  // const [createComplaint, { loading, reset }] = useAddTicketMutation();
+ 
 
   const pathName = usePathname();
   const isMFUND = pathName.includes("compensation");
@@ -94,9 +94,7 @@ const ReviewSubmitForm = ({
         id: uploadLoaderIDS.complaints,
       });
 
-      const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
-      const response = await fetch(`${BASE_URL}/complaint`, {
+      const response = await fetch(`/api/complaint`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +112,6 @@ const ReviewSubmitForm = ({
 
       const result = await response.json();
 
-      console.log("new complaint result", result);
 
       resetComplaintData();
       resetSharedStore();

@@ -18,7 +18,7 @@ export function useOffices() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://themis.niccomplaintshub.com/offices`);
+      const response = await fetch(`/api/offices`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
@@ -55,7 +55,7 @@ export function useEntities() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://themis.niccomplaintshub.com/entities`);
+      const response = await fetch(`/api/entities`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
@@ -94,7 +94,7 @@ export function useTicketStatus() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://themis.niccomplaintshub.com/ticket_status`, {
+      const response = await fetch(`/api/ticket_status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
