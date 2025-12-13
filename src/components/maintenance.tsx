@@ -27,7 +27,6 @@ export function MaintenanceUIAdvanced({
         return "Performing maintenance";
     }
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-muted">
       <div className="flex flex-col items-center justify-center px-6 py-12 max-w-2xl text-center">
