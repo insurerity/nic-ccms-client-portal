@@ -1,9 +1,16 @@
 
+import { checkCors, getCorsHeaders } from '@/lib/rateLimit';
 import { NextRequest, NextResponse } from 'next/server';
 
 const BASE_URL = process.env.THEMIS_API_URL || 'https://themis.niccomplaintshub.com';
 
 export async function POST(request: NextRequest) {
+   if (!checkCors(request)) {
+      return NextResponse.json(
+        { error: 'CORS policy violation' },
+        { status: 403, headers: getCorsHeaders() }
+      );
+    }
   try {
     const { ticketNumber, recaptureToken } = await request.json();
 
